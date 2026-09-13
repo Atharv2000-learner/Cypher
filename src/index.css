@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  
+  html.light {
+    color-scheme: light;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar for cyber aesthetic */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #090d16;
+  }
+  .light ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+  .light ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #06b6d4;
+  }
+}
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-size: 24px 24px;
+  }
+  
+  .glow-cyan {
+    box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3);
+  }
+  
+  .glow-violet {
+    box-shadow: 0 0 25px -5px rgba(139, 92, 246, 0.3);
+  }
+  
+  .glow-emerald {
+    box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
+  }
+
+  .text-gradient-cyan {
+    background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 50%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-green {
+    background: linear-gradient(135deg, #34d399 0%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Enhanced Light Theme Support */
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+html.light header {
+  background-color: rgba(248, 250, 252, 0.85);
+  border-bottom-color: #e2e8f0;
+}
+
+html.light .bg-cypher-950 {
+  background-color: #f1f5f9;
+}
+
+html.light .bg-cypher-900,
+html.light [class*="bg-cypher-900"] {
+  background-color: #ffffff;
+}
+
+html.light .border-cypher-800,
+html.light [class*="border-cypher-800"] {
+  border-color: #e2e8f0;
+}
+
+html.light .text-white {
+  color: #0f172a;
+}
+
+html.light .text-slate-100 {
+  color: #0f172a;
+}
+
+html.light .text-slate-300 {
+  color: #334155;
+}
+
+html.light .text-slate-400 {
+  color: #64748b;
+}
+
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light footer {
+  background-color: #f1f5f9;
+  border-top-color: #e2e8f0;
+}
