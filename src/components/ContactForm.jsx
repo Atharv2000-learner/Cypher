@@ -81,17 +81,17 @@ export default function ContactForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-xl">
-        <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4">
+      <div className="bg-white dark:bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-xl">
+        <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-500 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-7 h-7" />
         </div>
-        <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Message Dispatched</h3>
-        <p className="text-sm text-slate-300 max-w-sm mx-auto mb-6">
-          Thanks for reaching out! A Cypher Club team coordinator will reply to <span className="text-white font-medium">{formData.email}</span> shortly.
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">Message Dispatched</h3>
+        <p className="text-sm text-slate-600 dark:text-slate-300 max-w-sm mx-auto mb-6">
+          Thanks for reaching out! A Cypher Club team coordinator will reply to <span className="text-slate-900 dark:text-white font-medium">{formData.email}</span> shortly.
         </p>
         <button
           onClick={handleReset}
-          className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-cypher-800 hover:bg-cypher-700 text-white border border-cypher-700 transition-colors"
+          className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 dark:bg-cypher-800 dark:hover:bg-cypher-700 dark:text-white dark:border-cypher-700 transition-colors"
         >
           Send Another Message
         </button>
@@ -103,19 +103,19 @@ export default function ContactForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="bg-cypher-900/70 border border-cypher-800/90 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm space-y-5"
+      className="bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm space-y-5"
     >
       {status === 'error' && (
-        <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+        <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
           <span>{statusMessage}</span>
         </div>
       )}
 
       {/* Name */}
       <div>
-        <label htmlFor="contact-name" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-1.5">
-          Your Name <span className="text-neon-cyan">*</span>
+        <label htmlFor="contact-name" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+          Your Name <span className="text-cyan-600 dark:text-neon-cyan">*</span>
         </label>
         <input
           id="contact-name"
@@ -126,12 +126,12 @@ export default function ContactForm() {
           placeholder="e.g. Jordan Lee"
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? "name-err" : undefined}
-          className={`w-full px-4 py-2.5 rounded-xl bg-cypher-950 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
-            errors.name ? 'border-red-500' : 'border-cypher-800 focus:border-neon-cyan'
+          className={`w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors ${
+            errors.name ? 'border-red-500' : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan'
           }`}
         />
         {errors.name && (
-          <p id="name-err" className="text-xs text-red-400 mt-1 flex items-center gap-1">
+          <p id="name-err" className="text-xs text-red-500 dark:text-red-400 mt-1 flex items-center gap-1">
             <AlertCircle className="w-3.5 h-3.5" /> {errors.name}
           </p>
         )}
@@ -139,8 +139,8 @@ export default function ContactForm() {
 
       {/* Email */}
       <div>
-        <label htmlFor="contact-email" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-1.5">
-          Your Email <span className="text-neon-cyan">*</span>
+        <label htmlFor="contact-email" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+          Your Email <span className="text-cyan-600 dark:text-neon-cyan">*</span>
         </label>
         <input
           id="contact-email"
@@ -151,12 +151,12 @@ export default function ContactForm() {
           placeholder="e.g. jordan@example.com"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "email-err" : undefined}
-          className={`w-full px-4 py-2.5 rounded-xl bg-cypher-950 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
-            errors.email ? 'border-red-500' : 'border-cypher-800 focus:border-neon-cyan'
+          className={`w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors ${
+            errors.email ? 'border-red-500' : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan'
           }`}
         />
         {errors.email && (
-          <p id="email-err" className="text-xs text-red-400 mt-1 flex items-center gap-1">
+          <p id="email-err" className="text-xs text-red-500 dark:text-red-400 mt-1 flex items-center gap-1">
             <AlertCircle className="w-3.5 h-3.5" /> {errors.email}
           </p>
         )}
@@ -164,7 +164,7 @@ export default function ContactForm() {
 
       {/* Subject */}
       <div>
-        <label htmlFor="contact-subject" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-1.5">
+        <label htmlFor="contact-subject" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
           Topic / Subject <span className="text-slate-500 text-[10px] font-normal">(Optional)</span>
         </label>
         <input
@@ -174,14 +174,14 @@ export default function ContactForm() {
           value={formData.subject}
           onChange={handleChange}
           placeholder="Workshop query, partnership, or general question"
-          className="w-full px-4 py-2.5 rounded-xl bg-cypher-950 border border-cypher-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-neon-cyan"
+          className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-cypher-950 border border-slate-300 dark:border-cypher-800 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-neon-cyan"
         />
       </div>
 
       {/* Message */}
       <div>
-        <label htmlFor="contact-message" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-1.5">
-          Message <span className="text-neon-cyan">*</span>
+        <label htmlFor="contact-message" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+          Message <span className="text-cyan-600 dark:text-neon-cyan">*</span>
         </label>
         <textarea
           id="contact-message"
@@ -192,12 +192,12 @@ export default function ContactForm() {
           placeholder="How can Cypher Club assist you?"
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "msg-err" : undefined}
-          className={`w-full px-4 py-2.5 rounded-xl bg-cypher-950 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
-            errors.message ? 'border-red-500' : 'border-cypher-800 focus:border-neon-cyan'
+          className={`w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors ${
+            errors.message ? 'border-red-500' : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan'
           }`}
         />
         {errors.message && (
-          <p id="msg-err" className="text-xs text-red-400 mt-1 flex items-center gap-1">
+          <p id="msg-err" className="text-xs text-red-500 dark:text-red-400 mt-1 flex items-center gap-1">
             <AlertCircle className="w-3.5 h-3.5" /> {errors.message}
           </p>
         )}

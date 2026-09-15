@@ -126,25 +126,25 @@ export default function JoinForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-2xl relative overflow-hidden">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto mb-6">
+      <div className="bg-white dark:bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-2xl relative overflow-hidden">
+        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-500 dark:text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto mb-6">
           <CheckCircle2 className="w-8 h-8" />
         </div>
-        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+        <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-3">
           Application Received!
         </h3>
-        <p className="text-slate-300 max-w-md mx-auto mb-6 text-sm sm:text-base leading-relaxed">
-          Thank you, <span className="text-white font-semibold">{formData.fullName}</span>! Your registration for Cypher Club has been logged. Our student leads review new member intakes during regular club onboarding cycles.
+        <p className="text-slate-600 dark:text-slate-300 max-w-md mx-auto mb-6 text-sm sm:text-base leading-relaxed">
+          Thank you, <span className="text-slate-900 dark:text-white font-semibold">{formData.fullName}</span>! Your registration for Cypher Club has been logged. Our student leads review new member intakes during regular club onboarding cycles.
         </p>
-        <div className="p-4 rounded-xl bg-cypher-950/80 border border-cypher-800 text-left max-w-md mx-auto mb-6 text-xs text-slate-300 space-y-1.5 font-mono">
-          <p><span className="text-slate-400">Department:</span> {formData.department}</p>
-          <p><span className="text-slate-400">Academic Year:</span> {formData.year}</p>
-          <p><span className="text-slate-400">Track:</span> {formData.interest}</p>
-          <p><span className="text-slate-400">Notification Email:</span> {formData.email}</p>
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-cypher-950/80 border border-slate-200 dark:border-cypher-800 text-left max-w-md mx-auto mb-6 text-xs text-slate-700 dark:text-slate-300 space-y-1.5 font-mono">
+          <p><span className="text-slate-500 dark:text-slate-400">Department:</span> {formData.department}</p>
+          <p><span className="text-slate-500 dark:text-slate-400">Academic Year:</span> {formData.year}</p>
+          <p><span className="text-slate-500 dark:text-slate-400">Track:</span> {formData.interest}</p>
+          <p><span className="text-slate-500 dark:text-slate-400">Notification Email:</span> {formData.email}</p>
         </div>
         <button
           onClick={handleReset}
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold bg-cypher-800 hover:bg-cypher-700 text-white border border-cypher-700 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 dark:bg-cypher-800 dark:hover:bg-cypher-700 dark:text-white dark:border-cypher-700 transition-colors"
         >
           Submit Another Response
         </button>
@@ -156,14 +156,14 @@ export default function JoinForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="bg-cypher-900/70 border border-cypher-800/90 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-sm space-y-6"
+      className="bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-sm space-y-6"
     >
       {status === 'error' && (
-        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm flex items-start gap-3" role="alert">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-sm flex items-start gap-3" role="alert">
+          <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
           <div>
             <p className="font-semibold">Submission failed</p>
-            <p className="text-xs text-red-300/90">{errorMessage}</p>
+            <p className="text-xs text-red-500/90 dark:text-red-300/90">{errorMessage}</p>
           </div>
         </div>
       )}
@@ -171,8 +171,8 @@ export default function JoinForm() {
       {/* Row 1: Full Name & Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="fullName" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-2">
-            Full Name <span className="text-neon-cyan">*</span>
+          <label htmlFor="fullName" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            Full Name <span className="text-cyan-600 dark:text-neon-cyan">*</span>
           </label>
           <input
             id="fullName"
@@ -183,22 +183,22 @@ export default function JoinForm() {
             placeholder="e.g. Alex Rivera"
             aria-invalid={!!errors.fullName}
             aria-describedby={errors.fullName ? "fullName-error" : undefined}
-            className={`w-full px-4 py-3 rounded-xl bg-cypher-950 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
+            className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors ${
               errors.fullName
                 ? 'border-red-500/70 focus:border-red-400 focus:ring-1 focus:ring-red-400'
-                : 'border-cypher-800 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan'
+                : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan'
             }`}
           />
           {errors.fullName && (
-            <p id="fullName-error" className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+            <p id="fullName-error" className="text-xs text-red-500 dark:text-red-400 mt-1.5 flex items-center gap-1">
               <AlertCircle className="w-3.5 h-3.5" /> {errors.fullName}
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-2">
-            Email Address <span className="text-neon-cyan">*</span>
+          <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            Email Address <span className="text-cyan-600 dark:text-neon-cyan">*</span>
           </label>
           <input
             id="email"
@@ -209,14 +209,14 @@ export default function JoinForm() {
             placeholder="e.g. alex@university.edu"
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "email-error" : undefined}
-            className={`w-full px-4 py-3 rounded-xl bg-cypher-950 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
+            className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors ${
               errors.email
                 ? 'border-red-500/70 focus:border-red-400 focus:ring-1 focus:ring-red-400'
-                : 'border-cypher-800 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan'
+                : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan'
             }`}
           />
           {errors.email && (
-            <p id="email-error" className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+            <p id="email-error" className="text-xs text-red-500 dark:text-red-400 mt-1.5 flex items-center gap-1">
               <AlertCircle className="w-3.5 h-3.5" /> {errors.email}
             </p>
           )}
@@ -226,8 +226,8 @@ export default function JoinForm() {
       {/* Row 2: Department & Year */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="department" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-2">
-            Department / Major <span className="text-neon-cyan">*</span>
+          <label htmlFor="department" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            Department / Major <span className="text-cyan-600 dark:text-neon-cyan">*</span>
           </label>
           <select
             id="department"
@@ -236,10 +236,10 @@ export default function JoinForm() {
             onChange={handleChange}
             aria-invalid={!!errors.department}
             aria-describedby={errors.department ? "dept-error" : undefined}
-            className={`w-full px-4 py-3 rounded-xl bg-cypher-950 border text-sm text-white focus:outline-none transition-colors ${
+            className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white focus:outline-none transition-colors ${
               errors.department
                 ? 'border-red-500/70 focus:border-red-400'
-                : 'border-cypher-800 focus:border-neon-cyan'
+                : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan'
             }`}
           >
             <option value="">Select your department</option>
@@ -248,15 +248,15 @@ export default function JoinForm() {
             ))}
           </select>
           {errors.department && (
-            <p id="dept-error" className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+            <p id="dept-error" className="text-xs text-red-500 dark:text-red-400 mt-1.5 flex items-center gap-1">
               <AlertCircle className="w-3.5 h-3.5" /> {errors.department}
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="year" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-2">
-            Academic Year <span className="text-neon-cyan">*</span>
+          <label htmlFor="year" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            Academic Year <span className="text-cyan-600 dark:text-neon-cyan">*</span>
           </label>
           <select
             id="year"
@@ -265,10 +265,10 @@ export default function JoinForm() {
             onChange={handleChange}
             aria-invalid={!!errors.year}
             aria-describedby={errors.year ? "year-error" : undefined}
-            className={`w-full px-4 py-3 rounded-xl bg-cypher-950 border text-sm text-white focus:outline-none transition-colors ${
+            className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white focus:outline-none transition-colors ${
               errors.year
                 ? 'border-red-500/70 focus:border-red-400'
-                : 'border-cypher-800 focus:border-neon-cyan'
+                : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan'
             }`}
           >
             <option value="">Select current year</option>
@@ -277,7 +277,7 @@ export default function JoinForm() {
             ))}
           </select>
           {errors.year && (
-            <p id="year-error" className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+            <p id="year-error" className="text-xs text-red-500 dark:text-red-400 mt-1.5 flex items-center gap-1">
               <AlertCircle className="w-3.5 h-3.5" /> {errors.year}
             </p>
           )}
@@ -286,15 +286,15 @@ export default function JoinForm() {
 
       {/* Row 3: Primary Area of Interest */}
       <div>
-        <label htmlFor="interest" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-2">
-          Primary Area of Interest <span className="text-neon-cyan">*</span>
+        <label htmlFor="interest" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-2">
+          Primary Area of Interest <span className="text-cyan-600 dark:text-neon-cyan">*</span>
         </label>
         <select
           id="interest"
           name="interest"
           value={formData.interest}
           onChange={handleChange}
-          className="w-full px-4 py-3 rounded-xl bg-cypher-950 border border-cypher-800 text-sm text-white focus:outline-none focus:border-neon-cyan"
+          className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-cypher-950 border border-slate-300 dark:border-cypher-800 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-neon-cyan"
         >
           {interests.map((item) => (
             <option key={item} value={item}>{item}</option>
@@ -304,7 +304,7 @@ export default function JoinForm() {
 
       {/* Row 4: GitHub or LinkedIn (Optional) */}
       <div>
-        <label htmlFor="githubOrLinkedin" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-2">
+        <label htmlFor="githubOrLinkedin" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-2">
           GitHub or LinkedIn Profile <span className="text-slate-500 text-[10px] font-normal">(Optional)</span>
         </label>
         <input
@@ -314,14 +314,14 @@ export default function JoinForm() {
           value={formData.githubOrLinkedin}
           onChange={handleChange}
           placeholder="https://github.com/your-username"
-          className="w-full px-4 py-3 rounded-xl bg-cypher-950 border border-cypher-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-neon-cyan transition-colors"
+          className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-cypher-950 border border-slate-300 dark:border-cypher-800 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-neon-cyan transition-colors"
         />
       </div>
 
       {/* Row 5: Motivation / Why join? */}
       <div>
-        <label htmlFor="reason" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-300 mb-2">
-          Why do you want to join Cypher Club? <span className="text-neon-cyan">*</span>
+        <label htmlFor="reason" className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700 dark:text-slate-300 mb-2">
+          Why do you want to join Cypher Club? <span className="text-cyan-600 dark:text-neon-cyan">*</span>
         </label>
         <textarea
           id="reason"
@@ -332,14 +332,14 @@ export default function JoinForm() {
           placeholder="Tell us about what you want to learn, what projects you wish to build, or how you want to contribute..."
           aria-invalid={!!errors.reason}
           aria-describedby={errors.reason ? "reason-error" : undefined}
-          className={`w-full px-4 py-3 rounded-xl bg-cypher-950 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
+          className={`w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-cypher-950 border text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors ${
             errors.reason
               ? 'border-red-500/70 focus:border-red-400 focus:ring-1 focus:ring-red-400'
-              : 'border-cypher-800 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan'
+              : 'border-slate-300 dark:border-cypher-800 focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan'
           }`}
         />
         {errors.reason && (
-          <p id="reason-error" className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+          <p id="reason-error" className="text-xs text-red-500 dark:text-red-400 mt-1.5 flex items-center gap-1">
             <AlertCircle className="w-3.5 h-3.5" /> {errors.reason}
           </p>
         )}
@@ -364,7 +364,7 @@ export default function JoinForm() {
             </>
           )}
         </button>
-        <span className="block mt-2 text-[11px] text-slate-400">
+        <span className="block mt-2 text-[11px] text-slate-500 dark:text-slate-400">
           Submissions are stored securely and reviewed by the student committee.
         </span>
       </div>

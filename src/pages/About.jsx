@@ -86,13 +86,13 @@ export default function About() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
       {/* 1. ABOUT CYPHER CLUB HERO */}
       <section className="text-center max-w-4xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/25">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase bg-cyan-500/10 dark:bg-neon-cyan/10 text-cyan-700 dark:text-neon-cyan border border-cyan-500/30 dark:border-neon-cyan/25">
           About Cypher Club
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Where Curiosity Meets <span className="text-gradient-cyan">Real-World Code</span>
         </h1>
-        <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl mx-auto">
           Cypher Club is an independent student technology society established to empower students across engineering disciplines to explore modern software, build ambitious applications, and master computer science fundamentals.
         </p>
       </section>
@@ -100,33 +100,33 @@ export default function About() {
       {/* 2. VISION & MISSION CARDS */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Vision */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-cypher-900/80 border border-cyan-500/30 relative overflow-hidden shadow-xl group hover:border-cyan-500/50 transition-all">
-          <div className="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-neon-cyan mb-6">
+        <div className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-cypher-900/80 border border-cyan-500/30 relative overflow-hidden shadow-xl group hover:border-cyan-500/50 transition-all">
+          <div className="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-neon-cyan mb-6">
             <Target className="w-7 h-7" />
           </div>
-          <span className="text-xs font-mono uppercase tracking-widest text-cyan-400 font-bold block mb-2">
+          <span className="text-xs font-mono uppercase tracking-widest text-cyan-700 dark:text-cyan-400 font-bold block mb-2">
             Our Vision
           </span>
-          <h2 className="text-2xl font-bold text-white mb-4">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
             Democratizing Technology & Engineering Excellence
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
             To create a vibrant, student-powered engineering hub where every student — regardless of background or prior experience — has the mentorship, tools, and platform to become a confident creator, builder, and problem-solver.
           </p>
         </div>
 
         {/* Mission */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-cypher-900/80 border border-emerald-500/30 relative overflow-hidden shadow-xl group hover:border-emerald-500/50 transition-all">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-6">
+        <div className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-cypher-900/80 border border-emerald-500/30 relative overflow-hidden shadow-xl group hover:border-emerald-500/50 transition-all">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6">
             <Compass className="w-7 h-7" />
           </div>
-          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold block mb-2">
+          <span className="text-xs font-mono uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-bold block mb-2">
             Our Mission
           </span>
-          <h2 className="text-2xl font-bold text-white mb-4">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
             Hands-on Mastery Through Collaborative Building
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
             To run high-quality peer-to-peer technical bootcamps, foster cross-functional open source project teams, nurture cybersecurity talent, and support competitive squads with real engineering resources and mentorship.
           </p>
         </div>
@@ -145,14 +145,14 @@ export default function About() {
           {siteConfig.progression.map((item) => (
             <div
               key={item.title}
-              className={`p-6 rounded-2xl bg-cypher-900/70 border ${item.border} flex flex-col h-full`}
+              className={`p-6 rounded-2xl bg-white dark:bg-cypher-900/70 border ${item.border} flex flex-col h-full shadow-sm`}
             >
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-mono text-slate-400">{item.step}</span>
+                <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{item.step}</span>
                 <span className={`text-sm font-mono font-bold ${item.accent}`}>{item.title}</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">{item.subtitle}</h3>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{item.description}</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{item.subtitle}</h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{item.description}</p>
             </div>
           ))}
         </div>
@@ -173,14 +173,14 @@ export default function About() {
             return (
               <div
                 key={item.title}
-                className="p-6 sm:p-8 rounded-2xl bg-cypher-900/60 border border-cypher-800 flex items-start gap-5 hover:border-cypher-700 transition-colors"
+                className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-cypher-900/60 border border-slate-200 dark:border-cypher-800 flex items-start gap-5 hover:border-slate-300 dark:hover:border-cypher-700 transition-colors shadow-sm"
               >
-                <div className={`w-12 h-12 rounded-xl bg-cypher-950 border ${item.accent} flex items-center justify-center shrink-0`}>
+                <div className={`w-12 h-12 rounded-xl bg-slate-100 dark:bg-cypher-950 border ${item.accent} flex items-center justify-center shrink-0`}>
                   <Icon className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">{item.description}</p>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{item.title}</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{item.description}</p>
                 </div>
               </div>
             )
@@ -203,19 +203,19 @@ export default function About() {
             return (
               <div
                 key={track.topic}
-                className="p-6 sm:p-7 rounded-2xl bg-cypher-900/70 border border-cypher-800/90"
+                className="p-6 sm:p-7 rounded-2xl bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 shadow-sm"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-cypher-950 border border-cypher-700 flex items-center justify-center text-neon-cyan">
+                  <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-cypher-950 border border-slate-200 dark:border-cypher-700 flex items-center justify-center text-cyan-600 dark:text-neon-cyan">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-lg font-bold text-white">{track.topic}</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">{track.topic}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2 pt-2">
                   {track.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="px-3 py-1 rounded-lg text-xs font-mono bg-cypher-950 border border-cypher-800 text-slate-300"
+                      className="px-3 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-cypher-950 border border-slate-200 dark:border-cypher-800 text-slate-700 dark:text-slate-300"
                     >
                       {skill}
                     </span>
@@ -240,13 +240,13 @@ export default function About() {
           {whyJoinReasons.map((reason) => (
             <div
               key={reason.title}
-              className="p-6 rounded-2xl bg-cypher-900/60 border border-cypher-800/80 hover:border-neon-cyan/40 transition-colors"
+              className="p-6 rounded-2xl bg-white dark:bg-cypher-900/60 border border-slate-200 dark:border-cypher-800/80 hover:border-cyan-500/40 dark:hover:border-neon-cyan/40 transition-colors shadow-sm"
             >
               <div className="flex items-center gap-2 mb-3">
-                <CheckCircle2 className="w-5 h-5 text-neon-cyan shrink-0" />
-                <h3 className="text-base font-bold text-white">{reason.title}</h3>
+                <CheckCircle2 className="w-5 h-5 text-cyan-600 dark:text-neon-cyan shrink-0" />
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">{reason.title}</h3>
               </div>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 {reason.desc}
               </p>
             </div>

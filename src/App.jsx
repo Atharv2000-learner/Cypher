@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -16,6 +16,18 @@ import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
 
 export default function App() {
+  const location = useLocation()
+  const transitionClass = {
+    '/': 'page-transition-home',
+    '/about': 'page-transition-about',
+    '/events': 'page-transition-events',
+    '/projects': 'page-transition-projects',
+    '/achievements': 'page-transition-achievements',
+    '/team': 'page-transition-team',
+    '/join': 'page-transition-join',
+    '/contact': 'page-transition-contact'
+  }[location.pathname] || 'page-transition-default'
+
   // Theme state: dark by default
   const [isDark, setIsDark] = useState(() => {
     const savedTheme = localStorage.getItem('cypher-theme')
@@ -43,22 +55,24 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cypher-950 text-slate-100 selection:bg-neon-cyan/20 selection:text-neon-cyan-bright transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-cypher-950 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
       <ScrollToTop />
       <Navbar isDark={isDark} onToggleTheme={toggleTheme} />
       
       <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/join" element={<Join />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div key={location.pathname} className={`page-transition ${transitionClass}`}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/achievements" element={<Achievements />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </main>
 
       <Footer />

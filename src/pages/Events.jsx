@@ -48,18 +48,18 @@ export default function Events() {
       />
 
       {/* Filter and Search Bar Control Area */}
-      <div className="bg-cypher-900/70 border border-cypher-800 rounded-2xl p-5 space-y-4 shadow-xl">
+      <div className="bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800 rounded-2xl p-5 space-y-4 shadow-xl">
         {/* Search + Tab toggle */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Tab Filter: All | Upcoming | Past */}
-          <div className="flex items-center p-1 rounded-xl bg-cypher-950 border border-cypher-800 w-full md:w-auto">
+          <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-cypher-950 border border-slate-200 dark:border-cypher-800 w-full md:w-auto">
             <button
               onClick={() => setActiveTab('all')}
               className={`flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-mono font-semibold transition-colors ${
                 activeTab === 'all'
-                  ? 'bg-neon-cyan text-cypher-950'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-neon-cyan text-cypher-950 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
               }`}
             >
               All Events ({events.length})
@@ -68,8 +68,8 @@ export default function Events() {
               onClick={() => setActiveTab('upcoming')}
               className={`flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-mono font-semibold transition-colors ${
                 activeTab === 'upcoming'
-                  ? 'bg-neon-cyan text-cypher-950'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-neon-cyan text-cypher-950 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
               }`}
             >
               Upcoming ({events.filter((e) => e.type === 'upcoming').length})
@@ -78,8 +78,8 @@ export default function Events() {
               onClick={() => setActiveTab('past')}
               className={`flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-mono font-semibold transition-colors ${
                 activeTab === 'past'
-                  ? 'bg-neon-cyan text-cypher-950'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-neon-cyan text-cypher-950 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
               }`}
             >
               Past Archives ({events.filter((e) => e.type === 'past').length})
@@ -94,14 +94,14 @@ export default function Events() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by topic, keyword, venue..."
-              className="w-full pl-9 pr-3 py-2 rounded-xl bg-cypher-950 border border-cypher-800 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-neon-cyan"
+              className="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-50 dark:bg-cypher-950 border border-slate-300 dark:border-cypher-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-neon-cyan"
             />
           </div>
         </div>
 
         {/* Category Pills */}
-        <div className="pt-2 border-t border-cypher-800/80">
-          <span className="block text-xs font-mono text-slate-400 mb-2">Category Filter:</span>
+        <div className="pt-2 border-t border-slate-200 dark:border-cypher-800/80">
+          <span className="block text-xs font-mono text-slate-600 dark:text-slate-400 mb-2">Category Filter:</span>
           <PillFilter
             categories={eventCategories}
             selectedCategory={selectedCategory}
@@ -115,10 +115,10 @@ export default function Events() {
         {/* UPCOMING EVENTS */}
         {(activeTab === 'all' || activeTab === 'upcoming') && (
           <div className="space-y-6">
-            <div className="flex items-center gap-3 border-b border-cypher-800 pb-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <h2 className="text-2xl font-bold text-white">Upcoming Events</h2>
-              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-cypher-900 border border-cypher-800 text-slate-300">
+            <div className="flex items-center gap-3 border-b border-slate-200 dark:border-cypher-800 pb-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Upcoming Events</h2>
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-cypher-900 border border-slate-200 dark:border-cypher-800 text-slate-700 dark:text-slate-300">
                 {upcomingList.length}
               </span>
             </div>
@@ -130,12 +130,12 @@ export default function Events() {
                 ))}
               </div>
             ) : (
-              <div className="p-10 rounded-2xl bg-cypher-900/40 border border-cypher-800 text-center space-y-2">
+              <div className="p-10 rounded-2xl bg-white dark:bg-cypher-900/40 border border-slate-200 dark:border-cypher-800 text-center space-y-2">
                 <Calendar className="w-10 h-10 text-slate-400 mx-auto mb-2" />
-                <p className="text-base font-medium text-slate-300">
+                <p className="text-base font-medium text-slate-700 dark:text-slate-300">
                   No upcoming events at the moment. Check back soon.
                 </p>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Try adjusting the category filter or search terms above.
                 </p>
               </div>
@@ -146,10 +146,10 @@ export default function Events() {
         {/* PAST EVENTS */}
         {(activeTab === 'all' || activeTab === 'past') && (
           <div className="space-y-6">
-            <div className="flex items-center gap-3 border-b border-cypher-800 pb-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
-              <h2 className="text-2xl font-bold text-white">Past Events & Archives</h2>
-              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-cypher-900 border border-cypher-800 text-slate-300">
+            <div className="flex items-center gap-3 border-b border-slate-200 dark:border-cypher-800 pb-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Past Events & Archives</h2>
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-cypher-900 border border-slate-200 dark:border-cypher-800 text-slate-700 dark:text-slate-300">
                 {pastList.length}
               </span>
             </div>
@@ -161,7 +161,7 @@ export default function Events() {
                 ))}
               </div>
             ) : (
-              <div className="p-8 rounded-2xl bg-cypher-900/40 border border-cypher-800 text-center text-slate-400 text-sm">
+              <div className="p-8 rounded-2xl bg-white dark:bg-cypher-900/40 border border-slate-200 dark:border-cypher-800 text-center text-slate-500 dark:text-slate-400 text-sm">
                 No past events match the current filter.
               </div>
             )}

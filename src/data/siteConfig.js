@@ -22,7 +22,7 @@ export const siteConfig = {
       icon: "GraduationCap",
       color: "from-cyan-500/20 to-cyan-500/5",
       border: "border-cyan-500/30",
-      accent: "text-cyan-400"
+      accent: "text-cyan-700 dark:text-cyan-400"
     },
     {
       step: "02",
@@ -32,7 +32,7 @@ export const siteConfig = {
       icon: "Code2",
       color: "from-emerald-500/20 to-emerald-500/5",
       border: "border-emerald-500/30",
-      accent: "text-emerald-400"
+      accent: "text-emerald-700 dark:text-emerald-400"
     },
     {
       step: "03",
@@ -42,7 +42,7 @@ export const siteConfig = {
       icon: "Trophy",
       color: "from-violet-500/20 to-violet-500/5",
       border: "border-violet-500/30",
-      accent: "text-violet-400"
+      accent: "text-violet-700 dark:text-violet-400"
     },
     {
       step: "04",
@@ -52,7 +52,7 @@ export const siteConfig = {
       icon: "Users",
       color: "from-amber-500/20 to-amber-500/5",
       border: "border-amber-500/30",
-      accent: "text-amber-400"
+      accent: "text-amber-700 dark:text-amber-400"
     }
   ],
 
