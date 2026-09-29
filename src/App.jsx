@@ -1,33 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import ScrollToTop from './components/ScrollToTop'
-
-// Pages
-import Home from './pages/Home'
-import About from './pages/About'
-import Events from './pages/Events'
-import Projects from './pages/Projects'
-import Achievements from './pages/Achievements'
-import Team from './pages/Team'
-import Join from './pages/Join'
-import Contact from './pages/Contact'
-import NotFound from './pages/NotFound'
+import OnePage from './pages/OnePage'
 
 export default function App() {
-  const location = useLocation()
-  const transitionClass = {
-    '/': 'page-transition-home',
-    '/about': 'page-transition-about',
-    '/events': 'page-transition-events',
-    '/projects': 'page-transition-projects',
-    '/achievements': 'page-transition-achievements',
-    '/team': 'page-transition-team',
-    '/join': 'page-transition-join',
-    '/contact': 'page-transition-contact'
-  }[location.pathname] || 'page-transition-default'
-
   // Theme state: dark by default
   const [isDark, setIsDark] = useState(() => {
     const savedTheme = localStorage.getItem('cypher-theme')
@@ -57,24 +33,11 @@ export default function App() {
   return (
     <div className="relative isolate min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
       <div className="cypher-backdrop" aria-hidden="true" />
-      <ScrollToTop />
       <div className="relative z-10 flex flex-1 flex-col">
         <Navbar isDark={isDark} onToggleTheme={toggleTheme} />
 
         <main className="flex-grow">
-          <div key={location.pathname} className={`page-transition ${transitionClass}`}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/achievements" element={<Achievements />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/join" element={<Join />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
+          <OnePage />
         </main>
 
         <Footer />

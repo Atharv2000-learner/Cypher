@@ -19,7 +19,7 @@ export default function AchievementCard({ achievement }) {
   }
 
   return (
-    <div className="flex flex-col h-full bg-cypher-900/70 border border-cypher-800/90 rounded-2xl p-6 hover:border-cypher-700 hover:shadow-xl transition-all duration-300 relative group">
+    <div className="card-lift flex flex-col h-full bg-cypher-900/70 border border-cypher-800/90 rounded-2xl p-6 hover:border-cypher-700 hover:shadow-xl transition-all duration-300 relative group">
       {/* Top Bar: Icon + Badge + Date */}
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="w-12 h-12 rounded-xl bg-cypher-950 border border-cypher-800 flex items-center justify-center shrink-0 group-hover:border-neon-cyan/40 transition-colors">

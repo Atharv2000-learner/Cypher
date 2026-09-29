@@ -126,7 +126,7 @@ export default function JoinForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-white dark:bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-2xl relative overflow-hidden">
+      <div className="card-lift bg-white dark:bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-2xl relative overflow-hidden">
         <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-500 dark:text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto mb-6">
           <CheckCircle2 className="w-8 h-8" />
         </div>
@@ -156,7 +156,7 @@ export default function JoinForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-sm space-y-6"
+      className="card-lift bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-sm space-y-6"
     >
       {status === 'error' && (
         <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-sm flex items-start gap-3" role="alert">

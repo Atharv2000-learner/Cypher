@@ -14,7 +14,7 @@ export default function Achievements() {
     : achievements.filter((a) => a.year === selectedYear)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    <div className="w-full px-3 sm:px-5 py-8 space-y-8">
       {/* Header */}
       <SectionHeader
         badge="Honor Roll"
@@ -48,7 +48,7 @@ export default function Achievements() {
           ))}
         </div>
       ) : (
-        <div className="p-12 rounded-3xl bg-cypher-900/40 border border-cypher-800 text-center space-y-3">
+        <div className="card-lift p-12 rounded-3xl bg-cypher-900/40 border border-cypher-800 text-center space-y-3">
           <Trophy className="w-12 h-12 text-slate-400 mx-auto" />
           <h3 className="text-lg font-bold text-white">
             Achievements will be added soon.
@@ -60,7 +60,7 @@ export default function Achievements() {
       )}
 
       {/* Competition Culture Banner */}
-      <div className="rounded-3xl bg-cypher-900/70 border border-cypher-800 p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="card-lift rounded-3xl bg-cypher-900/70 border border-cypher-800 p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-2 text-center md:text-left">
           <div className="inline-flex items-center gap-2 text-xs font-mono text-neon-cyan uppercase tracking-wider">
             <Medal className="w-4 h-4" />
@@ -73,12 +73,6 @@ export default function Achievements() {
             We form interdisciplinary student squads, provide dedicated workspace, cover entry requisites, and conduct mock pitch reviews before every national contest.
           </p>
         </div>
-        <a
-          href="/join"
-          className="px-6 py-3 rounded-xl text-sm font-semibold bg-neon-cyan text-cypher-950 hover:bg-neon-cyan-bright transition-all shadow-md shadow-neon-cyan/20 shrink-0"
-        >
-          Join Our Contest Squad
-        </a>
       </div>
     </div>
   )

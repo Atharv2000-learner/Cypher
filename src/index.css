@@ -110,6 +110,14 @@ html.light .cypher-backdrop {
 }
 
 @layer utilities {
+  .card-lift {
+    transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  }
+
+  .card-lift:hover {
+    transform: translateY(-8px);
+  }
+
   .bg-grid-pattern {
     background-size: 24px 24px;
   }
@@ -136,6 +144,14 @@ html.light .cypher-backdrop {
     background: linear-gradient(135deg, #34d399 0%, #06b6d4 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-lift,
+  .card-lift:hover {
+    transition: none;
+    transform: none;
   }
 }
 
@@ -215,17 +231,17 @@ html.light .text-gradient-green {
   background-image: linear-gradient(135deg, #047857 0%, #0e7490 100%);
 }
 
-html.light main .page-transition :is(h1, h2, h3, h4, p, li, a, span):not([class*="bg-"]):not(:where(.page-transition [class*="bg-"] *)) {
+html.light main :is(h1, h2, h3, h4, p, li, a, span):not([class*="bg-"]):not(:where(main [class*="bg-"] *)) {
   color: #f8fafc;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 0, 0, 0.65);
 }
 
-html.light main .page-transition .text-gradient-cyan:not([class*="bg-"]):not(:where(.page-transition [class*="bg-"] *)) {
+html.light main .text-gradient-cyan:not([class*="bg-"]):not(:where(main [class*="bg-"] *)) {
   background-image: linear-gradient(135deg, #67e8f9 0%, #22d3ee 50%, #a5b4fc 100%);
   text-shadow: none;
 }
 
-html.light main .page-transition .text-gradient-green:not([class*="bg-"]):not(:where(.page-transition [class*="bg-"] *)) {
+html.light main .text-gradient-green:not([class*="bg-"]):not(:where(main [class*="bg-"] *)) {
   background-image: linear-gradient(135deg, #6ee7b7 0%, #67e8f9 100%);
   text-shadow: none;
 }

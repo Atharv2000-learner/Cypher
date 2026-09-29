@@ -1,17 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowRight, Calendar, Sparkles, Terminal, Code2, Shield, Cpu, ChevronRight } from 'lucide-react'
+import { ArrowRight, Calendar, Terminal, Code2, Shield, Cpu, ChevronRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 import ThreeVortexCanvas from './ThreeVortexCanvas'
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pt-10 pb-20 md:pt-16 md:pb-28">
+    <section className="relative overflow-hidden pt-8 pb-12 md:pt-12 md:pb-16">
       {/* Background Decorative Gradients & Grid */}
       <div className="absolute inset-0 bg-cyber-grid bg-grid-pattern opacity-60 pointer-events-none"></div>
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] h-[350px] bg-gradient-to-tr from-cyan-600/15 via-violet-600/15 to-emerald-600/10 blur-[110px] rounded-full pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full px-3 sm:px-5 relative z-10">
         
         {/* 2-Column Split: Content on Left, 3D Spiral on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
@@ -25,9 +24,9 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
               </span>
-              <span className="text-neon-cyan font-bold tracking-wider uppercase">CYPHER CLUB</span>
+              <span className="text-neon-cyan font-bold tracking-wider uppercase">CYPHER</span>
               <span className="text-slate-400">|</span>
-              <span>Student Technology Community</span>
+              <span>Cyber Security Club</span>
             </div>
 
             {/* Main Headline */}
@@ -40,27 +39,19 @@ export default function Hero() {
 
             {/* Introduction Paragraph */}
             <p className="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed font-normal">
-              Welcome to <span className="text-white font-medium">Cypher Club</span> — the premier student hub for aspiring developers, cybersecurity enthusiasts, and AI builders. We bridge the gap between classroom theory and real-world engineering.
+              Welcome to <span className="text-white font-medium">CYPHER</span> — the premier student hub for aspiring developers, cybersecurity enthusiasts, and AI builders. We bridge the gap between classroom theory and real-world engineering.
             </p>
 
             {/* Action Buttons */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <Link
-                to="/join"
-                className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-base bg-gradient-to-r from-neon-cyan via-cyan-400 to-cyan-500 text-cypher-950 hover:from-cyan-300 hover:to-neon-cyan shadow-lg shadow-neon-cyan/25 hover:shadow-neon-cyan/40 hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon-cyan focus:ring-offset-cypher-950"
-              >
-                <Sparkles className="w-5 h-5" />
-                <span>Join Cypher Club</span>
-              </Link>
-
-              <Link
-                to="/events"
+              <a
+                href="#events"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-base bg-cypher-900/90 hover:bg-cypher-800 text-white border border-cypher-700 hover:border-neon-cyan/40 shadow-sm hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cypher-700 focus:ring-offset-cypher-950"
               >
                 <Calendar className="w-5 h-5 text-neon-cyan" />
                 <span>Explore Events</span>
                 <ArrowRight className="w-4 h-4 text-slate-400 ml-1" />
-              </Link>
+              </a>
             </div>
 
           </div>
@@ -78,7 +69,7 @@ export default function Hero() {
         <div className="mt-14 space-y-10">
           
           {/* Interactive Progression Banner */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-cypher-900/70 border border-cypher-800/80 backdrop-blur-md max-w-4xl mx-auto text-left shadow-xl">
+          <div className="card-lift p-4 sm:p-5 rounded-2xl bg-cypher-900/70 border border-cypher-800/80 backdrop-blur-md max-w-4xl mx-auto text-left shadow-xl">
             <div className="flex items-center justify-between border-b border-cypher-800 pb-3 mb-4 text-xs font-mono text-slate-400">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
@@ -107,7 +98,7 @@ export default function Hero() {
             {siteConfig.stats.map((stat) => (
               <div
                 key={stat.label}
-                className="p-4 rounded-xl bg-cypher-900/40 border border-cypher-800/60 text-center hover:border-cypher-700 transition-colors shadow-sm"
+                className="card-lift p-4 rounded-xl bg-cypher-900/40 border border-cypher-800/60 text-center hover:border-cypher-700 transition-colors shadow-sm"
               >
                 <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight text-gradient-cyan">
                   {stat.value}

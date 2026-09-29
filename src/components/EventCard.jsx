@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Calendar, Clock, MapPin, Tag, ArrowUpRight, Users, CheckCircle2 } from 'lucide-react'
 
 export default function EventCard({ event }) {
@@ -28,7 +27,7 @@ export default function EventCard({ event }) {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-2xl p-5 sm:p-6 hover:border-cyan-500/40 hover:shadow-lg dark:hover:border-cypher-700 dark:hover:shadow-xl dark:hover:shadow-cyan-950/20 transition-all duration-300 group relative">
+    <div className="card-lift flex flex-col h-full bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-2xl p-5 sm:p-6 hover:border-cyan-500/40 hover:shadow-lg dark:hover:border-cypher-700 dark:hover:shadow-xl dark:hover:shadow-cyan-950/20 transition-all duration-300 group relative">
       {/* Top Meta: Category & Status Badge */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(event.category)}`}>
@@ -99,13 +98,13 @@ export default function EventCard({ event }) {
                 <ArrowUpRight className="w-4 h-4" />
               </a>
             ) : (
-              <Link
-                to={event.registrationUrl}
+              <a
+                href={event.registrationUrl === '/join' ? '#join' : event.registrationUrl}
                 className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm bg-cyan-600 hover:bg-cyan-500 text-white dark:bg-neon-cyan dark:text-cypher-950 dark:hover:bg-neon-cyan-bright transition-all shadow-md shadow-cyan-600/20 dark:shadow-neon-cyan/20 focus:outline-none focus:ring-2 focus:ring-cyan-600 dark:focus:ring-neon-cyan"
               >
                 <span>Register for Event</span>
                 <ArrowUpRight className="w-4 h-4" />
-              </Link>
+              </a>
             )
           ) : (
             <div className="w-full text-center py-2 px-3 rounded-xl bg-slate-100 border border-slate-200 dark:bg-cypher-950/60 dark:border-cypher-800 text-xs text-slate-600 dark:text-slate-400 font-mono">

@@ -6,14 +6,6 @@
  * in the project brief and can be replaced with verified member details.
  */
 
-export const teamDepartments = [
-  "All",
-  "Leadership",
-  "Technical & Dev",
-  "AI & Security",
-  "Design & Events"
-];
-
 export const teamMembers = [
   {
     id: "tm-01",

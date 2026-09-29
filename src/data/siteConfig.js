@@ -6,8 +6,8 @@
  */
 
 export const siteConfig = {
-  name: "Cypher Club",
-  shortName: "Cypher",
+  name: "CYPHER",
+  shortName: "CYPHER",
   tagline: "Code. Create. Collaborate.",
   description: "A premier student technology community dedicated to fostering engineering excellence, hands-on development, cybersecurity prowess, and collaborative innovation.",
   heroSubtitle: "Empowering passionate student developers, cyber defenders, and tech innovators through hands-on workshops, hackathons, and real-world project development.",

@@ -30,7 +30,7 @@ export default function Projects() {
   }, [selectedCategory, searchQuery])
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    <div className="w-full px-3 sm:px-5 py-8 space-y-8">
       {/* Header */}
       <SectionHeader
         badge="Open Source & Labs"
@@ -71,7 +71,7 @@ export default function Projects() {
           ))}
         </div>
       ) : (
-        <div className="p-12 rounded-3xl bg-cypher-900/40 border border-cypher-800 text-center space-y-3">
+        <div className="card-lift p-12 rounded-3xl bg-cypher-900/40 border border-cypher-800 text-center space-y-3">
           <FolderGit2 className="w-12 h-12 text-slate-400 mx-auto" />
           <h3 className="text-lg font-bold text-white">
             Projects will be showcased here soon.

@@ -21,7 +21,7 @@ export default function ProjectCard({ project }) {
   const gradientClasses = getGradient(project.accentColor)
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-2xl overflow-hidden hover:border-cyan-500/40 hover:shadow-lg dark:hover:border-cypher-700 dark:hover:shadow-xl dark:hover:shadow-cyan-950/20 transition-all duration-300 group">
+    <div className="card-lift flex flex-col h-full bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-2xl overflow-hidden hover:border-cyan-500/40 hover:shadow-lg dark:hover:border-cypher-700 dark:hover:shadow-xl dark:hover:shadow-cyan-950/20 transition-all duration-300 group">
       {/* Project Visual Header */}
       <div className={`h-40 relative p-5 bg-gradient-to-br ${gradientClasses} border-b flex flex-col justify-between`}>
         <div className="flex items-center justify-between">

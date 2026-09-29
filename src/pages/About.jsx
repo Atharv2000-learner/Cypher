@@ -1,8 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Target, Compass, Code, Brain, Shield, Terminal, BookOpen, Users, Trophy, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { Target, Compass, Code, Brain, Shield, Terminal, Trophy, CheckCircle2 } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
-import { siteConfig } from '../data/siteConfig'
 
 export default function About() {
   const whatWeDo = [
@@ -83,7 +81,7 @@ export default function About() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+    <div className="w-full px-3 sm:px-5 py-8 space-y-12">
       {/* 1. ABOUT CYPHER CLUB HERO */}
       <section className="text-center max-w-4xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase bg-cyan-500/10 dark:bg-neon-cyan/10 text-cyan-700 dark:text-neon-cyan border border-cyan-500/30 dark:border-neon-cyan/25">
@@ -100,7 +98,7 @@ export default function About() {
       {/* 2. VISION & MISSION CARDS */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Vision */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-cypher-900/80 border border-cyan-500/30 relative overflow-hidden shadow-xl group hover:border-cyan-500/50 transition-all">
+        <div className="card-lift p-8 sm:p-10 rounded-3xl bg-white dark:bg-cypher-900/80 border border-cyan-500/30 relative overflow-hidden shadow-xl group hover:border-cyan-500/50 transition-all">
           <div className="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-neon-cyan mb-6">
             <Target className="w-7 h-7" />
           </div>
@@ -116,7 +114,7 @@ export default function About() {
         </div>
 
         {/* Mission */}
-        <div className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-cypher-900/80 border border-emerald-500/30 relative overflow-hidden shadow-xl group hover:border-emerald-500/50 transition-all">
+        <div className="card-lift p-8 sm:p-10 rounded-3xl bg-white dark:bg-cypher-900/80 border border-emerald-500/30 relative overflow-hidden shadow-xl group hover:border-emerald-500/50 transition-all">
           <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6">
             <Compass className="w-7 h-7" />
           </div>
@@ -129,32 +127,6 @@ export default function About() {
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
             To run high-quality peer-to-peer technical bootcamps, foster cross-functional open source project teams, nurture cybersecurity talent, and support competitive squads with real engineering resources and mentorship.
           </p>
-        </div>
-      </section>
-
-      {/* 3. THE CYCLE: LEARN -> BUILD -> COMPETE -> COLLABORATE */}
-      <section className="space-y-8">
-        <SectionHeader
-          badge="Our Methodology"
-          title="The Four Pillars of"
-          highlight="Cypher Club"
-          subtitle="Our structured progression helps students transition seamlessly from curious beginners to seasoned technical contributors."
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {siteConfig.progression.map((item) => (
-            <div
-              key={item.title}
-              className={`p-6 rounded-2xl bg-white dark:bg-cypher-900/70 border ${item.border} flex flex-col h-full shadow-sm`}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{item.step}</span>
-                <span className={`text-sm font-mono font-bold ${item.accent}`}>{item.title}</span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{item.subtitle}</h3>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{item.description}</p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -173,7 +145,7 @@ export default function About() {
             return (
               <div
                 key={item.title}
-                className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-cypher-900/60 border border-slate-200 dark:border-cypher-800 flex items-start gap-5 hover:border-slate-300 dark:hover:border-cypher-700 transition-colors shadow-sm"
+                className="card-lift p-6 sm:p-8 rounded-2xl bg-white dark:bg-cypher-900/60 border border-slate-200 dark:border-cypher-800 flex items-start gap-5 hover:border-slate-300 dark:hover:border-cypher-700 transition-colors shadow-sm"
               >
                 <div className={`w-12 h-12 rounded-xl bg-slate-100 dark:bg-cypher-950 border ${item.accent} flex items-center justify-center shrink-0`}>
                   <Icon className="w-6 h-6" />
@@ -203,7 +175,7 @@ export default function About() {
             return (
               <div
                 key={track.topic}
-                className="p-6 sm:p-7 rounded-2xl bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 shadow-sm"
+                className="card-lift p-6 sm:p-7 rounded-2xl bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 shadow-sm"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-cypher-950 border border-slate-200 dark:border-cypher-700 flex items-center justify-center text-cyan-600 dark:text-neon-cyan">
@@ -240,7 +212,7 @@ export default function About() {
           {whyJoinReasons.map((reason) => (
             <div
               key={reason.title}
-              className="p-6 rounded-2xl bg-white dark:bg-cypher-900/60 border border-slate-200 dark:border-cypher-800/80 hover:border-cyan-500/40 dark:hover:border-neon-cyan/40 transition-colors shadow-sm"
+              className="card-lift p-6 rounded-2xl bg-white dark:bg-cypher-900/60 border border-slate-200 dark:border-cypher-800/80 hover:border-cyan-500/40 dark:hover:border-neon-cyan/40 transition-colors shadow-sm"
             >
               <div className="flex items-center gap-2 mb-3">
                 <CheckCircle2 className="w-5 h-5 text-cyan-600 dark:text-neon-cyan shrink-0" />
@@ -253,15 +225,6 @@ export default function About() {
           ))}
         </div>
 
-        <div className="pt-6 text-center">
-          <Link
-            to="/join"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-neon-cyan to-cyan-500 text-cypher-950 hover:from-cyan-300 hover:to-neon-cyan shadow-lg shadow-neon-cyan/20"
-          >
-            <Sparkles className="w-4 h-4" />
-            <span>Apply to Join Cypher Club</span>
-          </Link>
-        </div>
       </section>
     </div>
   )

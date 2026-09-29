@@ -81,7 +81,7 @@ export default function ContactForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-white dark:bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-xl">
+      <div className="card-lift bg-white dark:bg-cypher-900/80 border border-emerald-500/40 rounded-3xl p-8 sm:p-10 text-center shadow-xl">
         <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-500 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-7 h-7" />
         </div>
@@ -103,7 +103,7 @@ export default function ContactForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm space-y-5"
+      className="card-lift bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm space-y-5"
     >
       {status === 'error' && (
         <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs flex items-center gap-2">

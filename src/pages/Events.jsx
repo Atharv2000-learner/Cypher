@@ -38,7 +38,7 @@ export default function Events() {
   const pastList = filteredEvents.filter((e) => e.type === 'past')
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    <div className="w-full px-3 sm:px-5 py-8 space-y-8">
       {/* Header */}
       <SectionHeader
         badge="Club Schedule"
@@ -130,7 +130,7 @@ export default function Events() {
                 ))}
               </div>
             ) : (
-              <div className="p-10 rounded-2xl bg-white dark:bg-cypher-900/40 border border-slate-200 dark:border-cypher-800 text-center space-y-2">
+              <div className="card-lift p-10 rounded-2xl bg-white dark:bg-cypher-900/40 border border-slate-200 dark:border-cypher-800 text-center space-y-2">
                 <Calendar className="w-10 h-10 text-slate-400 mx-auto mb-2" />
                 <p className="text-base font-medium text-slate-700 dark:text-slate-300">
                   No upcoming events at the moment. Check back soon.
@@ -161,7 +161,7 @@ export default function Events() {
                 ))}
               </div>
             ) : (
-              <div className="p-8 rounded-2xl bg-white dark:bg-cypher-900/40 border border-slate-200 dark:border-cypher-800 text-center text-slate-500 dark:text-slate-400 text-sm">
+              <div className="card-lift p-8 rounded-2xl bg-white dark:bg-cypher-900/40 border border-slate-200 dark:border-cypher-800 text-center text-slate-500 dark:text-slate-400 text-sm">
                 No past events match the current filter.
               </div>
             )}

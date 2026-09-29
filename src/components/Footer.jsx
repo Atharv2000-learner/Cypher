@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Terminal, Github, Linkedin, MessageSquare, Twitter, Instagram, Mail, MapPin, CheckCircle2, ArrowRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 
@@ -23,19 +22,19 @@ export default function Footer() {
       {/* Subtle background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-neon-cyan/5 blur-3xl pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 relative z-10">
+      <div className="w-full px-3 sm:px-5 pt-16 pb-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
           
           {/* Brand Col */}
           <div className="lg:col-span-4 space-y-4">
-            <Link to="/" className="inline-flex items-center gap-3 group">
+            <a href="#top" className="inline-flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-xl bg-cypher-900 border border-neon-cyan/40 flex items-center justify-center text-neon-cyan">
                 <Terminal className="w-5 h-5" />
               </div>
               <span className="text-xl font-bold font-mono tracking-tight text-white">
-                CYPHER<span className="text-neon-cyan font-sans font-normal ml-1">CLUB</span>
+                CYPHER
               </span>
-            </Link>
+            </a>
             <p className="text-slate-300 font-medium font-mono text-sm">
               "{siteConfig.tagline}"
             </p>
@@ -99,22 +98,25 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="hover:text-neon-cyan transition-colors">Home</Link>
+                <a href="#top" className="hover:text-neon-cyan transition-colors">Home</a>
               </li>
               <li>
-                <Link to="/about" className="hover:text-neon-cyan transition-colors">About Us</Link>
+                <a href="#about" className="hover:text-neon-cyan transition-colors">About Us</a>
               </li>
               <li>
-                <Link to="/events" className="hover:text-neon-cyan transition-colors">Events & Workshops</Link>
+                <a href="#events" className="hover:text-neon-cyan transition-colors">Events & Workshops</a>
               </li>
               <li>
-                <Link to="/projects" className="hover:text-neon-cyan transition-colors">Member Projects</Link>
+                <a href="#projects" className="hover:text-neon-cyan transition-colors">Member Projects</a>
               </li>
               <li>
-                <Link to="/achievements" className="hover:text-neon-cyan transition-colors">Achievements</Link>
+                <a href="#achievements" className="hover:text-neon-cyan transition-colors">Achievements</a>
               </li>
               <li>
-                <Link to="/team" className="hover:text-neon-cyan transition-colors">Core Team</Link>
+                <a href="#team" className="hover:text-neon-cyan transition-colors">Core Team</a>
+              </li>
+              <li>
+                <a href="#faqs" className="hover:text-neon-cyan transition-colors">FAQs</a>
               </li>
             </ul>
           </div>
@@ -190,9 +192,7 @@ export default function Footer() {
             © {new Date().getFullYear()} {siteConfig.name}. Built with React, Vite & Tailwind CSS.
           </p>
           <div className="flex items-center gap-4 text-slate-400">
-            <Link to="/join" className="hover:text-neon-cyan transition-colors">Join Society</Link>
-            <span>•</span>
-            <Link to="/contact" className="hover:text-neon-cyan transition-colors">Contact Organizers</Link>
+            <a href="#contact" className="hover:text-neon-cyan transition-colors">Contact Organizers</a>
             <span>•</span>
             <a href="#top" className="hover:text-neon-cyan transition-colors">Back to Top ↑</a>
           </div>
