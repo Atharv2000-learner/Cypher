@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Terminal, Menu, X, Sun, Moon } from 'lucide-react'
+import { Menu, X, Sun, Moon } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 
 export default function Navbar({ isDark, onToggleTheme }) {
@@ -41,9 +41,11 @@ export default function Navbar({ isDark, onToggleTheme }) {
             className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-neon-cyan rounded-lg px-1 py-0.5"
             aria-label="CYPHER Home"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cypher-900 to-cypher-850 border border-neon-cyan/40 flex items-center justify-center text-neon-cyan shadow-sm group-hover:border-neon-cyan group-hover:shadow-neon-cyan/30 transition-all duration-300">
-              <Terminal className="w-5 h-5 text-neon-cyan group-hover:rotate-6 transition-transform" />
-            </div>
+            <img
+              src="/cypher-logo.png"
+              alt="CYPHER logo"
+              className="w-14 h-14 rounded-full object-cover border border-white shadow-sm transition-transform duration-300 group-hover:scale-105"
+            />
             <div className="flex flex-col">
               <span className="text-xl font-bold font-mono tracking-tight text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-neon-cyan-bright transition-colors">
                 CYPHER

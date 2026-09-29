@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Terminal, Github, Linkedin, MessageSquare, Twitter, Instagram, Mail, MapPin, CheckCircle2, ArrowRight } from 'lucide-react'
+import { Github, Linkedin, MessageSquare, Twitter, Instagram, Mail, MapPin, CheckCircle2, ArrowRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 
 export default function Footer() {
@@ -28,9 +28,11 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-4 space-y-4">
             <a href="#top" className="inline-flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-cypher-900 border border-neon-cyan/40 flex items-center justify-center text-neon-cyan">
-                <Terminal className="w-5 h-5" />
-              </div>
+              <img
+                src="/cypher-logo.png"
+                alt="CYPHER logo"
+                className="w-14 h-14 rounded-full object-cover border border-white"
+              />
               <span className="text-xl font-bold font-mono tracking-tight text-white">
                 CYPHER
               </span>
