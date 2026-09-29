@@ -48,6 +48,25 @@
 .page-transition-achievements { animation-name: page-enter-scale; }
 .page-transition-join { animation-name: page-enter-rotate; }
 
+.cypher-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(7, 11, 20, 0.84), rgba(7, 11, 20, 0.88)),
+    url('/cypher-bg.jpg');
+  background-position: center, center 38%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+html.light .cypher-backdrop {
+  background-image:
+    linear-gradient(rgba(7, 11, 20, 0.84), rgba(7, 11, 20, 0.88)),
+    url('/cypher-bg.jpg');
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-transition {
     animation: none;
@@ -131,7 +150,8 @@ html.light header {
   border-bottom-color: #e2e8f0;
 }
 
-html.light .bg-cypher-950 {
+html.light .bg-cypher-950,
+html.light [class*="bg-cypher-950"] {
   background-color: #f1f5f9;
 }
 
@@ -145,11 +165,10 @@ html.light [class*="border-cypher-800"] {
   border-color: #e2e8f0;
 }
 
-html.light .text-white {
-  color: #0f172a;
-}
-
-html.light .text-slate-100 {
+html.light .text-white,
+html.light .text-slate-100,
+html.light .text-slate-200,
+html.light .text-slate-300 {
   color: #0f172a;
 }
 
@@ -159,6 +178,83 @@ html.light .text-slate-300 {
 
 html.light .text-slate-400 {
   color: #64748b;
+}
+
+html.light .text-slate-500 {
+  color: #475569;
+}
+
+html.light .text-neon-cyan,
+html.light .text-neon-cyan-bright,
+html.light .text-cyan-300,
+html.light .text-cyan-400 {
+  color: #0e7490;
+}
+
+html.light .text-emerald-300,
+html.light .text-emerald-400,
+html.light .text-emerald-500 {
+  color: #047857;
+}
+
+html.light .text-amber-300,
+html.light .text-amber-400 {
+  color: #a16207;
+}
+
+html.light .text-violet-300,
+html.light .text-violet-400 {
+  color: #6d28d9;
+}
+
+html.light .text-gradient-cyan {
+  background-image: linear-gradient(135deg, #0e7490 0%, #0e7490 50%, #4338ca 100%);
+}
+
+html.light .text-gradient-green {
+  background-image: linear-gradient(135deg, #047857 0%, #0e7490 100%);
+}
+
+html.light main .page-transition :is(h1, h2, h3, h4, p, li, a, span):not([class*="bg-"]):not(:where(.page-transition [class*="bg-"] *)) {
+  color: #f8fafc;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 0, 0, 0.65);
+}
+
+html.light main .page-transition .text-gradient-cyan:not([class*="bg-"]):not(:where(.page-transition [class*="bg-"] *)) {
+  background-image: linear-gradient(135deg, #67e8f9 0%, #22d3ee 50%, #a5b4fc 100%);
+  text-shadow: none;
+}
+
+html.light main .page-transition .text-gradient-green:not([class*="bg-"]):not(:where(.page-transition [class*="bg-"] *)) {
+  background-image: linear-gradient(135deg, #6ee7b7 0%, #67e8f9 100%);
+  text-shadow: none;
+}
+
+html.light .bg-slate-950 .text-slate-100,
+html.light .bg-slate-950 .text-slate-200,
+html.light .bg-slate-950 .text-slate-300 {
+  color: #cbd5e1;
+}
+
+html.light .bg-slate-950 .text-slate-400 {
+  color: #94a3b8;
+}
+
+html.light .bg-slate-950 .text-cyan-300 {
+  color: #67e8f9;
+}
+
+html.light .bg-slate-950 .text-cyan-400 {
+  color: #22d3ee;
+}
+
+html.light [class~="hover:text-white"]:hover {
+  color: #0f172a;
+}
+
+html.light [class~="hover:text-neon-cyan"]:hover,
+html.light .group:hover [class~="group-hover:text-neon-cyan-bright"] {
+  color: #0e7490;
 }
 
 html.light input,

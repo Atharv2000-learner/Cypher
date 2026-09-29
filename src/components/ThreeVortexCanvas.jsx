@@ -175,6 +175,7 @@ export default function ThreeVortexCanvas({ className = '', onLoaded }) {
     materials.push(gyroMat)
     const gyroRing = new THREE.Mesh(gyroGeom, gyroMat)
     gyroRing.rotation.x = Math.PI * 0.1
+    gyroRing.position.z = 0.5
     vortexGroup.add(gyroRing)
 
     // 9. ORBITAL PARTICLES SYSTEM
@@ -308,10 +309,6 @@ export default function ThreeVortexCanvas({ className = '', onLoaded }) {
 
       // Continuous rotation of vortex
       vortexGroup.rotation.z += animState.current.spinSpeed
-
-      // Counter-rotation of concentric gyro ring
-      gyroRing.rotation.z -= animState.current.spinSpeed * 1.5
-      gyroRing.rotation.x = Math.sin(elapsedTime * 0.8) * 0.2
 
       // Smooth inertia damping for cursor / drag rotation
       animState.current.currentRotX += (animState.current.targetRotX - animState.current.currentRotX) * 0.06

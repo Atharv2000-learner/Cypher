@@ -19,7 +19,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-cypher-950 border-t border-cypher-850 text-slate-400 text-sm relative overflow-hidden">
+    <footer className="bg-cypher-950/85 border-t border-cypher-850 text-slate-400 text-sm relative overflow-hidden">
       {/* Subtle background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-neon-cyan/5 blur-3xl pointer-events-none"></div>
 

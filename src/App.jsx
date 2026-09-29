@@ -55,27 +55,30 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-cypher-950 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
+    <div className="relative isolate min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
+      <div className="cypher-backdrop" aria-hidden="true" />
       <ScrollToTop />
-      <Navbar isDark={isDark} onToggleTheme={toggleTheme} />
-      
-      <main className="flex-grow">
-        <div key={location.pathname} className={`page-transition ${transitionClass}`}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/achievements" element={<Achievements />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </main>
+      <div className="relative z-10 flex flex-1 flex-col">
+        <Navbar isDark={isDark} onToggleTheme={toggleTheme} />
 
-      <Footer />
+        <main className="flex-grow">
+          <div key={location.pathname} className={`page-transition ${transitionClass}`}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/achievements" element={<Achievements />} />
+              <Route path="/team" element={<Team />} />
+              <Route path="/join" element={<Join />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </main>
+
+        <Footer />
+      </div>
     </div>
   )
 }
