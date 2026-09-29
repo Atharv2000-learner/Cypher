@@ -47,7 +47,7 @@ export default function ThreeVortexCanvas({ className = '', onLoaded }) {
 
     // 2. CAMERA SETUP (ample Z-distance to avoid edge clipping)
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100)
-    camera.position.set(0, 0, 9.6)
+    camera.position.set(0, 0, 10.2)
     animState.current.camera = camera
 
     // 3. RENDERER SETUP (transparent alpha for zero borders)
@@ -94,7 +94,7 @@ export default function ThreeVortexCanvas({ className = '', onLoaded }) {
 
     // 5. MAIN VORTEX GROUP
     const vortexGroup = new THREE.Group()
-    vortexGroup.scale.setScalar(1.2)
+    vortexGroup.scale.setScalar(1.4)
     scene.add(vortexGroup)
     animState.current.coreGroup = vortexGroup
 
@@ -184,7 +184,7 @@ export default function ThreeVortexCanvas({ className = '', onLoaded }) {
     const particleAngles = []
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const rad = 0.9 + Math.random() * 2.2
+      const rad = 0.8 + Math.random() * 1.7
       const angle = Math.random() * Math.PI * 2
       const speed = 0.2 + Math.random() * 0.6
       const zOffset = (Math.random() - 0.5) * 1.5 - 0.2

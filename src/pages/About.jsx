@@ -1,5 +1,5 @@
 import React from 'react'
-import { Target, Compass, Code, Brain, Shield, Terminal, Trophy, CheckCircle2 } from 'lucide-react'
+import { Target, Compass, Code, Shield, Terminal, Trophy, CheckCircle2 } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
 
 export default function About() {
@@ -27,29 +27,6 @@ export default function About() {
       description: "Mentoring, ideation workshops, UI/UX polish, and rapid prototyping bootcamps to field winning teams at national hackathons.",
       icon: Trophy,
       accent: "text-amber-400 border-amber-500/30"
-    }
-  ]
-
-  const whatYouCanLearn = [
-    {
-      topic: "Full-Stack Web Engineering",
-      skills: ["React & Vite", "Node.js & Express", "Tailwind CSS", "REST & GraphQL APIs", "PostgreSQL & NoSQL"],
-      icon: Code
-    },
-    {
-      topic: "Applied AI & Machine Learning",
-      skills: ["Python & PyTorch", "LLM APIs & Prompt Engineering", "RAG Vector Databases", "Autonomous Agents", "Computer Vision"],
-      icon: Brain
-    },
-    {
-      topic: "Cybersecurity & Defense",
-      skills: ["Network Security", "Web Exploitation & Mitigation", "Cryptography", "Linux Administration", "Reverse Engineering"],
-      icon: Shield
-    },
-    {
-      topic: "DevOps & Engineering Etiquette",
-      skills: ["Git & Advanced GitHub", "Docker & Containers", "CI/CD Workflows", "Open Source Contribution", "Agile Sprints"],
-      icon: Terminal
     }
   ]
 
@@ -88,10 +65,10 @@ export default function About() {
           About Cypher Club
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Where Curiosity Meets <span className="text-gradient-cyan">Real-World Code</span>
+          What is <span className="text-gradient-cyan">Cypher</span>
         </h1>
         <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl mx-auto">
-          Cypher Club is an independent student technology society established to empower students across engineering disciplines to explore modern software, build ambitious applications, and master computer science fundamentals.
+          We are a dynamic collective of security enthusiasts, ethical hackers, and tech innovators. While our primary domain is <strong className="font-bold text-cyan-700 dark:text-neon-cyan">Cyber Security</strong>, we don't stop there—we push the boundaries of technology through groundbreaking innovations, collaborative projects, and intense hackathons.
         </p>
       </section>
 
@@ -153,45 +130,6 @@ export default function About() {
                 <div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{item.title}</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{item.description}</p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </section>
-
-      {/* 5. WHAT YOU CAN LEARN */}
-      <section className="space-y-8">
-        <SectionHeader
-          badge="Curriculum"
-          title="What You Can"
-          highlight="Learn"
-          subtitle="Explore modern industry-standard frameworks, programming languages, and engineering concepts."
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {whatYouCanLearn.map((track) => {
-            const Icon = track.icon
-            return (
-              <div
-                key={track.topic}
-                className="card-lift p-6 sm:p-7 rounded-2xl bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 shadow-sm"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-cypher-950 border border-slate-200 dark:border-cypher-700 flex items-center justify-center text-cyan-600 dark:text-neon-cyan">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">{track.topic}</h3>
-                </div>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {track.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 rounded-lg text-xs font-mono bg-slate-100 dark:bg-cypher-950 border border-slate-200 dark:border-cypher-800 text-slate-700 dark:text-slate-300"
-                    >
-                      {skill}
-                    </span>
-                  ))}
                 </div>
               </div>
             )

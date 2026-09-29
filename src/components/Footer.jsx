@@ -29,11 +29,11 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-4">
             <a href="#top" className="inline-flex items-center gap-3 group">
               <img
-                src="/cypher-logo.png"
+                src="/assets/cypher-logo.png"
                 alt="CYPHER logo"
                 className="w-14 h-14 rounded-full object-cover border border-white"
               />
-              <span className="text-xl font-bold font-mono tracking-tight text-white">
+              <span className="text-xl font-bold font-display tracking-tight text-white">
                 CYPHER
               </span>
             </a>

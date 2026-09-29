@@ -35,9 +35,10 @@ This repository contains the complete V1 responsive web application, structured 
 ```
 Cypher/
 ├── public/
-│   └── favicon.svg           # Custom Cypher branded SVG favicon
+│   └── assets/
+│       ├── cypher-bg.jpg     # Site background
+│       └── cypher-logo.png   # CYPHER brand mark and favicon
 ├── src/
-│   ├── assets/               # Static assets & illustrations
 │   ├── components/           # Modular, reusable UI components
 │   │   ├── AchievementCard.jsx # Milestone recognition card
 │   │   ├── ContactForm.jsx     # Form with email & field validation

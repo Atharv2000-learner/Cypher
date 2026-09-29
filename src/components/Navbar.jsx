@@ -27,7 +27,7 @@ export default function Navbar({ isDark, onToggleTheme }) {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`navbar-enter sticky top-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-white/90 dark:bg-cypher-950/85 backdrop-blur-md border-b border-slate-200 dark:border-cypher-800/80 shadow-md shadow-slate-900/5 dark:shadow-black/20'
           : 'bg-white/70 dark:bg-cypher-950/60 backdrop-blur-sm border-b border-slate-200/50 dark:border-transparent'
@@ -38,16 +38,16 @@ export default function Navbar({ isDark, onToggleTheme }) {
           {/* Brand Logo */}
           <a
             href="#top"
-            className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-neon-cyan rounded-lg px-1 py-0.5"
+            className="navbar-brand-enter flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-neon-cyan rounded-lg px-1 py-0.5"
             aria-label="CYPHER Home"
           >
             <img
-              src="/cypher-logo.png"
+              src="/assets/cypher-logo.png"
               alt="CYPHER logo"
               className="w-14 h-14 rounded-full object-cover border border-white shadow-sm transition-transform duration-300 group-hover:scale-105"
             />
             <div className="flex flex-col">
-              <span className="text-xl font-bold font-mono tracking-tight text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-neon-cyan-bright transition-colors">
+              <span className="text-xl font-bold font-display tracking-tight text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-neon-cyan-bright transition-colors">
                 CYPHER
               </span>
               <span className="text-[10px] font-mono tracking-widest text-slate-500 dark:text-slate-400 uppercase -mt-1">
@@ -57,12 +57,13 @@ export default function Navbar({ isDark, onToggleTheme }) {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
-            {navLinks.map((link) => (
+          <nav className="hidden lg:ml-auto lg:mr-3 lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
+            {navLinks.map((link, index) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-cypher-900/80 border border-transparent"
+                style={{ animationDelay: `${100 + index * 45}ms` }}
+                className="navbar-link-enter nav-cyber-corners px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white border border-transparent"
               >
                 {link.name}
               </a>
@@ -70,7 +71,7 @@ export default function Navbar({ isDark, onToggleTheme }) {
           </nav>
 
           {/* Actions: Theme Toggle & Join CTA */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="navbar-control-enter hidden lg:flex items-center gap-3">
             <button
               onClick={onToggleTheme}
               className="p-2 rounded-lg bg-slate-100 dark:bg-cypher-900 border border-slate-200 dark:border-cypher-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-cypher-700 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition-colors"
@@ -83,7 +84,7 @@ export default function Navbar({ isDark, onToggleTheme }) {
           </div>
 
           {/* Mobile menu and theme buttons */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="navbar-control-enter flex lg:hidden items-center gap-2">
             <button
               onClick={onToggleTheme}
               className="p-2 rounded-lg bg-slate-100 dark:bg-cypher-900 border border-slate-200 dark:border-cypher-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-neon-cyan"
@@ -106,14 +107,15 @@ export default function Navbar({ isDark, onToggleTheme }) {
 
       {/* Mobile Drawer Menu */}
       {isOpen && (
-        <div className="lg:hidden bg-white/95 dark:bg-cypher-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-cypher-800 px-4 pt-2 pb-6 space-y-1 shadow-2xl transition-all">
+        <div className="navbar-drawer-enter lg:hidden bg-white/95 dark:bg-cypher-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-cypher-800 px-4 pt-2 pb-6 space-y-1 shadow-2xl transition-all">
           <nav className="flex flex-col space-y-1" aria-label="Mobile Navigation">
-            {navLinks.map((link) => (
+            {navLinks.map((link, index) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-3 rounded-lg text-base font-medium transition-colors text-slate-700 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-cypher-800"
+                style={{ animationDelay: `${index * 35}ms` }}
+                className="navbar-link-enter nav-cyber-corners px-4 py-3 rounded-lg text-base font-medium transition-colors text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               >
                 {link.name}
               </a>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Calendar, Terminal, Code2, Shield, Cpu, ChevronRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 import ThreeVortexCanvas from './ThreeVortexCanvas'
@@ -15,7 +15,7 @@ export default function Hero() {
         {/* 2-Column Split: Content on Left, 3D Spiral on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
-          {/* LEFT COLUMN: Original Cypher Club Hero Content */}
+          {/* LEFT COLUMN: CYPHER Hero Content */}
           <div className="lg:col-span-7 text-left space-y-6">
             
             {/* Top Pill / Status Tag */}
@@ -31,9 +31,10 @@ export default function Hero() {
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-tight">
-              Code. Create.{' '}
-              <span className="text-gradient-cyan block sm:inline">
-                Collaborate.
+              Explore{' '}
+              <span className="block sm:inline">
+                <span style={{ color: '#ff003c', textShadow: '0 0 18px rgba(255, 0, 60, 0.55)' }}>Exploit</span>{' '}
+                <span style={{ color: '#00ffff', textShadow: '0 0 18px rgba(0, 255, 255, 0.55)' }}>Defend</span>
               </span>
             </h1>
 
@@ -56,7 +57,7 @@ export default function Hero() {
 
           </div>
 
-          {/* RIGHT COLUMN: 3D Animated Metallic Spiral Canvas (Borderless & Unclipped) */}
+          {/* RIGHT COLUMN: 3D Animated Metallic Spiral */}
           <div className="lg:col-span-5 flex items-center justify-center relative overflow-visible">
             <div className="w-full h-[380px] sm:h-[460px] lg:h-[500px] flex items-center justify-center relative overflow-visible">
               <ThreeVortexCanvas className="w-full h-full" />
@@ -101,7 +102,7 @@ export default function Hero() {
                 className="card-lift p-4 rounded-xl bg-cypher-900/40 border border-cypher-800/60 text-center hover:border-cypher-700 transition-colors shadow-sm"
               >
                 <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight text-gradient-cyan">
-                  {stat.value}
+                  <AnimatedStat value={stat.value} />
                 </div>
                 <div className="text-xs text-slate-400 font-medium mt-1">
                   {stat.label}
@@ -120,4 +121,68 @@ export default function Hero() {
       </div>
     </section>
   )
+}
+
+function AnimatedStat({ value }) {
+  const statRef = useRef(null)
+  const [count, setCount] = useState(0)
+  const valueText = String(value)
+  const match = /^(\d+)(.*)$/.exec(valueText)
+  const target = match ? Number(match[1]) : 0
+  const suffix = match ? match[2] : ''
+
+  useEffect(() => {
+    if (!match || target === 0) return
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setCount(target)
+      return
+    }
+
+    let frameId
+    let startDelay
+    let observer
+    let started = false
+
+    const animate = () => {
+      if (started) return
+      started = true
+      const startTime = performance.now()
+      const duration = 1500
+
+      const tick = (now) => {
+        const progress = Math.min((now - startTime) / duration, 1)
+        const easedProgress = 1 - Math.pow(1 - progress, 3)
+        setCount(Math.floor(target * easedProgress))
+
+        if (progress < 1) {
+          frameId = requestAnimationFrame(tick)
+        } else {
+          setCount(target)
+        }
+      }
+
+      frameId = requestAnimationFrame(tick)
+    }
+
+    if (!statRef.current || !('IntersectionObserver' in window)) {
+      animate()
+    } else {
+      observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          observer.disconnect()
+          startDelay = window.setTimeout(animate, 300)
+        }
+      }, { threshold: 0.6 })
+      observer.observe(statRef.current)
+    }
+
+    return () => {
+      observer?.disconnect()
+      window.clearTimeout(startDelay)
+      cancelAnimationFrame(frameId)
+    }
+  }, [valueText, target])
+
+  return <span ref={statRef} className="tabular-nums">{count}{suffix}</span>
 }
