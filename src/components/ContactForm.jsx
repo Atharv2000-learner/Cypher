@@ -85,7 +85,7 @@ export default function ContactForm() {
         <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-500 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-7 h-7" />
         </div>
-        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">Message Dispatched</h3>
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">Packet Dispatched</h3>
         <p className="text-sm text-slate-600 dark:text-slate-300 max-w-sm mx-auto mb-6">
           Thanks for reaching out! A Cypher Club team coordinator will reply to <span className="text-slate-900 dark:text-white font-medium">{formData.email}</span> shortly.
         </p>
@@ -208,7 +208,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={status === 'sending'}
-          className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-neon-cyan text-cypher-950 hover:bg-neon-cyan-bright transition-colors disabled:opacity-50"
+          className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-cypher-900 text-neon-emerald-bright border border-neon-emerald/40 hover:bg-cypher-800 hover:border-neon-emerald/70 transition-colors focus:outline-none focus:ring-2 focus:ring-neon-emerald disabled:opacity-50"
         >
           {status === 'sending' ? (
             <>
@@ -218,7 +218,7 @@ export default function ContactForm() {
           ) : (
             <>
               <Send className="w-4 h-4" />
-              <span>Send Message</span>
+              <span>Send_Packet</span>
             </>
           )}
         </button>

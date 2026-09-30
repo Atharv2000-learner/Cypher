@@ -44,7 +44,7 @@ export default function Navbar({ isDark, onToggleTheme }) {
             <img
               src="/assets/cypher-logo.png"
               alt="CYPHER logo"
-              className="w-14 h-14 rounded-full object-cover border border-white shadow-sm transition-transform duration-300 group-hover:scale-105"
+              className="w-14 h-14 rounded-full object-cover border border-white shadow-sm"
             />
             <div className="flex flex-col">
               <span className="text-xl font-bold font-display tracking-tight text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-neon-cyan-bright transition-colors">
@@ -63,7 +63,7 @@ export default function Navbar({ isDark, onToggleTheme }) {
                 key={link.name}
                 href={link.href}
                 style={{ animationDelay: `${100 + index * 45}ms` }}
-                className="navbar-link-enter nav-cyber-corners px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white border border-transparent"
+                className="navbar-link-enter nav-cyber-corners px-3.5 py-2 rounded-lg text-sm font-display font-medium transition-all duration-200 hover:scale-105 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white border border-transparent"
               >
                 {link.name}
               </a>
@@ -115,7 +115,7 @@ export default function Navbar({ isDark, onToggleTheme }) {
                 href={link.href}
                 onClick={() => setIsOpen(false)}
                 style={{ animationDelay: `${index * 35}ms` }}
-                className="navbar-link-enter nav-cyber-corners px-4 py-3 rounded-lg text-base font-medium transition-colors text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                className="navbar-link-enter nav-cyber-corners px-4 py-3 rounded-lg text-base font-display font-medium transition-all duration-200 hover:scale-105 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               >
                 {link.name}
               </a>

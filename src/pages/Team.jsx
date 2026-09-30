@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Github, HeartHandshake, Linkedin, X } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
 import PillFilter from '../components/PillFilter'
@@ -10,20 +10,80 @@ const teamTypes = ['Core Members', 'Members']
 export default function Team() {
   const [selectedType, setSelectedType] = useState('Core Members')
   const [selectedMember, setSelectedMember] = useState(null)
+  const [selectedCardBounds, setSelectedCardBounds] = useState(null)
+  const profileBackdropRef = useRef(null)
+  const profileDialogRef = useRef(null)
+
+  const handleSelectMember = (member, bounds) => {
+    setSelectedCardBounds(bounds)
+    setSelectedMember(member)
+  }
+
+  const handleCloseProfile = () => {
+    setSelectedCardBounds(null)
+    setSelectedMember(null)
+  }
+
+  useLayoutEffect(() => {
+    if (!selectedMember) return
+
+    const previousOverflow = document.body.style.overflow
+    const previousPaddingRight = document.body.style.paddingRight
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+    const currentPaddingRight = parseFloat(window.getComputedStyle(document.body).paddingRight) || 0
+
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${currentPaddingRight + scrollbarWidth}px`
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.body.style.paddingRight = previousPaddingRight
+    }
+  }, [selectedMember])
+
+  useLayoutEffect(() => {
+    const backdrop = profileBackdropRef.current
+    const dialog = profileDialogRef.current
+    if (!selectedMember || !selectedCardBounds || !backdrop || !dialog) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!backdrop.animate || !dialog.animate) return
+
+    const targetBounds = dialog.getBoundingClientRect()
+    const translateX = selectedCardBounds.left + selectedCardBounds.width / 2 - (targetBounds.left + targetBounds.width / 2)
+    const translateY = selectedCardBounds.top + selectedCardBounds.height / 2 - (targetBounds.top + targetBounds.height / 2)
+    const scaleX = selectedCardBounds.width / targetBounds.width
+    const scaleY = selectedCardBounds.height / targetBounds.height
+    const initialTransform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scaleX}, ${scaleY}) rotateY(0deg) rotateX(0deg)`
+    const tiltedTransform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scaleX}, ${scaleY}) rotateY(-16deg) rotateX(5deg)`
+
+    const animations = [
+      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 200,
+        easing: 'ease-out',
+        fill: 'both'
+      }),
+      dialog.animate([
+        { transform: initialTransform, offset: 0 },
+        { transform: tiltedTransform, offset: 0.16 },
+        { transform: 'translate3d(0, 0, 0) scale(1, 1) rotateY(0deg) rotateX(0deg)', offset: 1 }
+      ], {
+        duration: 460,
+        easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+        fill: 'both'
+      })
+    ]
+    return () => animations.forEach((animation) => animation.cancel())
+  }, [selectedMember, selectedCardBounds])
 
   useEffect(() => {
     if (!selectedMember) return
 
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') setSelectedMember(null)
+      if (event.key === 'Escape') handleCloseProfile()
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [selectedMember])
@@ -52,7 +112,12 @@ export default function Team() {
       {/* Team Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {filteredMembers.map((member) => (
-          <TeamCard key={member.id} member={member} onSelect={setSelectedMember} />
+          <TeamCard
+            key={member.id}
+            member={member}
+            onSelect={handleSelectMember}
+            isSelected={selectedMember?.id === member.id}
+          />
         ))}
         {filteredMembers.length === 0 && (
           <div className="col-span-full rounded-2xl bg-cypher-900/40 border border-cypher-800 p-10 text-center">
@@ -77,20 +142,23 @@ export default function Team() {
 
       {selectedMember && (
         <div
+          ref={profileBackdropRef}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
+          style={{ perspective: '1200px' }}
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setSelectedMember(null)
+            if (event.target === event.currentTarget) handleCloseProfile()
           }}
         >
           <div
+            ref={profileDialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="team-profile-name"
-            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-neon-cyan/30 bg-cypher-950 p-6 sm:p-10 text-white shadow-2xl shadow-cyan-500/10"
+            className="relative origin-center w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-neon-cyan/30 bg-cypher-950 p-6 sm:p-10 text-white shadow-2xl shadow-cyan-500/10"
           >
             <button
               type="button"
-              onClick={() => setSelectedMember(null)}
+              onClick={handleCloseProfile}
               className="absolute right-4 top-4 rounded-lg p-2 text-slate-400 transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan"
               aria-label="Close profile"
             >

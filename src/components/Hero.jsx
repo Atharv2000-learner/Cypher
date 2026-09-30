@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ArrowRight, Calendar, Terminal, Code2, Shield, Cpu, ChevronRight } from 'lucide-react'
+import { Terminal, Code2, Shield, Cpu, ChevronRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 import ThreeVortexCanvas from './ThreeVortexCanvas'
 
@@ -42,18 +42,6 @@ export default function Hero() {
             <p className="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed font-normal">
               Welcome to <span className="text-white font-medium">CYPHER</span> — the premier student hub for aspiring developers, cybersecurity enthusiasts, and AI builders. We bridge the gap between classroom theory and real-world engineering.
             </p>
-
-            {/* Action Buttons */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <a
-                href="#events"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-base bg-cypher-900/90 hover:bg-cypher-800 text-white border border-cypher-700 hover:border-neon-cyan/40 shadow-sm hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cypher-700 focus:ring-offset-cypher-950"
-              >
-                <Calendar className="w-5 h-5 text-neon-cyan" />
-                <span>Explore Events</span>
-                <ArrowRight className="w-4 h-4 text-slate-400 ml-1" />
-              </a>
-            </div>
 
           </div>
 
