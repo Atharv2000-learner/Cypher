@@ -1,119 +1,542 @@
 /**
- * Cypher Club - Team & Leadership Data
- * 
- * Centralized list of core committee leads and coordinators.
- * Note: Data below represents structured sample/demo profiles as specified
- * in the project brief and can be replaced with verified member details.
+ * Cypher Club - Official Members Dataset
+ * Verified dataset sourced directly from Cypher Club records.
+ *
+ * Sourced from official records:
+ * - 17 Core Leadership Members arranged by organizational hierarchy
+ * - 23 Active Members in verified sequential order
+ *
+ * NOTE: Social profiles and photograph URLs are structured to be easily populated
+ * as members provide verified URLs. Placeholders are rendered cleanly with zero fake data.
  */
 
-export const teamMembers = [
+export const coreMembers = [
   {
-    id: "tm-01",
-    name: "Rahul Sharma",
-    role: "Club President",
-    wing: "Leadership",
-    department: "Computer Science & Engineering",
-    year: "4th Year",
-    bio: "Passionate about building collaborative student tech communities, driving hackathons, and systems engineering.",
-    avatar: null, // Clean SVG initials fallback is rendered when null
-    socials: {
-      github: "https://github.com",
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-01",
+    code: "CY-CORE-01",
+    name: "Namit Mahure",
+    post: "President",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-05 // LEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   },
   {
-    id: "tm-02",
-    name: "Priya Patil",
-    role: "Technical Lead",
-    wing: "Technical & Dev",
-    department: "Information Technology",
-    year: "4th Year",
-    bio: "Architecting club projects, mentoring junior developers, and conducting full-stack cloud and containerization bootcamps.",
-    avatar: null,
-    socials: {
-      github: "https://github.com",
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-02",
+    code: "CY-CORE-02",
+    name: "Yashraj Bhunde",
+    post: "Vice President",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-05 // LEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   },
   {
-    id: "tm-03",
-    name: "Arjun Mehta",
-    role: "Web Development Lead",
-    wing: "Technical & Dev",
-    department: "Computer Science & Engineering",
-    year: "3rd Year",
-    bio: "Specializing in React, TypeScript, and high-performance frontend interfaces. Passionate about open-source developer tooling.",
-    avatar: null,
-    socials: {
-      github: "https://github.com",
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-03",
+    code: "CY-CORE-03",
+    name: "Suviksha Shendekar",
+    post: "Secretary",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-04 // EXEC",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   },
   {
-    id: "tm-04",
-    name: "Aman Varma",
-    role: "AI / ML Lead",
-    wing: "AI & Security",
-    department: "Artificial Intelligence & Data Science",
-    year: "3rd Year",
-    bio: "Exploring applied generative AI, retrieval architectures, and organizing student machine learning research reading groups.",
-    avatar: null,
-    socials: {
-      github: "https://github.com",
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-04",
+    code: "CY-CORE-04",
+    name: "Swapnil Kodwe",
+    post: "Advisory",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-04 // ADVISOR",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   },
   {
-    id: "tm-05",
-    name: "Rohan Deshmukh",
-    role: "Cybersecurity Lead",
-    wing: "AI & Security",
-    department: "Cyber Security & Networks",
-    year: "3rd Year",
-    bio: "CTF enthusiast, ethical hacker, and leader of the Cypher defense lab. Hosting bi-weekly vulnerability research clinics.",
-    avatar: null,
-    socials: {
-      github: "https://github.com",
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-05",
+    code: "CY-CORE-05",
+    name: "Siddhi Chalak",
+    post: "Joint Secretary",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // EXEC",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   },
   {
-    id: "tm-06",
-    name: "Sneha Kulkarni",
-    role: "Design Lead",
-    wing: "Design & Events",
-    department: "Electronics & Computer Engineering",
-    year: "3rd Year",
-    bio: "Crafting modern UI/UX design systems, branding aesthetics, and interactive event experiences with Figma and modern CSS.",
-    avatar: null,
-    socials: {
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-06",
+    code: "CY-CORE-06",
+    name: "Sairam Mirashi",
+    post: "Technical Head",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // TECH-LEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   },
   {
-    id: "tm-07",
-    name: "Aditya Joshi",
-    role: "Event Coordinator",
-    wing: "Design & Events",
-    department: "Information Technology",
-    year: "3rd Year",
-    bio: "Overseeing logistics, guest speaker coordination, and smooth execution for our flagship hackathons and workshops.",
-    avatar: null,
-    socials: {
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-07",
+    code: "CY-CORE-07",
+    name: "Adesh Khairnar",
+    post: "Marketing Head",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // MKT-HEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   },
   {
-    id: "tm-08",
-    name: "Tanvi Rao",
-    role: "Marketing & Community Lead",
-    wing: "Leadership",
-    department: "Computer Engineering",
-    year: "2nd Year",
-    bio: "Managing social media outreach, student engagement campaigns, and community announcements across platforms.",
-    avatar: null,
-    socials: {
-      linkedin: "https://linkedin.com"
-    }
+    id: "cy-core-08",
+    code: "CY-CORE-08",
+    name: "Sarthak Ambulkar",
+    post: "Technical Coordinator",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-02 // TECH-COORD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-09",
+    code: "CY-CORE-09",
+    name: "Pranav Mane",
+    post: "Event Head",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // EVT-HEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-10",
+    code: "CY-CORE-10",
+    name: "Vyom Patil",
+    post: "Event Head",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // EVT-HEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-11",
+    code: "CY-CORE-11",
+    name: "Sarthak Shinde",
+    post: "Lead Scout",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-02 // SCOUT-LEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-12",
+    code: "CY-CORE-12",
+    name: "Nishant Shitole",
+    post: "Lead Scout",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-02 // SCOUT-LEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-13",
+    code: "CY-CORE-13",
+    name: "Veer Dhage",
+    post: "Management Coordinator",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-02 // MGMT-COORD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-14",
+    code: "CY-CORE-14",
+    name: "Vedant Waghchaure",
+    post: "Management Coordinator",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-02 // MGMT-COORD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-15",
+    code: "CY-CORE-15",
+    name: "Shravani Patil",
+    post: "Creative Head",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // CREATIVE-HEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-16",
+    code: "CY-CORE-16",
+    name: "Yash Sawant",
+    post: "Graphics Head",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // GRAPHICS-HEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-core-17",
+    code: "CY-CORE-17",
+    name: "Abinav Rathod",
+    post: "Media Head",
+    category: "core",
+    categoryLabel: "Core Member",
+    securityLevel: "LEVEL-03 // MEDIA-HEAD",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
   }
-];
+]
+
+export const generalMembers = [
+  {
+    id: "cy-mbr-01",
+    code: "CY-MBR-01",
+    name: "Shiwali Sali",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-02",
+    code: "CY-MBR-02",
+    name: "Kirtesh Chatur",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-03",
+    code: "CY-MBR-03",
+    name: "Harshal Kamble",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-04",
+    code: "CY-MBR-04",
+    name: "Om Khandale",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-05",
+    code: "CY-MBR-05",
+    name: "Tejasvi Jadhav",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-06",
+    code: "CY-MBR-06",
+    name: "Shubhankar Bhenki",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-07",
+    code: "CY-MBR-07",
+    name: "Triveni Wani",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-08",
+    code: "CY-MBR-08",
+    name: "Yogita Kore",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-09",
+    code: "CY-MBR-09",
+    name: "Parmeshwar Bobade",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-10",
+    code: "CY-MBR-10",
+    name: "Manali Shinde",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-11",
+    code: "CY-MBR-11",
+    name: "Amol Shelke",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-12",
+    code: "CY-MBR-12",
+    name: "Jayashree Rout",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-13",
+    code: "CY-MBR-13",
+    name: "Atharv Bhoyar",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-14",
+    code: "CY-MBR-14",
+    name: "Srusthi Ghadose",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-15",
+    code: "CY-MBR-15",
+    name: "Aditya Ingle",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-16",
+    code: "CY-MBR-16",
+    name: "Shivam Salunke",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-17",
+    code: "CY-MBR-17",
+    name: "Rihan Mulla",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-18",
+    code: "CY-MBR-18",
+    name: "Mohit Avhad",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-19",
+    code: "CY-MBR-19",
+    name: "Sarika Muke",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-20",
+    code: "CY-MBR-20",
+    name: "Payal Thakare",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-21",
+    code: "CY-MBR-21",
+    name: "Vedika Chavan",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-22",
+    code: "CY-MBR-22",
+    name: "Vaishnavi Chakke",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  },
+  {
+    id: "cy-mbr-23",
+    code: "CY-MBR-23",
+    name: "Tanaya Inpure",
+    post: "Member",
+    category: "member",
+    categoryLabel: "Member",
+    securityLevel: "LEVEL-01 // MEMBER",
+    status: "ACTIVE",
+    photo: null,
+    github: "",
+    linkedin: ""
+  }
+]
+
+export const allMembers = [...coreMembers, ...generalMembers]
+
+// Backward compatibility alias if needed
+export const teamMembers = coreMembers
