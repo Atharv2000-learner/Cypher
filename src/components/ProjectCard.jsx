@@ -1,118 +1,111 @@
 import React from 'react'
-import { Github, ExternalLink, Code2, Sparkles, CheckCircle } from 'lucide-react'
+import { ArrowRight, Github, ExternalLink, Users, Code2 } from 'lucide-react'
+import ProjectBanner from './ProjectBanner'
+import { projectStatuses } from '../data/projects'
 
-export default function ProjectCard({ project }) {
-  // Determine gradient / visual icon based on category/accent
-  const getGradient = (accent) => {
-    switch (accent) {
-      case 'cyan':
-        return 'from-cyan-50 via-cyan-100/40 to-white dark:from-cyan-500/20 dark:via-cyan-900/40 dark:to-cypher-950 border-cyan-200 dark:border-cyan-500/30 text-cyan-700 dark:text-cyan-400'
-      case 'emerald':
-        return 'from-emerald-50 via-emerald-100/40 to-white dark:from-emerald-500/20 dark:via-emerald-900/40 dark:to-cypher-950 border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400'
-      case 'violet':
-        return 'from-violet-50 via-violet-100/40 to-white dark:from-violet-500/20 dark:via-violet-900/40 dark:to-cypher-950 border-violet-200 dark:border-violet-500/30 text-violet-700 dark:text-violet-400'
-      case 'amber':
-        return 'from-amber-50 via-amber-100/40 to-white dark:from-amber-500/20 dark:via-amber-900/40 dark:to-cypher-950 border-amber-200 dark:border-amber-500/30 text-amber-700 dark:text-amber-400'
-      default:
-        return 'from-cyan-50 via-cyan-100/40 to-white dark:from-cyan-500/20 dark:via-cypher-900 dark:to-cypher-950 border-cyan-200 dark:border-cyan-500/30 text-cyan-700 dark:text-cyan-400'
-    }
-  }
-
-  const gradientClasses = getGradient(project.accentColor)
+export default function ProjectCard({ project, onViewProject }) {
+  const statusInfo = projectStatuses[project.status] || projectStatuses.Active
 
   return (
-    <div className="card-lift flex flex-col h-full bg-white dark:bg-cypher-900/70 border border-slate-200 dark:border-cypher-800/90 rounded-2xl overflow-hidden hover:border-cyan-500/40 hover:shadow-lg dark:hover:border-cypher-700 dark:hover:shadow-xl dark:hover:shadow-cyan-950/20 transition-all duration-300 group">
-      {/* Project Visual Header */}
-      <div className={`h-40 relative p-5 bg-gradient-to-br ${gradientClasses} border-b flex flex-col justify-between`}>
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-md bg-white/90 dark:bg-cypher-950/80 text-slate-800 dark:text-white border border-slate-200 dark:border-cypher-800 shadow-sm">
-            {project.category}
-          </span>
-          <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400 bg-white/80 dark:bg-cypher-950/70 border border-slate-200 dark:border-transparent px-2 py-0.5 rounded">
-            {project.status}
-          </span>
+    <div
+      onClick={() => onViewProject(project)}
+      className="group relative flex flex-col h-full rounded-2xl bg-cypher-900/60 dark:bg-cypher-900/60 backdrop-blur-md border border-cypher-800/80 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_25px_-5px_rgba(6,182,212,0.18)] cursor-pointer overflow-hidden"
+    >
+      {/* Neon Accent Line Appearing on Hover */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
+
+      {/* 1. Project Thumbnail with Image Zoom on Hover */}
+      <div className="relative overflow-hidden border-b border-cypher-800/80 bg-cypher-950">
+        <div className="transform transition-transform duration-500 group-hover:scale-105">
+          <ProjectBanner
+            bannerType={project.bannerType}
+            title={project.title}
+            accentColor={project.accentColor}
+            aspectRatio="aspect-[16/9]"
+          />
         </div>
 
-        <div className="flex items-end justify-between">
-          <div className="w-12 h-12 rounded-xl bg-white dark:bg-cypher-950/90 border border-current flex items-center justify-center shadow-md">
-            <Code2 className="w-6 h-6" />
-          </div>
-          {project.featured && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-mono text-amber-800 bg-amber-100 border border-amber-300 dark:text-amber-300 dark:bg-amber-500/20 dark:border-amber-500/30 px-2.5 py-0.5 rounded-full font-semibold">
-              <Sparkles className="w-3 h-3" /> Featured
-            </span>
-          )}
+        {/* Floating Top Badges */}
+        <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none z-10">
+          {/* Category Badge */}
+          <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-cypher-950/90 text-cyan-300 border border-cypher-700/80 backdrop-blur-md shadow-sm">
+            {project.category}
+          </span>
+
+          {/* Status Badge */}
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold border backdrop-blur-md ${statusInfo.bgClass}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${statusInfo.dotClass} ${statusInfo.pulseClass}`} />
+            <span>{statusInfo.label}</span>
+          </span>
         </div>
       </div>
 
-      {/* Body Content */}
-      <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-neon-cyan-bright transition-colors mb-2">
-          {project.title}
-        </h3>
+      {/* Card Body */}
+      <div className="p-5 sm:p-6 flex flex-col flex-1 justify-between">
+        <div>
+          {/* 2. Project Title */}
+          <h3 className="text-lg font-bold font-display text-white group-hover:text-cyan-300 transition-colors line-clamp-1 mb-2">
+            {project.title}
+          </h3>
 
-        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-5">
-          {project.description}
-        </p>
+          {/* 3. Short Description */}
+          <p className="text-xs sm:text-sm text-slate-300 line-clamp-2 leading-relaxed mb-4">
+            {project.oneLiner || project.description}
+          </p>
 
-        {/* Feature Highlights */}
-        {project.highlights && project.highlights.length > 0 && (
-          <ul className="mb-5 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
-            {project.highlights.map((h, i) => (
-              <li key={i} className="flex items-center gap-2">
-                <CheckCircle className="w-3 h-3 text-cyan-600 dark:text-neon-cyan shrink-0" />
-                <span>{h}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {/* Technologies Badges */}
-        <div className="mt-auto pt-4 border-t border-slate-200 dark:border-cypher-800/70">
+          {/* 4. Technology Stack */}
           <div className="flex flex-wrap gap-1.5 mb-5">
-            {project.technologies.map((tech) => (
+            {project.technologies.slice(0, 3).map((tech) => (
               <span
                 key={tech}
-                className="px-2.5 py-0.5 rounded-md text-xs font-mono bg-slate-100 border border-slate-200 text-slate-700 dark:bg-cypher-950 dark:border-cypher-800 dark:text-slate-300"
+                className="px-2 py-0.5 rounded text-[11px] font-mono bg-cypher-950 border border-cypher-800 text-slate-300 group-hover:border-cyan-500/30 group-hover:text-cyan-200 transition-colors"
               >
                 {tech}
               </span>
             ))}
-          </div>
-
-          {/* Action Buttons: Only show if URLs are provided */}
-          <div className="flex items-center gap-3">
-            {project.githubUrl ? (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 dark:bg-cypher-800 dark:hover:bg-cypher-700 dark:text-white dark:border-cypher-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-600 dark:focus:ring-neon-cyan"
-              >
-                <Github className="w-3.5 h-3.5" />
-                <span>GitHub</span>
-              </a>
-            ) : null}
-
-            {project.demoUrl ? (
-              <a
-                href={project.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white dark:bg-neon-cyan dark:text-cypher-950 dark:hover:bg-neon-cyan-bright transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-600 dark:focus:ring-neon-cyan"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Live Demo</span>
-              </a>
-            ) : null}
-
-            {/* If neither link is configured yet, show an informational note */}
-            {!project.githubUrl && !project.demoUrl && (
-              <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 italic">
-                Source repository in internal club review
+            {project.technologies.length > 3 && (
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-500">
+                +{project.technologies.length - 3}
               </span>
             )}
           </div>
+        </div>
+
+        {/* Footer: Team & View Project Button */}
+        <div className="pt-4 border-t border-cypher-800/60 flex items-center justify-between gap-3">
+          {/* 7. Team / Member Preview */}
+          <div className="flex items-center gap-1.5">
+            {project.team && project.team.length > 0 ? (
+              <div className="flex -space-x-1.5">
+                {project.team.slice(0, 3).map((member, idx) => (
+                  <div
+                    key={idx}
+                    title={`${member.name} - ${member.role}`}
+                    className="w-6 h-6 rounded-full bg-cypher-800 border border-cypher-950 text-[9px] font-mono font-bold text-cyan-300 flex items-center justify-center"
+                  >
+                    {member.avatar || member.name.substring(0, 2).toUpperCase()}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Users className="w-4 h-4 text-slate-500" />
+            )}
+            <span className="text-[11px] font-mono text-slate-400">
+              {project.team ? project.team[0]?.name.split(' ')[0] : 'Cypher'}
+            </span>
+          </div>
+
+          {/* 8. View Project Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onViewProject(project)
+            }}
+            className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-neon-cyan group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all focus:outline-none"
+          >
+            <span>View Project</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </div>
     </div>
