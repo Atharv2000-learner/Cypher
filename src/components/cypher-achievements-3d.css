@@ -1,0 +1,675 @@
+/* ==========================================================================
+   CYPHER CLUB — 3D ACHIEVEMENTS GALLERY STYLING (OPTIMIZED AWARD PLAQUES)
+   Futuristic Technology Award Gallery · Ultra-Smooth 60FPS Architecture
+   ========================================================================== */
+
+.cypher-achievements-root {
+  --cypher-bg: #05070B;
+  --cypher-bg-card: rgba(8, 14, 26, 0.92);
+  --cypher-primary: #00E5FF;
+  --cypher-secondary: #7C3AED;
+  --cypher-accent: #2563EB;
+  --cypher-text: #F5F7FA;
+  --cypher-muted: #94A3B8;
+  --cypher-border: rgba(0, 229, 255, 0.2);
+  --cypher-border-bright: rgba(0, 229, 255, 0.45);
+  --cypher-glow: rgba(0, 229, 255, 0.18);
+  --cypher-ease: cubic-bezier(0.2, 0.72, 0.24, 1);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-display: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  position: relative;
+  width: 100%;
+  min-height: 720px;
+  height: 82vh;
+  max-height: 900px;
+  background-color: var(--cypher-bg);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(30, 41, 59, 0.8);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 229, 255, 0.06);
+  user-select: none;
+  isolation: isolate;
+  color: var(--cypher-text);
+}
+
+@media (min-width: 1024px) {
+  .cypher-achievements-root {
+    min-height: 780px;
+  }
+}
+
+/* Fullscreen Immersion Mode */
+.cypher-achievements-root.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-height: none;
+  min-height: 100vh;
+  border-radius: 0;
+  z-index: 9999;
+  border: none;
+}
+
+/* Cyber corner framing */
+.cypher-frame-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--cypher-primary);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.cypher-frame-tl { top: 12px; left: 12px; border-top: 2px solid; border-left: 2px solid; }
+.cypher-frame-tr { top: 12px; right: 12px; border-top: 2px solid; border-right: 2px solid; }
+.cypher-frame-bl { bottom: 12px; left: 12px; border-bottom: 2px solid; border-left: 2px solid; }
+.cypher-frame-br { bottom: 12px; right: 12px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* Scene & Canvas */
+.cypher-scene-shell {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.cypher-webgl-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+
+.cypher-webgl-canvas:active {
+  cursor: grabbing;
+}
+
+.cypher-webgl-canvas.is-inspecting {
+  cursor: grab;
+}
+
+.cypher-webgl-canvas.is-inspecting:active {
+  cursor: grabbing;
+}
+
+/* Top Masthead Header */
+.cypher-masthead {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
+  transition: opacity 350ms var(--cypher-ease);
+}
+
+@media (min-width: 768px) {
+  .cypher-masthead {
+    top: 26px;
+    left: 32px;
+    right: 32px;
+  }
+}
+
+.cypher-masthead * {
+  pointer-events: auto;
+}
+
+.cypher-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cypher-community-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cypher-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cypher-community-badge::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--cypher-primary);
+  box-shadow: 0 0 8px var(--cypher-primary);
+}
+
+.cypher-section-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.4vw, 1.95rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.cypher-section-title span {
+  background: linear-gradient(135deg, #FFFFFF 30%, var(--cypher-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cypher-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 0.78rem;
+  color: var(--cypher-muted);
+  max-width: 380px;
+  line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+  .cypher-subtitle {
+    font-size: 0.84rem;
+  }
+}
+
+.cypher-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cypher-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(10, 20, 36, 0.75);
+  border: 1px solid var(--cypher-border-bright);
+  color: var(--cypher-primary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 229, 255, 0.12);
+  backdrop-filter: blur(12px);
+  transition: all 200ms var(--cypher-ease);
+}
+
+.cypher-explore-btn:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--cypher-primary);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 229, 255, 0.25);
+}
+
+.cypher-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 20, 36, 0.75);
+  border: 1px solid var(--cypher-border);
+  color: var(--cypher-muted);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 180ms ease;
+}
+
+.cypher-icon-btn:hover {
+  color: #FFFFFF;
+  border-color: var(--cypher-primary);
+  background: rgba(0, 229, 255, 0.1);
+}
+
+/* Floating Pointer Label */
+.cypher-pointer-label {
+  position: absolute;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--cypher-border-bright);
+  background: rgba(6, 11, 22, 0.94);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 229, 255, 0.12);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: translate(16px, 18px);
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  transition: opacity 120ms ease;
+}
+
+.cypher-pointer-label[aria-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.cypher-pointer-label-idx {
+  color: var(--cypher-primary);
+  font-weight: 700;
+  font-size: 0.6rem;
+}
+
+.cypher-pointer-label-title {
+  color: var(--cypher-text);
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+/* Bottom Catalogue Navigation */
+.cypher-browse-ui {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 20px;
+  pointer-events: none;
+  transition: opacity 300ms var(--cypher-ease), transform 400ms var(--cypher-ease);
+}
+
+@media (min-width: 768px) {
+  .cypher-browse-ui {
+    left: 32px;
+    right: 32px;
+    bottom: 24px;
+    gap: 28px;
+  }
+}
+
+.cypher-browse-ui * {
+  pointer-events: auto;
+}
+
+@media (max-width: 680px) {
+  .cypher-browse-ui {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .cypher-selection {
+    order: 1;
+  }
+  .cypher-browse-actions {
+    order: 2;
+    justify-content: center;
+  }
+  .cypher-index-nav {
+    display: none !important;
+  }
+}
+
+/* Active Selection Title */
+.cypher-selection {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cypher-counter {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--cypher-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cypher-selection-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cypher-selection-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cypher-selection-note {
+  margin: 2px 0 0 0;
+  font-size: 0.74rem;
+  color: var(--cypher-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
+/* Navigation Actions (Prev / Focus / Next) */
+.cypher-browse-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cypher-round-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--cypher-border-bright);
+  background: rgba(9, 15, 28, 0.85);
+  color: var(--cypher-primary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 180ms var(--cypher-ease);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.cypher-round-btn:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--cypher-primary);
+  color: #FFFFFF;
+  transform: scale(1.05);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+}
+
+.cypher-open-btn {
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 9999px;
+  border: 1px solid var(--cypher-primary);
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.2) 0%, rgba(37, 99, 235, 0.25) 100%);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 180ms var(--cypher-ease);
+  box-shadow: 0 4px 18px rgba(0, 229, 255, 0.15);
+}
+
+.cypher-open-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.32) 0%, rgba(37, 99, 235, 0.38) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(0, 229, 255, 0.3);
+}
+
+/* Index Navigation (Pills / Markers) */
+.cypher-index-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.cypher-markers {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: 9999px;
+  background: rgba(9, 15, 28, 0.75);
+  border: 1px solid var(--cypher-border);
+  backdrop-filter: blur(10px);
+}
+
+.cypher-marker-pill {
+  width: 20px;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.25);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 200ms var(--cypher-ease);
+}
+
+.cypher-marker-pill:hover {
+  background: rgba(0, 229, 255, 0.5);
+}
+
+.cypher-marker-pill.is-active {
+  width: 32px;
+  background: var(--cypher-primary);
+  box-shadow: 0 0 8px var(--cypher-primary);
+}
+
+.cypher-microcopy {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cypher-muted);
+}
+
+/* ==========================================================================
+   COMPACT AWARD DETAIL REVEAL PANEL
+   AWARD → WHAT WAS ACHIEVED → WHEN
+   ========================================================================== */
+.cypher-award-detail-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  width: min(440px, 90vw);
+  background: var(--cypher-bg-card);
+  border-left: 1px solid var(--cypher-border-bright);
+  box-shadow: -15px 0 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.08);
+  backdrop-filter: blur(20px);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+  transition: opacity 350ms var(--cypher-ease), transform 400ms var(--cypher-ease);
+}
+
+@media (max-width: 820px) {
+  .cypher-award-detail-panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 55vh;
+    border-left: none;
+    border-top: 1px solid var(--cypher-border-bright);
+    transform: translateY(100%);
+    padding: 20px 18px;
+    box-shadow: 0 -15px 45px rgba(0, 0, 0, 0.85);
+  }
+}
+
+.cypher-award-detail-panel.is-active {
+  opacity: 1;
+  transform: translate(0, 0);
+  pointer-events: auto;
+}
+
+.cypher-detail-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--cypher-border);
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--cypher-muted);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.cypher-detail-close-btn:hover {
+  color: #FFFFFF;
+  border-color: var(--cypher-primary);
+  background: rgba(0, 229, 255, 0.15);
+}
+
+/* Category & Year Tag */
+.cypher-detail-tagline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px 0;
+}
+
+.cypher-category-pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cypher-primary);
+}
+
+.cypher-year-pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--cypher-muted);
+}
+
+.cypher-award-title {
+  margin: 0 0 10px 0;
+  font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+
+.cypher-award-desc {
+  margin: 0 0 18px 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--cypher-text);
+  opacity: 0.92;
+}
+
+/* Compact Metadata */
+.cypher-compact-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 0 18px 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(6, 11, 22, 0.65);
+  border: 1px solid rgba(30, 41, 59, 0.7);
+}
+
+.cypher-meta-cell dt {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cypher-muted);
+  margin-bottom: 2px;
+}
+
+.cypher-meta-cell dd {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cypher-text);
+}
+
+/* Action Buttons */
+.cypher-award-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.cypher-btn-primary {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--cypher-primary) 0%, var(--cypher-accent) 100%);
+  color: #05070B;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 229, 255, 0.25);
+  transition: all 180ms ease;
+}
+
+.cypher-btn-primary:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 229, 255, 0.4);
+}
+
+.cypher-btn-secondary {
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--cypher-border-bright);
+  background: rgba(14, 23, 40, 0.75);
+  color: var(--cypher-text);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.cypher-btn-secondary:hover {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: var(--cypher-primary);
+  color: #FFFFFF;
+}
+
+.cypher-award-hint {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--cypher-muted);
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .cypher-achievements-root * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
