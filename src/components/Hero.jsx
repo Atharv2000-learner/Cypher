@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Terminal, Code2, Shield, Cpu, ChevronRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
-import ThreeVortexCanvas from './ThreeVortexCanvas'
 
 export default function Hero() {
   return (
@@ -12,13 +11,8 @@ export default function Hero() {
 
       <div className="w-full px-3 sm:px-5 relative z-10">
         
-        {/* 2-Column Split: Content on Left, 3D Spiral on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-          
-          {/* LEFT COLUMN: CYPHER Hero Content */}
-          <div className="lg:col-span-7 text-left space-y-6">
-            
-            {/* Top Pill / Status Tag */}
+        <div className="grid grid-cols-1 gap-10 lg:gap-8 items-center">
+          <div className="text-left space-y-6 max-w-4xl">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-cypher-900/90 border border-neon-cyan/30 text-xs font-mono text-slate-300 shadow-lg shadow-neon-cyan/5">
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
@@ -29,7 +23,6 @@ export default function Hero() {
               <span>Cyber Security Club</span>
             </div>
 
-            {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-tight">
               Explore{' '}
               <span className="block sm:inline">
@@ -38,20 +31,10 @@ export default function Hero() {
               </span>
             </h1>
 
-            {/* Introduction Paragraph */}
             <p className="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed font-normal">
               Welcome to <span className="text-white font-medium">CYPHER</span> — the premier student hub for aspiring developers, cybersecurity enthusiasts, and AI builders. We bridge the gap between classroom theory and real-world engineering.
             </p>
-
           </div>
-
-          {/* RIGHT COLUMN: 3D Animated Metallic Spiral */}
-          <div className="lg:col-span-5 flex items-center justify-center relative overflow-visible">
-            <div className="w-full h-[380px] sm:h-[460px] lg:h-[500px] flex items-center justify-center relative overflow-visible">
-              <ThreeVortexCanvas className="w-full h-full" />
-            </div>
-          </div>
-
         </div>
 
         {/* BOTTOM SECTION: Progression Loop Banner & Metrics */}

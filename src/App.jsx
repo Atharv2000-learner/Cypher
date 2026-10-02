@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import OnePage from './pages/OnePage'
+import KageBackground from './components/KageBackground'
 
 export default function App() {
   const cursorGlowRef = useRef(null)
@@ -89,8 +90,8 @@ export default function App() {
   }
 
   return (
-    <div className="relative isolate min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
-      <div className="cypher-backdrop" aria-hidden="true" />
+    <div className="app-shell relative isolate min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
+      <KageBackground />
       <div ref={cursorGlowRef} className="cursor-glow" aria-hidden="true">
         <span ref={cursorClickRef} className="cursor-click-ripple" />
       </div>
