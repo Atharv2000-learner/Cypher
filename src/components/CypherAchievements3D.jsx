@@ -40,13 +40,14 @@ export default function CypherAchievements3D({ className = '' }) {
     const shelfBoardTop = 0.45
     const spacing = 1.45
     const PRESENT_TRANSITION_DURATION = 0.55
+    const PAUSE_DURATION = 2.0 // 2-second pause per focused award
+    const TRANSITION_DURATION = 3.0 // 3-second smooth cinematic transition
 
     // Helper math functions
     const clamp = THREE.MathUtils.clamp
     const damp = THREE.MathUtils.damp
     const lerp = THREE.MathUtils.lerp
     const smootherstep = (x) => x * x * x * (x * (x * 6 - 15) + 10)
-    const mod = (n, m) => ((n % m) + m) % m
 
     // State
     let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -54,9 +55,7 @@ export default function CypherAchievements3D({ className = '' }) {
     let viewHeight = Math.max(1, root.clientHeight)
     let lastTime = performance.now()
     let currentMode = 'hero'
-    let currentSelectedIndex = 0
     let position = 0
-    let targetPosition = 0
     let transitionTime = 0
     let hoveredIndex = -1
     let detailSafeWidth = viewWidth * 0.5
@@ -64,6 +63,23 @@ export default function CypherAchievements3D({ className = '' }) {
     let currentViewOffsetX = 0
     let openingViewOffsetX = 0
     let closingViewOffsetX = 0
+
+    // Automatic Sequential Presentation Controller (01 -> 02 -> ... -> 08 -> STOP)
+    const playback = {
+      phase: 'pause', // 'pause' | 'transition' | 'stopped'
+      timer: 0,
+      currentIndex: 0,
+      fromPos: 0,
+      toPos: 0
+    }
+
+    // Touch Swipe Navigation Tracker (Mobile Only)
+    const touchTracker = {
+      active: false,
+      startX: 0,
+      startY: 0,
+      isHorizontal: false
+    }
 
     // Three.js Objects
     let renderer, scene, camera, shelfStage, controls, environmentTarget
@@ -101,26 +117,13 @@ export default function CypherAchievements3D({ className = '' }) {
     let awardRigs = []
     let dustParticles = null
 
-    // Touch & Mouse Dragging State
-    const shelfDrag = {
-      active: false,
-      pointerId: null,
-      startX: 0,
-      startY: 0,
-      moved: false,
-      isIntentionalHorizontal: false,
-      velocity: 0,
-      lastX: 0,
-      lastTime: 0
-    }
-
     // =========================================================================
     // SHARED GEOMETRIES & MATERIALS (MAX PERFORMANCE VIA REUSE)
     // =========================================================================
     const sharedGeoms = {
       plaque: new RoundedBoxGeometry(0.96, 1.48, 0.05, 2, 0.015),
       base: new RoundedBoxGeometry(0.72, 0.08, 0.32, 2, 0.01),
-      facePlane: new THREE.PlaneGeometry(0.92, 1.44),
+      facePlane: new THREE.PlaneGeometry(0.92, 1.38),
       shadowPlane: new THREE.PlaneGeometry(1.2, 0.6),
       hitBox: new THREE.BoxGeometry(1.05, 1.55, 0.45)
     }
@@ -166,13 +169,13 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     // =========================================================================
-    // LIGHTWEIGHT PROCEDURAL CANVAS TEXTURE FOR AWARD PLAQUE FACES
-    // 512x768 Crisp Resolution · Pre-rendered ONCE
+    // HIGH-DEFINITION PROCEDURAL CANVAS TEXTURE FOR AWARD PLAQUE FACES
+    // 1024x1536 Crisp HD Resolution · Anisotropic Filtering · Pre-rendered ONCE
     // =========================================================================
-    function makeAwardFaceTexture(item) {
+    function makeAwardFaceTexture(item, currentRenderer) {
       const cvs = document.createElement('canvas')
-      cvs.width = 512
-      cvs.height = 768
+      cvs.width = 1024
+      cvs.height = 1536
       const ctx = cvs.getContext('2d')
       const w = cvs.width
       const h = cvs.height
@@ -187,104 +190,104 @@ export default function CypherAchievements3D({ className = '' }) {
 
       // Subtle tech background grid
       ctx.strokeStyle = 'rgba(0, 229, 255, 0.035)'
-      ctx.lineWidth = 1
-      for (let x = 0; x < w; x += 28) {
+      ctx.lineWidth = 1.5
+      for (let x = 0; x < w; x += 52) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke()
       }
-      for (let y = 0; y < h; y += 28) {
+      for (let y = 0; y < h; y += 52) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke()
       }
 
-      // High-precision outer boundary (matches category foil)
+      // Outer boundary matching award foil accent
       ctx.strokeStyle = item.foil
-      ctx.lineWidth = 2.5
-      ctx.strokeRect(24, 24, w - 48, h - 48)
+      ctx.lineWidth = 4
+      ctx.strokeRect(44, 44, w - 88, h - 88)
 
       // Thin inner inset
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'
-      ctx.lineWidth = 1
-      ctx.strokeRect(32, 32, w - 64, h - 64)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)'
+      ctx.lineWidth = 2
+      ctx.strokeRect(58, 58, w - 116, h - 116)
 
       // Cyber corner brackets
-      const cLen = 22
+      const cLen = 40
       ctx.strokeStyle = item.foil
-      ctx.lineWidth = 3.5
+      ctx.lineWidth = 6
       // TL
-      ctx.beginPath(); ctx.moveTo(24, 24 + cLen); ctx.lineTo(24, 24); ctx.lineTo(24 + cLen, 24); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(44, 44 + cLen); ctx.lineTo(44, 44); ctx.lineTo(44 + cLen, 44); ctx.stroke()
       // TR
-      ctx.beginPath(); ctx.moveTo(w - 24 - cLen, 24); ctx.lineTo(w - 24, 24); ctx.lineTo(w - 24, 24 + cLen); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(w - 44 - cLen, 44); ctx.lineTo(w - 44, 44); ctx.lineTo(w - 44, 44 + cLen); ctx.stroke()
       // BL
-      ctx.beginPath(); ctx.moveTo(24, h - 24 - cLen); ctx.lineTo(24, h - 24); ctx.lineTo(24 + cLen, h - 24); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(44, h - 44 - cLen); ctx.lineTo(44, h - 44); ctx.lineTo(44 + cLen, h - 44); ctx.stroke()
       // BR
-      ctx.beginPath(); ctx.moveTo(w - 24 - cLen, h - 24); ctx.lineTo(w - 24, h - 24); ctx.lineTo(w - 24, h - 24 - cLen); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(w - 44 - cLen, h - 44); ctx.lineTo(w - 44, h - 44); ctx.lineTo(w - 44, h - 44 - cLen); ctx.stroke()
 
       // Header Brand
       ctx.fillStyle = item.foil
-      ctx.font = '700 13px monospace'
+      ctx.font = '700 24px monospace'
       ctx.textAlign = 'left'
-      ctx.fillText('CYPhER CLUB', 42, 60)
+      ctx.fillText('CYPhER CLUB', 76, 115)
 
-      ctx.fillStyle = 'rgba(148, 163, 184, 0.9)'
-      ctx.font = '600 12px monospace'
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.95)'
+      ctx.font = '600 22px monospace'
       ctx.textAlign = 'right'
-      ctx.fillText(`ACH // 0${item.number}`, w - 42, 60)
+      ctx.fillText(`ACH // 0${item.number}`, w - 76, 115)
 
-      ctx.strokeStyle = 'rgba(0, 229, 255, 0.2)'
-      ctx.lineWidth = 1
-      ctx.beginPath(); ctx.moveTo(42, 74); ctx.lineTo(w - 42, 74); ctx.stroke()
+      ctx.strokeStyle = 'rgba(0, 229, 255, 0.22)'
+      ctx.lineWidth = 2
+      ctx.beginPath(); ctx.moveTo(76, 140); ctx.lineTo(w - 76, 140); ctx.stroke()
 
-      // Central Emblem / Category Icon
+      // Central Category Icon & Emblem Plate
       const cx = w / 2
-      const cy = 200
+      const cy = 370
 
       // Emblem plate
-      ctx.fillStyle = 'rgba(10, 20, 38, 0.7)'
-      ctx.beginPath(); ctx.arc(cx, cy, 64, 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = 'rgba(10, 20, 38, 0.75)'
+      ctx.beginPath(); ctx.arc(cx, cy, 115, 0, Math.PI * 2); ctx.fill()
       ctx.strokeStyle = item.foil
-      ctx.lineWidth = 2
+      ctx.lineWidth = 3.5
       ctx.stroke()
 
       // Outer dashed tech ring
-      ctx.setLineDash([4, 6])
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'
-      ctx.beginPath(); ctx.arc(cx, cy, 74, 0, Math.PI * 2); ctx.stroke()
+      ctx.setLineDash([8, 10])
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)'
+      ctx.beginPath(); ctx.arc(cx, cy, 134, 0, Math.PI * 2); ctx.stroke()
       ctx.setLineDash([])
 
       // Category Abstract Vector Icon
       ctx.strokeStyle = item.foil
       ctx.fillStyle = item.foil
-      ctx.lineWidth = 2.5
+      ctx.lineWidth = 4.5
       ctx.textAlign = 'center'
 
       if (item.category === 'Hackathon') {
-        ctx.strokeRect(cx - 24, cy - 24, 48, 48)
-        ctx.fillRect(cx - 10, cy - 10, 20, 20)
+        ctx.strokeRect(cx - 44, cy - 44, 88, 88)
+        ctx.fillRect(cx - 18, cy - 18, 36, 36)
         ctx.beginPath()
-        ctx.moveTo(cx - 24, cy); ctx.lineTo(cx - 38, cy)
-        ctx.moveTo(cx + 24, cy); ctx.lineTo(cx + 38, cy)
-        ctx.moveTo(cx, cy - 24); ctx.lineTo(cx, cy - 38)
-        ctx.moveTo(cx, cy + 24); ctx.lineTo(cx, cy + 38)
+        ctx.moveTo(cx - 44, cy); ctx.lineTo(cx - 68, cy)
+        ctx.moveTo(cx + 44, cy); ctx.lineTo(cx + 68, cy)
+        ctx.moveTo(cx, cy - 44); ctx.lineTo(cx, cy - 68)
+        ctx.moveTo(cx, cy + 44); ctx.lineTo(cx, cy + 68)
         ctx.stroke()
       } else if (item.category === 'Competition') {
         ctx.beginPath()
-        ctx.moveTo(cx - 28, cy + 20); ctx.lineTo(cx - 10, cy - 18); ctx.lineTo(cx + 10, cy + 8); ctx.lineTo(cx + 28, cy - 24)
+        ctx.moveTo(cx - 52, cy + 36); ctx.lineTo(cx - 18, cy - 32); ctx.lineTo(cx + 18, cy + 14); ctx.lineTo(cx + 52, cy - 44)
         ctx.stroke()
-        for (let p of [-28, -10, 10, 28]) {
-          ctx.beginPath(); ctx.arc(cx + p, cy + (p === -28 ? 20 : p === -10 ? -18 : p === 10 ? 8 : -24), 4, 0, Math.PI * 2); ctx.fill()
+        for (let p of [[-52, 36], [-18, -32], [18, 14], [52, -44]]) {
+          ctx.beginPath(); ctx.arc(cx + p[0], cy + p[1], 7, 0, Math.PI * 2); ctx.fill()
         }
       } else if (item.category === 'Projects') {
-        ctx.strokeRect(cx - 28, cy - 24, 24, 20)
-        ctx.strokeRect(cx + 4, cy - 24, 24, 20)
-        ctx.strokeRect(cx - 28, cy + 4, 56, 20)
+        ctx.strokeRect(cx - 52, cy - 44, 46, 38)
+        ctx.strokeRect(cx + 6, cy - 44, 46, 38)
+        ctx.strokeRect(cx - 52, cy + 6, 104, 38)
       } else if (item.category === 'Workshop') {
-        ctx.strokeRect(cx - 28, cy - 22, 56, 44)
-        ctx.font = '700 16px monospace'
-        ctx.fillText('>_ CLI', cx, cy + 6)
+        ctx.strokeRect(cx - 54, cy - 42, 108, 84)
+        ctx.font = '700 30px monospace'
+        ctx.fillText('>_ CLI', cx, cy + 10)
       } else if (item.category === 'Coding') {
-        ctx.font = '700 36px monospace'
-        ctx.fillText('{  }', cx, cy + 12)
+        ctx.font = '700 68px monospace'
+        ctx.fillText('{  }', cx, cy + 22)
       } else if (item.category === 'Innovation') {
-        const npts = [[0, -22], [-22, 14], [22, 14], [0, 6]]
+        const npts = [[0, -42], [-42, 26], [42, 26], [0, 10]]
         ctx.beginPath()
         ctx.moveTo(cx + npts[0][0], cy + npts[0][1]); ctx.lineTo(cx + npts[1][0], cy + npts[1][1])
         ctx.moveTo(cx + npts[0][0], cy + npts[0][1]); ctx.lineTo(cx + npts[2][0], cy + npts[2][1])
@@ -292,85 +295,90 @@ export default function CypherAchievements3D({ className = '' }) {
         ctx.moveTo(cx + npts[2][0], cy + npts[2][1]); ctx.lineTo(cx + npts[3][0], cy + npts[3][1])
         ctx.stroke()
         npts.forEach(([nx, ny]) => {
-          ctx.beginPath(); ctx.arc(cx + nx, cy + ny, 5, 0, Math.PI * 2); ctx.fill()
+          ctx.beginPath(); ctx.arc(cx + nx, cy + ny, 9, 0, Math.PI * 2); ctx.fill()
         })
       } else if (item.category === 'Community') {
         for (let a = 0; a < 6; a++) {
           const rad = (a * Math.PI) / 3
-          const px = cx + Math.cos(rad) * 26
-          const py = cy + Math.sin(rad) * 26
-          ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fill()
+          const px = cx + Math.cos(rad) * 48
+          const py = cy + Math.sin(rad) * 48
+          ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2); ctx.fill()
           ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke()
         }
-        ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI * 2); ctx.fill()
+        ctx.beginPath(); ctx.arc(cx, cy, 11, 0, Math.PI * 2); ctx.fill()
       } else {
-        ctx.strokeRect(cx - 18, cy - 24, 36, 32)
-        ctx.beginPath(); ctx.moveTo(cx - 18, cy + 8); ctx.lineTo(cx, cy + 22); ctx.lineTo(cx + 18, cy + 8); ctx.stroke()
-        ctx.beginPath(); ctx.arc(cx, cy - 8, 8, 0, Math.PI * 2); ctx.fill()
+        ctx.strokeRect(cx - 34, cy - 44, 68, 60)
+        ctx.beginPath(); ctx.moveTo(cx - 34, cy + 16); ctx.lineTo(cx, cy + 42); ctx.lineTo(cx + 34, cy + 16); ctx.stroke()
+        ctx.beginPath(); ctx.arc(cx, cy - 14, 15, 0, Math.PI * 2); ctx.fill()
       }
 
       // Achievement Title
       ctx.fillStyle = '#FFFFFF'
-      ctx.font = '800 24px sans-serif'
+      ctx.font = '800 46px sans-serif'
       ctx.textAlign = 'center'
       const titleWords = item.title.toUpperCase().split(' ')
       if (titleWords.length > 2) {
-        ctx.fillText(titleWords.slice(0, 2).join(' '), cx, 310)
-        ctx.fillText(titleWords.slice(2).join(' '), cx, 338)
+        ctx.fillText(titleWords.slice(0, 2).join(' '), cx, 580)
+        ctx.fillText(titleWords.slice(2).join(' '), cx, 634)
       } else {
-        ctx.fillText(item.title.toUpperCase(), cx, 320)
+        ctx.fillText(item.title.toUpperCase(), cx, 600)
       }
 
       // Category Pill & Year
       ctx.fillStyle = item.foil
-      ctx.font = '700 14px monospace'
-      ctx.fillText(`${item.category.toUpperCase()} · 2026`, cx, 380)
+      ctx.font = '700 26px monospace'
+      ctx.fillText(`${item.category.toUpperCase()} · 2026`, cx, 710)
 
-      // Verified Documented Activity
-      ctx.fillStyle = '#94A3B8'
-      ctx.font = '400 13px sans-serif'
+      // Description text
+      ctx.fillStyle = '#CBD5E1'
+      ctx.font = '400 24px sans-serif'
       const descWords = item.description.split(' ')
       let line = ''
-      let ly = 430
+      let ly = 780
       for (let i = 0; i < descWords.length; i++) {
         const testLine = line + descWords[i] + ' '
-        if (ctx.measureText(testLine).width > w - 100 && i > 0) {
+        if (ctx.measureText(testLine).width > w - 160 && i > 0) {
           ctx.fillText(line, cx, ly)
           line = descWords[i] + ' '
-          ly += 20
+          ly += 36
         } else {
           line = testLine
         }
       }
       ctx.fillText(line, cx, ly)
 
-      // Team attribution
+      // Attribution
       ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'
-      ctx.font = '600 13px monospace'
-      ctx.fillText('TEAM: CYPHER CLUB', cx, 640)
+      ctx.font = '600 24px monospace'
+      ctx.fillText('TEAM: CYPHER CLUB', cx, 1260)
 
       // Verified footer seal
       ctx.fillStyle = 'rgba(0, 229, 255, 0.12)'
-      ctx.fillRect(cx - 110, 675, 220, 30)
+      ctx.fillRect(cx - 200, 1330, 400, 56)
       ctx.strokeStyle = item.foil
-      ctx.strokeRect(cx - 110, 675, 220, 30)
+      ctx.lineWidth = 2.5
+      ctx.strokeRect(cx - 200, 1330, 400, 56)
       ctx.fillStyle = item.foil
-      ctx.font = '700 11px monospace'
-      ctx.fillText(`AUTHENTICATED // 2026`, cx, 694)
+      ctx.font = '700 20px monospace'
+      ctx.fillText('AUTHENTICATED // 2026', cx, 1366)
 
       const tex = new THREE.CanvasTexture(cvs)
       tex.colorSpace = THREE.SRGBColorSpace
       tex.minFilter = THREE.LinearMipmapLinearFilter
+      tex.magFilter = THREE.LinearFilter
       tex.generateMipmaps = true
+      if (currentRenderer) {
+        tex.anisotropy = currentRenderer.capabilities.getMaxAnisotropy()
+      }
       tex.needsUpdate = true
       return tex
     }
 
     // =========================================================================
     // COMPACT 3D TROPHY / AWARD PLAQUE RIG
-    // STRICT SINGLE-LAYER RENDERING — ZERO DUPLICATE MESHES / ZERO GHOSTING
+    // STRICT FINITE LINEAR LAYOUT — NO WRAPPING / NO DUPLICATES
     // =========================================================================
-    function createAwardRig(item, index) {
+    function createAwardRig(item, index, currentRenderer) {
       const root = new THREE.Group()
       root.name = `award-${item.id}`
       root.userData.index = index
@@ -389,8 +397,8 @@ export default function CypherAchievements3D({ className = '' }) {
       plaqueBody.position.set(0, 0, 0)
       motion.add(plaqueBody)
 
-      // Faceplate with custom CanvasTexture (Satin-finish, zero specular glare)
-      const faceTexture = makeAwardFaceTexture(item)
+      // Faceplate with custom HD CanvasTexture (Satin-finish, zero specular glare)
+      const faceTexture = makeAwardFaceTexture(item, currentRenderer)
       const faceMat = new THREE.MeshStandardMaterial({
         map: faceTexture,
         roughness: 0.52,
@@ -420,13 +428,12 @@ export default function CypherAchievements3D({ className = '' }) {
         motion,
         faceMat,
         faceTexture,
-        hit,
-        lastOffset: null
+        hit
       }
     }
 
     // =========================================================================
-    // ROOM & BALANCED STUDIO LIGHTS (NO BLINDING SPECULAR GLARE OR BLOOM)
+    // ROOM & BALANCED STUDIO LIGHTS
     // =========================================================================
     function addRoom() {
       // Dark ground plane
@@ -467,21 +474,17 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     function addLights() {
-      // Soft ambient light for uniform base visibility
       const hemi = new THREE.HemisphereLight(0x1e293b, 0x070b14, 0.55)
       scene.add(hemi)
 
-      // Key light: Balanced white studio light, gentle controlled intensity
       const keyLight = new THREE.DirectionalLight(0xffffff, 0.65)
       keyLight.position.set(-2, 5, 4.5)
       scene.add(keyLight)
 
-      // Fill light: Soft neutral slate fill from opposite side
       const fillLight = new THREE.DirectionalLight(0x94a3b8, 0.3)
       fillLight.position.set(3, 3.5, 3)
       scene.add(fillLight)
 
-      // Subtle cool top rim light
       const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.18)
       rimLight.position.set(0, 4, -3)
       scene.add(rimLight)
@@ -537,20 +540,35 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     // =========================================================================
-    // AWARD PRESENTATION / INSPECT MODE
+    // NAVIGATION CONTROLLER: MANUAL SELECTION & TOUCH SWIPES
     // =========================================================================
-    function updateSelection(index) {
-      currentSelectedIndex = mod(index, ITEM_COUNT)
-      setSelectedIndex(currentSelectedIndex)
+    function selectItem(idx) {
+      if (currentMode !== 'hero') return
+      const targetIdx = clamp(idx, 0, ITEM_COUNT - 1)
+      if (targetIdx === playback.currentIndex && playback.phase === 'pause') return
+
+      playback.phase = 'transition'
+      playback.timer = 0
+      playback.fromPos = position
+      playback.toPos = targetIdx
+      playback.currentIndex = targetIdx
+      setSelectedIndex(targetIdx)
     }
 
+    // =========================================================================
+    // AWARD PRESENTATION / INSPECT MODE
+    // =========================================================================
     function openDetail() {
       if (currentMode !== 'hero') return
       currentMode = 'opening'
       setMode('opening')
       transitionTime = 0
 
-      activeAward = awardRigs[currentSelectedIndex]
+      // Pause playback while inspecting
+      playback.phase = 'pause'
+      playback.timer = 0
+
+      activeAward = awardRigs[playback.currentIndex]
 
       activeAward.root.updateWorldMatrix(true, true)
       activeAward.root.matrixWorld.decompose(
@@ -619,8 +637,7 @@ export default function CypherAchievements3D({ className = '' }) {
       closingViewOffsetX = currentViewOffsetX
       transitionCameraTarget.copy(closingCameraTarget)
 
-      position = currentSelectedIndex
-      targetPosition = currentSelectedIndex
+      position = playback.currentIndex
       closingPlaquePosition.set(0, shelfBoardTop + 0.74, 0.12)
 
       awardRigs.forEach((rig, idx) => {
@@ -660,27 +677,20 @@ export default function CypherAchievements3D({ className = '' }) {
       applyDetailViewOffset()
       camera.lookAt(transitionCameraTarget)
       activeAward = null
-    }
 
-    function navigate(dir) {
-      if (currentMode !== 'hero') return
-      targetPosition = Math.round(targetPosition + dir)
-    }
-
-    function selectItem(idx) {
-      if (currentMode !== 'hero') return
-      targetPosition = idx
+      // Resume 2-second pause from this award, then continue auto-playback
+      playback.phase = 'pause'
+      playback.timer = 0
     }
 
     threeActionsRef.current = {
       openDetail,
       closeDetail,
-      navigate,
       selectItem
     }
 
     // =========================================================================
-    // EVENT LISTENERS: STRICT SEPARATION OF VERTICAL SCROLL FROM HORIZONTAL DRAG
+    // EVENT LISTENERS: HOVER ONLY (ZERO MOUSE SLIDING, ZERO VERTICAL SCROLL HIJACK)
     // =========================================================================
     function onPointerMove(e) {
       if (isPageScrolling) return
@@ -691,39 +701,24 @@ export default function CypherAchievements3D({ className = '' }) {
       pointer.ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
       pointer.ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
 
-      // Shelf Dragging: strictly enforce horizontal-only intent
-      if (shelfDrag.active && currentMode === 'hero') {
-        const deltaX = e.clientX - shelfDrag.startX
-        const deltaY = e.clientY - shelfDrag.startY
+      // Touch gesture intent detection on mobile only
+      if (e.pointerType === 'touch' && currentMode === 'hero' && touchTracker.active) {
+        const deltaX = e.clientX - touchTracker.startX
+        const deltaY = e.clientY - touchTracker.startY
 
-        if (!shelfDrag.isIntentionalHorizontal) {
-          // If vertical movement dominates, the user is scrolling the page.
-          // Immediately abort award drag so browser vertical scroll continues smoothly.
-          if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 5) {
-            shelfDrag.active = false
+        if (!touchTracker.isHorizontal) {
+          if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 8) {
+            touchTracker.active = false
             return
           }
-          // Only lock into horizontal dragging if horizontal movement clearly exceeds threshold
-          if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 6) {
-            shelfDrag.isIntentionalHorizontal = true
-            shelfDrag.moved = true
-          } else {
-            return
+          if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+            touchTracker.isHorizontal = true
           }
         }
-
-        const now = performance.now()
-        const dt = Math.max(1, now - shelfDrag.lastTime)
-        shelfDrag.velocity = (e.clientX - shelfDrag.lastX) / dt
-        shelfDrag.lastX = e.clientX
-        shelfDrag.lastTime = now
-
-        targetPosition -= (deltaX / rect.width) * 2.0
-        shelfDrag.startX = e.clientX
         return
       }
 
-      // Raycast detection for subtle hover interaction
+      // Raycast detection for subtle visual hover highlight & tooltip (NO SLIDING!)
       if (currentMode === 'hero') {
         raycaster.setFromCamera(pointer.ndc, camera)
         const hitMeshes = awardRigs.map((r) => r.hit)
@@ -733,6 +728,7 @@ export default function CypherAchievements3D({ className = '' }) {
           const hitMesh = intersects[0].object
           const found = awardRigs.find((r) => r.hit === hitMesh)
           if (found) {
+            canvas.style.cursor = 'pointer'
             if (hoveredIndex !== found.index) {
               hoveredIndex = found.index
               setHoveredIdx(found.index)
@@ -746,6 +742,7 @@ export default function CypherAchievements3D({ className = '' }) {
             return
           }
         }
+        canvas.style.cursor = 'default'
         if (hoveredIndex !== -1) {
           hoveredIndex = -1
           setHoveredIdx(-1)
@@ -758,53 +755,65 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     function onPointerDown(e) {
-      // Ignore non-primary mouse clicks (right click / middle click)
-      if (e.pointerType === 'mouse' && e.button !== 0) return
-
-      if (currentMode === 'hero') {
-        shelfDrag.active = true
-        shelfDrag.pointerId = e.pointerId
-        shelfDrag.startX = e.clientX
-        shelfDrag.startY = e.clientY
-        shelfDrag.lastX = e.clientX
-        shelfDrag.lastTime = performance.now()
-        shelfDrag.moved = false
-        shelfDrag.isIntentionalHorizontal = false
-        shelfDrag.velocity = 0
+      if (e.pointerType === 'touch' && currentMode === 'hero') {
+        touchTracker.active = true
+        touchTracker.startX = e.clientX
+        touchTracker.startY = e.clientY
+        touchTracker.isHorizontal = false
       }
     }
 
-    function onPointerUp() {
-      if (shelfDrag.active && currentMode === 'hero') {
-        if (shelfDrag.isIntentionalHorizontal && Math.abs(shelfDrag.velocity) > 0.3) {
-          targetPosition -= clamp(shelfDrag.velocity * 0.6, -1.5, 1.5)
+    function onPointerUp(e) {
+      if (e.pointerType === 'touch' && currentMode === 'hero' && touchTracker.active) {
+        if (touchTracker.isHorizontal) {
+          const totalDeltaX = e.clientX - touchTracker.startX
+          if (totalDeltaX < -32) {
+            // Mobile Swipe Left -> request next award
+            if (playback.currentIndex < ITEM_COUNT - 1) {
+              selectItem(playback.currentIndex + 1)
+            }
+          } else if (totalDeltaX > 32) {
+            // Mobile Swipe Right -> request previous award
+            if (playback.currentIndex > 0) {
+              selectItem(playback.currentIndex - 1)
+            }
+          }
         }
-        shelfDrag.active = false
-        shelfDrag.isIntentionalHorizontal = false
-        targetPosition = Math.round(targetPosition)
+        touchTracker.active = false
+        touchTracker.isHorizontal = false
       }
+    }
+
+    function onPointerLeave() {
+      if (hoveredIndex !== -1) {
+        hoveredIndex = -1
+        setHoveredIdx(-1)
+      }
+      if (tooltip) {
+        tooltip.style.opacity = '0'
+        tooltip.style.visibility = 'hidden'
+      }
+      canvas.style.cursor = 'default'
     }
 
     function onCanvasClick() {
-      if (shelfDrag.moved) return
+      if (touchTracker.isHorizontal) return
       if (currentMode === 'hero') {
         if (hoveredIndex !== -1) {
-          if (hoveredIndex === currentSelectedIndex) {
+          if (hoveredIndex === playback.currentIndex) {
             openDetail()
           } else {
-            targetPosition = hoveredIndex
+            selectItem(hoveredIndex)
           }
         }
       }
     }
 
-    // When the window scrolls vertically, cancel any active drag and freeze hover
+    // When the window scrolls vertically, awards stay completely stable
     function onWindowScroll() {
-      if (shelfDrag.active) {
-        shelfDrag.active = false
-        shelfDrag.isIntentionalHorizontal = false
-        shelfDrag.velocity = 0
-      }
+      touchTracker.active = false
+      touchTracker.isHorizontal = false
+
       isPageScrolling = true
       if (scrollEndTimer) clearTimeout(scrollEndTimer)
       scrollEndTimer = setTimeout(() => {
@@ -825,9 +834,13 @@ export default function CypherAchievements3D({ className = '' }) {
       if (e.key === 'Escape' && currentMode === 'detail') {
         closeDetail()
       } else if (currentMode === 'hero') {
-        if (e.key === 'ArrowLeft') navigate(-1)
-        else if (e.key === 'ArrowRight') navigate(1)
-        else if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault()
+          if (playback.currentIndex > 0) selectItem(playback.currentIndex - 1)
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault()
+          if (playback.currentIndex < ITEM_COUNT - 1) selectItem(playback.currentIndex + 1)
+        } else if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           openDetail()
         }
@@ -835,18 +848,24 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     function resize() {
-      if (!root || !canvas || isDisposed) return
+      if (!root || !canvas || isDisposed || !renderer) return
       viewWidth = Math.max(1, root.clientWidth)
       viewHeight = Math.max(1, root.clientHeight)
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
       renderer.setSize(viewWidth, viewHeight, false)
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       camera.aspect = viewWidth / viewHeight
       configureResponsiveTargets()
       applyDetailViewOffset()
       camera.updateProjectionMatrix()
     }
 
-    // Intersection observer pauses rendering when off-screen
+    // Resize observer ensures crisp buffer scaling whenever container dimensions change
+    const resizeObserver = new ResizeObserver(() => {
+      resize()
+    })
+    resizeObserver.observe(root)
+
+    // Intersection observer pauses rendering & auto-playback when off-screen
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         isVisible = entry.isIntersecting
@@ -870,6 +889,8 @@ export default function CypherAchievements3D({ className = '' }) {
       return
     }
 
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
+    renderer.setSize(viewWidth, viewHeight, false)
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = 0.92
@@ -895,7 +916,7 @@ export default function CypherAchievements3D({ className = '' }) {
 
     controls = new OrbitControls(camera, canvas)
     controls.enabled = false
-    controls.enableZoom = false // Never intercept wheel scrolling; allow page to scroll freely
+    controls.enableZoom = false
     controls.enableDamping = !reducedMotion
     controls.dampingFactor = 0.075
     controls.enablePan = true
@@ -910,13 +931,12 @@ export default function CypherAchievements3D({ className = '' }) {
     addLights()
     addDust()
 
+    // Strict finite linear award placement: Award 0 at x=0, up to Award 7
     awardRigs = ITEMS.map((item, index) => {
-      const rig = createAwardRig(item, index)
+      const rig = createAwardRig(item, index, renderer)
       shelfStage.add(rig.root)
 
-      // Initialize exact positions on frame 0 to eliminate initial-load stacking/ghosts
-      let offset = index - position
-      offset -= Math.round(offset / ITEM_COUNT) * ITEM_COUNT
+      const offset = index - position
       const distance = Math.abs(offset)
       const focus = 1 - clamp(distance, 0, 1)
 
@@ -930,8 +950,7 @@ export default function CypherAchievements3D({ className = '' }) {
       rig.root.position.set(targetX, targetY, targetZ)
       rig.root.rotation.set(0, targetRotY, targetRotZ)
       rig.root.scale.setScalar(targetScale)
-      rig.root.visible = distance <= 2.8
-      rig.lastOffset = offset
+      rig.root.visible = distance <= 3.2
 
       return rig
     })
@@ -943,6 +962,7 @@ export default function CypherAchievements3D({ className = '' }) {
     canvas.addEventListener('pointermove', onPointerMove)
     canvas.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('pointerup', onPointerUp)
+    canvas.addEventListener('pointerleave', onPointerLeave)
     canvas.addEventListener('click', onCanvasClick)
 
     // Ultra-smooth 60 FPS frame loop
@@ -950,36 +970,62 @@ export default function CypherAchievements3D({ className = '' }) {
       if (isDisposed) return
       animationFrameId = requestAnimationFrame(frame)
 
-      // Only render if visible on screen to save battery and GPU cycles
       if (!isVisible) return
 
       const delta = Math.min((time - lastTime) / 1000, 0.05)
       const elapsed = time / 1000
       lastTime = time
 
-      // Shelf Layout Update
-      if (currentMode === 'hero') {
-        position = reducedMotion ? targetPosition : damp(position, targetPosition, 9.5, delta)
-        if (Math.abs(position - targetPosition) < 0.0005) position = targetPosition
+      // AUTOMATIC PROGRESSION: 2s PAUSE -> 3s TRANSITION -> NEXT -> STOP AT 08
+      if (currentMode === 'hero' && isVisible && !isPageScrolling) {
+        if (playback.phase === 'pause') {
+          playback.timer += delta
+          if (playback.timer >= PAUSE_DURATION) {
+            if (playback.currentIndex < ITEM_COUNT - 1) {
+              const nextIndex = playback.currentIndex + 1
+              playback.phase = 'transition'
+              playback.timer = 0
+              playback.fromPos = position
+              playback.toPos = nextIndex
+              playback.currentIndex = nextIndex
+              setSelectedIndex(nextIndex)
+            } else {
+              // Reached final award 08: STOP automatic playback!
+              playback.phase = 'stopped'
+            }
+          }
+        } else if (playback.phase === 'transition') {
+          playback.timer += delta
+          const duration = reducedMotion ? 0.05 : TRANSITION_DURATION
+          const progress = clamp(playback.timer / duration, 0, 1)
+          const eased = smootherstep(progress)
+          position = lerp(playback.fromPos, playback.toPos, eased)
 
-        const nearest = mod(Math.round(position), ITEM_COUNT)
-        if (nearest !== currentSelectedIndex) {
-          updateSelection(nearest)
+          if (progress >= 1) {
+            position = playback.toPos
+            if (playback.currentIndex < ITEM_COUNT - 1) {
+              // Once transition arrives, pause for 2 seconds before moving to next award
+              playback.phase = 'pause'
+              playback.timer = 0
+            } else {
+              // Reached final award 08: STOP automatic playback!
+              playback.phase = 'stopped'
+              playback.timer = 0
+            }
+          }
         }
       }
 
-      // Update 3D Award Plaques along shelf
+      // Update 3D Award Plaques along shelf (Strict finite layout, NO looping)
       awardRigs.forEach((rig, index) => {
         if (rig.root.parent !== shelfStage) return
 
-        let offset = index - position
-        offset -= Math.round(offset / ITEM_COUNT) * ITEM_COUNT
+        const offset = index - position
         const distance = Math.abs(offset)
 
-        // Culling: off-camera awards are hidden so they never render or drift across
-        if (distance > 2.8) {
+        // Culling: off-camera awards are hidden so they never render
+        if (distance > 3.2) {
           rig.root.visible = false
-          rig.lastOffset = offset
           return
         }
         rig.root.visible = true
@@ -992,26 +1038,10 @@ export default function CypherAchievements3D({ className = '' }) {
         const targetRotY = -offset * 0.05
         const targetRotZ = -offset * 0.008
         const targetScale = 1 + focus * 0.025
-        const speed = reducedMotion ? 1000 : 12
 
-        // If the award just wrapped across the seam, snap it immediately instead of damping across the screen!
-        if (rig.lastOffset !== null && Math.abs(offset - rig.lastOffset) > ITEM_COUNT * 0.4) {
-          rig.root.position.x = targetX
-          rig.root.position.y = targetY
-          rig.root.position.z = targetZ
-          rig.root.rotation.y = targetRotY
-          rig.root.rotation.z = targetRotZ
-          rig.root.scale.setScalar(targetScale)
-        } else {
-          rig.root.position.x = damp(rig.root.position.x, targetX, speed, delta)
-          rig.root.position.y = damp(rig.root.position.y, targetY, speed, delta)
-          rig.root.position.z = damp(rig.root.position.z, targetZ, speed, delta)
-          rig.root.rotation.y = damp(rig.root.rotation.y, targetRotY, speed, delta)
-          rig.root.rotation.z = damp(rig.root.rotation.z, targetRotZ, speed, delta)
-          rig.root.scale.setScalar(damp(rig.root.scale.x, targetScale, speed, delta))
-        }
-
-        rig.lastOffset = offset
+        rig.root.position.set(targetX, targetY, targetZ)
+        rig.root.rotation.set(0, targetRotY, targetRotZ)
+        rig.root.scale.setScalar(targetScale)
 
         // Controlled, subtle hover elevation and tilt (disabled while page is scrolling)
         const isHov = hoveredIndex === index && currentMode === 'hero' && !isPageScrolling
@@ -1021,7 +1051,7 @@ export default function CypherAchievements3D({ className = '' }) {
         rig.motion.rotation.x = damp(rig.motion.rotation.x, hovTilt, 12, delta)
       })
 
-      // Mode transitions
+      // Presentation mode transitions
       if (currentMode === 'opening') {
         transitionTime = Math.min(1, transitionTime + delta / PRESENT_TRANSITION_DURATION)
         applyOpeningPose(transitionTime)
@@ -1058,12 +1088,14 @@ export default function CypherAchievements3D({ className = '' }) {
       if (animationFrameId) cancelAnimationFrame(animationFrameId)
       if (scrollEndTimer) clearTimeout(scrollEndTimer)
       observer.disconnect()
+      resizeObserver.disconnect()
       window.removeEventListener('resize', resize)
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('scroll', onWindowScroll)
       canvas.removeEventListener('pointermove', onPointerMove)
       canvas.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('pointerup', onPointerUp)
+      canvas.removeEventListener('pointerleave', onPointerLeave)
       canvas.removeEventListener('click', onCanvasClick)
 
       // Dispose textures, geometries, materials
@@ -1147,16 +1179,60 @@ export default function CypherAchievements3D({ className = '' }) {
         </div>
       </header>
 
-      {/* 3D WebGL Canvas Shell */}
+      {/* 3D WebGL Canvas Shell & Award Slider */}
       <div className="cypher-scene-shell">
         <canvas
           ref={canvasRef}
           className={`cypher-webgl-canvas ${mode === 'detail' ? 'is-inspecting' : ''}`}
           aria-label="Interactive 3D Achievements Catalogue"
         />
+
+        {/* Navigation Arrows directly beside the 3D Award Catalogue */}
+        <div
+          className="cypher-stage-navigation"
+          style={{
+            opacity: mode === 'hero' ? 1 : 0,
+            pointerEvents: mode === 'hero' ? 'auto' : 'none'
+          }}
+          aria-label="Award Slider Navigation"
+        >
+          <button
+            onClick={() => {
+              if (selectedIndex > 0) {
+                threeActionsRef.current.selectItem?.(selectedIndex - 1)
+              }
+            }}
+            disabled={selectedIndex <= 0}
+            className="cypher-stage-arrow cypher-stage-arrow-prev"
+            type="button"
+            title="Previous Award (←)"
+            aria-label="Previous Achievement"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          <button
+            onClick={() => {
+              if (selectedIndex < achievementsData.length - 1) {
+                threeActionsRef.current.selectItem?.(selectedIndex + 1)
+              }
+            }}
+            disabled={selectedIndex >= achievementsData.length - 1}
+            className="cypher-stage-arrow cypher-stage-arrow-next"
+            type="button"
+            title="Next Award (→)"
+            aria-label="Next Achievement"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {/* Dynamic Cursor Tooltip (Hardware-accelerated transform, zero re-renders) */}
+      {/* Dynamic Cursor Tooltip */}
       <div
         ref={tooltipRef}
         className="cypher-pointer-label"
@@ -1167,7 +1243,7 @@ export default function CypherAchievements3D({ className = '' }) {
         <strong className="cypher-pointer-label-title">{hoverTitle}</strong>
       </div>
 
-      {/* Bottom Horizontal Catalogue Navigation */}
+      {/* Bottom Horizontal Catalogue Navigation: 01 / 08 & Standalone Inspect Award Button */}
       <nav
         className="cypher-browse-ui"
         aria-label="Achievement Navigation"
@@ -1177,30 +1253,25 @@ export default function CypherAchievements3D({ className = '' }) {
           pointerEvents: mode === 'hero' ? 'auto' : 'none'
         }}
       >
-        {/* Active Selection Details */}
-        <div className="cypher-selection">
-          <span className="cypher-counter">
-            0{selectedIndex + 1} / 0{achievementsData.length}
-          </span>
+        <div className="cypher-browse-central">
+          {/* Dynamic Counter Badge: 01 / 08 */}
+          <div className="cypher-counter-badge" aria-live="polite">
+            <span className="cypher-counter-current">
+              {String(selectedIndex + 1).padStart(2, '0')}
+            </span>
+            <span className="cypher-counter-divider">/</span>
+            <span className="cypher-counter-total">
+              {String(achievementsData.length).padStart(2, '0')}
+            </span>
+          </div>
+
+          {/* Active Selection Details */}
           <div className="cypher-selection-copy">
             <h3 className="cypher-selection-title">{selectedAchievement.title}</h3>
-            <p className="cypher-selection-note">{selectedAchievement.description}</p>
+            <p className="cypher-selection-note">{selectedAchievement.category} · {selectedAchievement.year}</p>
           </div>
-        </div>
 
-        {/* Prev / Focus / Next Actions */}
-        <div className="cypher-browse-actions">
-          <button
-            onClick={() => threeActionsRef.current.navigate?.(-1)}
-            className="cypher-round-btn"
-            type="button"
-            aria-label="Previous award"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-
+          {/* Standalone Clean Inspect Award Button — NO ARROWS BESIDE OR INSIDE */}
           <button
             onClick={() => threeActionsRef.current.openDetail?.()}
             className="cypher-open-btn"
@@ -1209,20 +1280,7 @@ export default function CypherAchievements3D({ className = '' }) {
             Inspect Award
           </button>
 
-          <button
-            onClick={() => threeActionsRef.current.navigate?.(1)}
-            className="cypher-round-btn"
-            type="button"
-            aria-label="Next award"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Marker Indicator Pills */}
-        <div className="cypher-index-nav">
+          {/* Marker Indicator Pills */}
           <div className="cypher-markers" role="tablist" aria-label="Select award plaque">
             {achievementsData.map((item, idx) => (
               <button
@@ -1236,7 +1294,6 @@ export default function CypherAchievements3D({ className = '' }) {
               />
             ))}
           </div>
-          <span className="cypher-microcopy">Drag horizontal · Swipe to browse · Click to inspect</span>
         </div>
       </nav>
 
