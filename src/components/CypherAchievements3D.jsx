@@ -10,13 +10,14 @@ import './cypher-achievements-3d.css'
 export default function CypherAchievements3D({ className = '' }) {
   const rootRef = useRef(null)
   const canvasRef = useRef(null)
+  const tooltipRef = useRef(null)
+
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [mode, setMode] = useState('hero') // 'hero' | 'opening' | 'detail' | 'closing'
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [activeModalData, setActiveModalData] = useState(null)
   const [hoveredIdx, setHoveredIdx] = useState(-1)
   const [hoverTitle, setHoverTitle] = useState('')
-  const [pointerPos, setPointerPos] = useState({ x: 0, y: 0, visible: false })
 
   const threeActionsRef = useRef({})
   const selectedAchievement = achievementsData[selectedIndex] || achievementsData[0]
@@ -24,18 +25,21 @@ export default function CypherAchievements3D({ className = '' }) {
   useEffect(() => {
     const root = rootRef.current
     const canvas = canvasRef.current
+    const tooltip = tooltipRef.current
     if (!root || !canvas) return
 
     let isDisposed = false
     let isVisible = true
     let animationFrameId = null
+    let isPageScrolling = false
+    let scrollEndTimer = null
 
     // Constants
     const ITEMS = achievementsData
     const ITEM_COUNT = ITEMS.length
     const shelfBoardTop = 0.45
     const spacing = 1.45
-    const PRESENT_TRANSITION_DURATION = 0.55 // Fast, responsive transition
+    const PRESENT_TRANSITION_DURATION = 0.55
 
     // Helper math functions
     const clamp = THREE.MathUtils.clamp
@@ -53,7 +57,6 @@ export default function CypherAchievements3D({ className = '' }) {
     let currentSelectedIndex = 0
     let position = 0
     let targetPosition = 0
-    let wheelIdle = 0
     let transitionTime = 0
     let hoveredIndex = -1
     let detailSafeWidth = viewWidth * 0.5
@@ -98,13 +101,14 @@ export default function CypherAchievements3D({ className = '' }) {
     let awardRigs = []
     let dustParticles = null
 
-    // Touch & Mouse Dragging
+    // Touch & Mouse Dragging State
     const shelfDrag = {
       active: false,
       pointerId: null,
       startX: 0,
       startY: 0,
       moved: false,
+      isIntentionalHorizontal: false,
       velocity: 0,
       lastX: 0,
       lastTime: 0
@@ -121,7 +125,7 @@ export default function CypherAchievements3D({ className = '' }) {
       hitBox: new THREE.BoxGeometry(1.05, 1.55, 0.45)
     }
 
-    // Soft procedural contact shadow texture (shared across all 8 plaques)
+    // Soft procedural contact shadow texture (shared across all plaques)
     function createContactShadowTexture() {
       const cvs = document.createElement('canvas')
       cvs.width = 128
@@ -129,7 +133,7 @@ export default function CypherAchievements3D({ className = '' }) {
       const ctx = cvs.getContext('2d')
       const grad = ctx.createRadialGradient(64, 32, 4, 64, 32, 60)
       grad.addColorStop(0, 'rgba(0, 0, 0, 0.75)')
-      grad.addColorStop(0.5, 'rgba(0, 0, 0, 0.3)')
+      grad.addColorStop(0.5, 'rgba(0, 0, 0, 0.28)')
       grad.addColorStop(1, 'rgba(0, 0, 0, 0)')
       ctx.fillStyle = grad
       ctx.fillRect(0, 0, 128, 64)
@@ -144,18 +148,18 @@ export default function CypherAchievements3D({ className = '' }) {
     const sharedMaterials = {
       graphiteBase: new THREE.MeshStandardMaterial({
         color: 0x090d16,
-        roughness: 0.35,
-        metalness: 0.85
+        roughness: 0.5,
+        metalness: 0.7
       }),
       darkMetalBody: new THREE.MeshStandardMaterial({
-        color: 0x060912,
-        roughness: 0.28,
-        metalness: 0.92
+        color: 0x090e1a,
+        roughness: 0.55,
+        metalness: 0.7
       }),
       shadow: new THREE.MeshBasicMaterial({
         map: sharedShadowTexture,
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.55,
         depthWrite: false
       }),
       hit: new THREE.MeshBasicMaterial({ visible: false })
@@ -191,7 +195,7 @@ export default function CypherAchievements3D({ className = '' }) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke()
       }
 
-      // Glowing outer boundary
+      // High-precision outer boundary (matches category foil)
       ctx.strokeStyle = item.foil
       ctx.lineWidth = 2.5
       ctx.strokeRect(24, 24, w - 48, h - 48)
@@ -201,7 +205,7 @@ export default function CypherAchievements3D({ className = '' }) {
       ctx.lineWidth = 1
       ctx.strokeRect(32, 32, w - 64, h - 64)
 
-      // Cyber corner accents
+      // Cyber corner brackets
       const cLen = 22
       ctx.strokeStyle = item.foil
       ctx.lineWidth = 3.5
@@ -233,7 +237,7 @@ export default function CypherAchievements3D({ className = '' }) {
       const cx = w / 2
       const cy = 200
 
-      // Glowing emblem plate
+      // Emblem plate
       ctx.fillStyle = 'rgba(10, 20, 38, 0.7)'
       ctx.beginPath(); ctx.arc(cx, cy, 64, 0, Math.PI * 2); ctx.fill()
       ctx.strokeStyle = item.foil
@@ -253,7 +257,6 @@ export default function CypherAchievements3D({ className = '' }) {
       ctx.textAlign = 'center'
 
       if (item.category === 'Hackathon') {
-        // Circuit / chip node
         ctx.strokeRect(cx - 24, cy - 24, 48, 48)
         ctx.fillRect(cx - 10, cy - 10, 20, 20)
         ctx.beginPath()
@@ -263,7 +266,6 @@ export default function CypherAchievements3D({ className = '' }) {
         ctx.moveTo(cx, cy + 24); ctx.lineTo(cx, cy + 38)
         ctx.stroke()
       } else if (item.category === 'Competition') {
-        // Terminal leaderboard / speed radar
         ctx.beginPath()
         ctx.moveTo(cx - 28, cy + 20); ctx.lineTo(cx - 10, cy - 18); ctx.lineTo(cx + 10, cy + 8); ctx.lineTo(cx + 28, cy - 24)
         ctx.stroke()
@@ -271,24 +273,18 @@ export default function CypherAchievements3D({ className = '' }) {
           ctx.beginPath(); ctx.arc(cx + p, cy + (p === -28 ? 20 : p === -10 ? -18 : p === 10 ? 8 : -24), 4, 0, Math.PI * 2); ctx.fill()
         }
       } else if (item.category === 'Projects') {
-        // Dashboard / modular apps
         ctx.strokeRect(cx - 28, cy - 24, 24, 20)
         ctx.strokeRect(cx + 4, cy - 24, 24, 20)
         ctx.strokeRect(cx - 28, cy + 4, 56, 20)
       } else if (item.category === 'Workshop') {
-        // Terminal session & clinic
         ctx.strokeRect(cx - 28, cy - 22, 56, 44)
         ctx.font = '700 16px monospace'
         ctx.fillText('>_ CLI', cx, cy + 6)
       } else if (item.category === 'Coding') {
-        // Brackets { }
         ctx.font = '700 36px monospace'
         ctx.fillText('{  }', cx, cy + 12)
       } else if (item.category === 'Innovation') {
-        // Neural network node cluster
-        const npts = [
-          [0, -22], [-22, 14], [22, 14], [0, 6]
-        ]
+        const npts = [[0, -22], [-22, 14], [22, 14], [0, 6]]
         ctx.beginPath()
         ctx.moveTo(cx + npts[0][0], cy + npts[0][1]); ctx.lineTo(cx + npts[1][0], cy + npts[1][1])
         ctx.moveTo(cx + npts[0][0], cy + npts[0][1]); ctx.lineTo(cx + npts[2][0], cy + npts[2][1])
@@ -299,7 +295,6 @@ export default function CypherAchievements3D({ className = '' }) {
           ctx.beginPath(); ctx.arc(cx + nx, cy + ny, 5, 0, Math.PI * 2); ctx.fill()
         })
       } else if (item.category === 'Community') {
-        // Connected network nodes
         for (let a = 0; a < 6; a++) {
           const rad = (a * Math.PI) / 3
           const px = cx + Math.cos(rad) * 26
@@ -309,7 +304,6 @@ export default function CypherAchievements3D({ className = '' }) {
         }
         ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI * 2); ctx.fill()
       } else {
-        // Recognition: Trophy medallion / star
         ctx.strokeRect(cx - 18, cy - 24, 36, 32)
         ctx.beginPath(); ctx.moveTo(cx - 18, cy + 8); ctx.lineTo(cx, cy + 22); ctx.lineTo(cx + 18, cy + 8); ctx.stroke()
         ctx.beginPath(); ctx.arc(cx, cy - 8, 8, 0, Math.PI * 2); ctx.fill()
@@ -374,6 +368,7 @@ export default function CypherAchievements3D({ className = '' }) {
 
     // =========================================================================
     // COMPACT 3D TROPHY / AWARD PLAQUE RIG
+    // STRICT SINGLE-LAYER RENDERING — ZERO DUPLICATE MESHES / ZERO GHOSTING
     // =========================================================================
     function createAwardRig(item, index) {
       const root = new THREE.Group()
@@ -389,31 +384,23 @@ export default function CypherAchievements3D({ className = '' }) {
       baseMesh.position.set(0, -0.74, 0)
       motion.add(baseMesh)
 
-      // Plaque back body
+      // Plaque back body (rounded dark titanium housing)
       const plaqueBody = new THREE.Mesh(sharedGeoms.plaque, sharedMaterials.darkMetalBody)
       plaqueBody.position.set(0, 0, 0)
       motion.add(plaqueBody)
 
-      // Faceplate with custom CanvasTexture
+      // Faceplate with custom CanvasTexture (Satin-finish, zero specular glare)
       const faceTexture = makeAwardFaceTexture(item)
       const faceMat = new THREE.MeshStandardMaterial({
         map: faceTexture,
-        roughness: 0.22,
-        metalness: 0.25
+        roughness: 0.52,
+        metalness: 0.12
       })
 
+      // Single crisp face mesh sitting squarely in the frame
       const faceMesh = new THREE.Mesh(sharedGeoms.facePlane, faceMat)
-      faceMesh.position.set(0, 0, 0.026)
+      faceMesh.position.set(0, 0, 0.0265)
       motion.add(faceMesh)
-
-      // Thin glowing border trim
-      const edgeMat = new THREE.MeshBasicMaterial({
-        color: item.foil
-      })
-      const edgeTrim = new THREE.Mesh(sharedGeoms.facePlane, edgeMat)
-      edgeTrim.scale.set(1.02, 1.02, 1)
-      edgeTrim.position.set(0, 0, 0.025)
-      motion.add(edgeTrim)
 
       // Soft contact shadow on the floor
       const shadow = new THREE.Mesh(sharedGeoms.shadowPlane, sharedMaterials.shadow)
@@ -431,7 +418,6 @@ export default function CypherAchievements3D({ className = '' }) {
         index,
         root,
         motion,
-        edgeMat,
         faceMat,
         faceTexture,
         hit,
@@ -440,15 +426,15 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     // =========================================================================
-    // ROOM & LIGHTS (LIGHTWEIGHT & HIGH PERFORMANCE)
+    // ROOM & BALANCED STUDIO LIGHTS (NO BLINDING SPECULAR GLARE OR BLOOM)
     // =========================================================================
     function addRoom() {
       // Dark ground plane
       const floorGeom = new THREE.PlaneGeometry(36, 24)
       const floorMat = new THREE.MeshStandardMaterial({
         color: 0x05070b,
-        roughness: 0.35,
-        metalness: 0.4
+        roughness: 0.45,
+        metalness: 0.3
       })
       const floor = new THREE.Mesh(floorGeom, floorMat)
       floor.rotation.x = -Math.PI * 0.5
@@ -472,33 +458,37 @@ export default function CypherAchievements3D({ className = '' }) {
       rail.position.set(0, 0.28, -0.02)
       shelfStage.add(rail)
 
-      // Subtle cyan glowing LED strip along rail edge
-      const ledGeom = new THREE.BoxGeometry(20.02, 0.03, 0.02)
-      const ledMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff })
+      // Subtle cyan accent line along rail edge
+      const ledGeom = new THREE.BoxGeometry(20.02, 0.02, 0.02)
+      const ledMat = new THREE.MeshBasicMaterial({ color: 0x00b4d8 })
       const ledStrip = new THREE.Mesh(ledGeom, ledMat)
       ledStrip.position.set(0, 0.37, 0.43)
       shelfStage.add(ledStrip)
     }
 
     function addLights() {
-      const hemi = new THREE.HemisphereLight(0x00e5ff, 0x05070b, 0.65)
+      // Soft ambient light for uniform base visibility
+      const hemi = new THREE.HemisphereLight(0x1e293b, 0x070b14, 0.55)
       scene.add(hemi)
 
-      const keyLight = new THREE.DirectionalLight(0x00e5ff, 1.4)
-      keyLight.position.set(-3, 6, 5)
+      // Key light: Balanced white studio light, gentle controlled intensity
+      const keyLight = new THREE.DirectionalLight(0xffffff, 0.65)
+      keyLight.position.set(-2, 5, 4.5)
       scene.add(keyLight)
 
-      const fillLight = new THREE.DirectionalLight(0x7c3aed, 1.0)
-      fillLight.position.set(4, 4, 3)
+      // Fill light: Soft neutral slate fill from opposite side
+      const fillLight = new THREE.DirectionalLight(0x94a3b8, 0.3)
+      fillLight.position.set(3, 3.5, 3)
       scene.add(fillLight)
 
-      const rimLight = new THREE.DirectionalLight(0x2563eb, 0.8)
-      rimLight.position.set(0, 3, -4)
+      // Subtle cool top rim light
+      const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.18)
+      rimLight.position.set(0, 4, -3)
       scene.add(rimLight)
     }
 
     function addDust() {
-      const count = 40
+      const count = 35
       const geom = new THREE.BufferGeometry()
       const pos = new Float32Array(count * 3)
       for (let i = 0; i < count; i++) {
@@ -509,9 +499,9 @@ export default function CypherAchievements3D({ className = '' }) {
       geom.setAttribute('position', new THREE.BufferAttribute(pos, 3))
       const mat = new THREE.PointsMaterial({
         color: 0x00e5ff,
-        size: 0.035,
+        size: 0.03,
         transparent: true,
-        opacity: 0.35
+        opacity: 0.3
       })
       dustParticles = new THREE.Points(geom, mat)
       scene.add(dustParticles)
@@ -547,7 +537,7 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     // =========================================================================
-    // AWARD PRESENTATION (NO BOOK OPENING!)
+    // AWARD PRESENTATION / INSPECT MODE
     // =========================================================================
     function updateSelection(index) {
       currentSelectedIndex = mod(index, ITEM_COUNT)
@@ -690,19 +680,37 @@ export default function CypherAchievements3D({ className = '' }) {
     }
 
     // =========================================================================
-    // EVENT LISTENERS: POINTER, DRAG, WHEEL, KEYBOARD
+    // EVENT LISTENERS: STRICT SEPARATION OF VERTICAL SCROLL FROM HORIZONTAL DRAG
     // =========================================================================
     function onPointerMove(e) {
+      if (isPageScrolling) return
+
       const rect = canvas.getBoundingClientRect()
       pointer.clientX = e.clientX
       pointer.clientY = e.clientY
       pointer.ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
       pointer.ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
 
-      // Shelf Dragging
+      // Shelf Dragging: strictly enforce horizontal-only intent
       if (shelfDrag.active && currentMode === 'hero') {
         const deltaX = e.clientX - shelfDrag.startX
-        if (Math.abs(deltaX) > 4) shelfDrag.moved = true
+        const deltaY = e.clientY - shelfDrag.startY
+
+        if (!shelfDrag.isIntentionalHorizontal) {
+          // If vertical movement dominates, the user is scrolling the page.
+          // Immediately abort award drag so browser vertical scroll continues smoothly.
+          if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 5) {
+            shelfDrag.active = false
+            return
+          }
+          // Only lock into horizontal dragging if horizontal movement clearly exceeds threshold
+          if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 6) {
+            shelfDrag.isIntentionalHorizontal = true
+            shelfDrag.moved = true
+          } else {
+            return
+          }
+        }
 
         const now = performance.now()
         const dt = Math.max(1, now - shelfDrag.lastTime)
@@ -710,12 +718,12 @@ export default function CypherAchievements3D({ className = '' }) {
         shelfDrag.lastX = e.clientX
         shelfDrag.lastTime = now
 
-        targetPosition -= (deltaX / rect.width) * 2.2
+        targetPosition -= (deltaX / rect.width) * 2.0
         shelfDrag.startX = e.clientX
         return
       }
 
-      // Raycast detection
+      // Raycast detection for subtle hover interaction
       if (currentMode === 'hero') {
         raycaster.setFromCamera(pointer.ndc, camera)
         const hitMeshes = awardRigs.map((r) => r.hit)
@@ -725,20 +733,34 @@ export default function CypherAchievements3D({ className = '' }) {
           const hitMesh = intersects[0].object
           const found = awardRigs.find((r) => r.hit === hitMesh)
           if (found) {
-            hoveredIndex = found.index
-            setHoveredIdx(found.index)
-            setHoverTitle(found.data.title)
-            setPointerPos({ x: e.clientX - rect.left, y: e.clientY - rect.top, visible: true })
+            if (hoveredIndex !== found.index) {
+              hoveredIndex = found.index
+              setHoveredIdx(found.index)
+              setHoverTitle(found.data.title)
+            }
+            if (tooltip) {
+              tooltip.style.transform = `translate3d(${e.clientX - rect.left + 16}px, ${e.clientY - rect.top + 18}px, 0)`
+              tooltip.style.opacity = '1'
+              tooltip.style.visibility = 'visible'
+            }
             return
           }
         }
-        hoveredIndex = -1
-        setHoveredIdx(-1)
-        setPointerPos((prev) => ({ ...prev, visible: false }))
+        if (hoveredIndex !== -1) {
+          hoveredIndex = -1
+          setHoveredIdx(-1)
+        }
+        if (tooltip) {
+          tooltip.style.opacity = '0'
+          tooltip.style.visibility = 'hidden'
+        }
       }
     }
 
     function onPointerDown(e) {
+      // Ignore non-primary mouse clicks (right click / middle click)
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+
       if (currentMode === 'hero') {
         shelfDrag.active = true
         shelfDrag.pointerId = e.pointerId
@@ -747,16 +769,18 @@ export default function CypherAchievements3D({ className = '' }) {
         shelfDrag.lastX = e.clientX
         shelfDrag.lastTime = performance.now()
         shelfDrag.moved = false
+        shelfDrag.isIntentionalHorizontal = false
         shelfDrag.velocity = 0
       }
     }
 
     function onPointerUp() {
       if (shelfDrag.active && currentMode === 'hero') {
-        shelfDrag.active = false
-        if (Math.abs(shelfDrag.velocity) > 0.3) {
-          targetPosition -= shelfDrag.velocity * 0.75
+        if (shelfDrag.isIntentionalHorizontal && Math.abs(shelfDrag.velocity) > 0.3) {
+          targetPosition -= clamp(shelfDrag.velocity * 0.6, -1.5, 1.5)
         }
+        shelfDrag.active = false
+        shelfDrag.isIntentionalHorizontal = false
         targetPosition = Math.round(targetPosition)
       }
     }
@@ -774,11 +798,26 @@ export default function CypherAchievements3D({ className = '' }) {
       }
     }
 
-    function onWheel(e) {
-      if (currentMode === 'hero') {
-        e.preventDefault()
-        wheelIdle = 0.25
-        targetPosition += Math.sign(e.deltaY) * 0.35
+    // When the window scrolls vertically, cancel any active drag and freeze hover
+    function onWindowScroll() {
+      if (shelfDrag.active) {
+        shelfDrag.active = false
+        shelfDrag.isIntentionalHorizontal = false
+        shelfDrag.velocity = 0
+      }
+      isPageScrolling = true
+      if (scrollEndTimer) clearTimeout(scrollEndTimer)
+      scrollEndTimer = setTimeout(() => {
+        isPageScrolling = false
+      }, 140)
+
+      if (hoveredIndex !== -1) {
+        hoveredIndex = -1
+        setHoveredIdx(-1)
+      }
+      if (tooltip) {
+        tooltip.style.opacity = '0'
+        tooltip.style.visibility = 'hidden'
       }
     }
 
@@ -807,9 +846,7 @@ export default function CypherAchievements3D({ className = '' }) {
       camera.updateProjectionMatrix()
     }
 
-    // =========================================================================
-    // INTERSECTION OBSERVER FOR PAUSING RENDERING OFF-SCREEN
-    // =========================================================================
+    // Intersection observer pauses rendering when off-screen
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         isVisible = entry.isIntersecting
@@ -835,16 +872,16 @@ export default function CypherAchievements3D({ className = '' }) {
 
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.05
+    renderer.toneMappingExposure = 0.92
     renderer.setClearColor(0x05070b, 1)
 
     scene = new THREE.Scene()
-    scene.fog = new THREE.FogExp2(0x05070b, 0.024)
+    scene.fog = new THREE.FogExp2(0x05070b, 0.02)
 
     const pmrem = new THREE.PMREMGenerator(renderer)
     environmentTarget = pmrem.fromScene(new RoomEnvironment(), 0.04)
     scene.environment = environmentTarget.texture
-    scene.environmentIntensity = 0.7
+    scene.environmentIntensity = 0.22
     pmrem.dispose()
 
     camera = new THREE.PerspectiveCamera(32, 1, 0.1, 60)
@@ -858,6 +895,7 @@ export default function CypherAchievements3D({ className = '' }) {
 
     controls = new OrbitControls(camera, canvas)
     controls.enabled = false
+    controls.enableZoom = false // Never intercept wheel scrolling; allow page to scroll freely
     controls.enableDamping = !reducedMotion
     controls.dampingFactor = 0.075
     controls.enablePan = true
@@ -875,17 +913,37 @@ export default function CypherAchievements3D({ className = '' }) {
     awardRigs = ITEMS.map((item, index) => {
       const rig = createAwardRig(item, index)
       shelfStage.add(rig.root)
+
+      // Initialize exact positions on frame 0 to eliminate initial-load stacking/ghosts
+      let offset = index - position
+      offset -= Math.round(offset / ITEM_COUNT) * ITEM_COUNT
+      const distance = Math.abs(offset)
+      const focus = 1 - clamp(distance, 0, 1)
+
+      const targetX = offset * spacing
+      const targetY = shelfBoardTop + 0.74 + focus * 0.04
+      const targetZ = 0.12 + focus * 0.04 - Math.min(distance, 2.5) * 0.03
+      const targetRotY = -offset * 0.05
+      const targetRotZ = -offset * 0.008
+      const targetScale = 1 + focus * 0.025
+
+      rig.root.position.set(targetX, targetY, targetZ)
+      rig.root.rotation.set(0, targetRotY, targetRotZ)
+      rig.root.scale.setScalar(targetScale)
+      rig.root.visible = distance <= 2.8
+      rig.lastOffset = offset
+
       return rig
     })
 
     resize()
     window.addEventListener('resize', resize)
     window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('scroll', onWindowScroll, { passive: true })
     canvas.addEventListener('pointermove', onPointerMove)
     canvas.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('pointerup', onPointerUp)
     canvas.addEventListener('click', onCanvasClick)
-    canvas.addEventListener('wheel', onWheel, { passive: false })
 
     // Ultra-smooth 60 FPS frame loop
     function frame(time) {
@@ -904,11 +962,6 @@ export default function CypherAchievements3D({ className = '' }) {
         position = reducedMotion ? targetPosition : damp(position, targetPosition, 9.5, delta)
         if (Math.abs(position - targetPosition) < 0.0005) position = targetPosition
 
-        if (wheelIdle > 0) {
-          wheelIdle -= delta
-          if (wheelIdle <= 0) targetPosition = Math.round(targetPosition)
-        }
-
         const nearest = mod(Math.round(position), ITEM_COUNT)
         if (nearest !== currentSelectedIndex) {
           updateSelection(nearest)
@@ -922,32 +975,53 @@ export default function CypherAchievements3D({ className = '' }) {
         let offset = index - position
         offset -= Math.round(offset / ITEM_COUNT) * ITEM_COUNT
         const distance = Math.abs(offset)
+
+        // Culling: off-camera awards are hidden so they never render or drift across
+        if (distance > 2.8) {
+          rig.root.visible = false
+          rig.lastOffset = offset
+          return
+        }
+        rig.root.visible = true
+
         const focus = 1 - clamp(distance, 0, 1)
 
         const targetX = offset * spacing
-        const targetY = shelfBoardTop + 0.74 + focus * 0.14
-        const targetZ = 0.12 + focus * 0.22 - Math.min(distance, 2.5) * 0.06
-        const targetRotY = -offset * 0.09
-        const targetRotZ = -offset * 0.015
-        const targetScale = 1 + focus * 0.08
+        const targetY = shelfBoardTop + 0.74 + focus * 0.04
+        const targetZ = 0.12 + focus * 0.04 - Math.min(distance, 2.5) * 0.03
+        const targetRotY = -offset * 0.05
+        const targetRotZ = -offset * 0.008
+        const targetScale = 1 + focus * 0.025
         const speed = reducedMotion ? 1000 : 12
 
-        rig.root.position.x = damp(rig.root.position.x, targetX, speed, delta)
-        rig.root.position.y = damp(rig.root.position.y, targetY, speed, delta)
-        rig.root.position.z = damp(rig.root.position.z, targetZ, speed, delta)
-        rig.root.rotation.y = damp(rig.root.rotation.y, targetRotY, speed, delta)
-        rig.root.rotation.z = damp(rig.root.rotation.z, targetRotZ, speed, delta)
-        rig.root.scale.setScalar(damp(rig.root.scale.x, targetScale, speed, delta))
+        // If the award just wrapped across the seam, snap it immediately instead of damping across the screen!
+        if (rig.lastOffset !== null && Math.abs(offset - rig.lastOffset) > ITEM_COUNT * 0.4) {
+          rig.root.position.x = targetX
+          rig.root.position.y = targetY
+          rig.root.position.z = targetZ
+          rig.root.rotation.y = targetRotY
+          rig.root.rotation.z = targetRotZ
+          rig.root.scale.setScalar(targetScale)
+        } else {
+          rig.root.position.x = damp(rig.root.position.x, targetX, speed, delta)
+          rig.root.position.y = damp(rig.root.position.y, targetY, speed, delta)
+          rig.root.position.z = damp(rig.root.position.z, targetZ, speed, delta)
+          rig.root.rotation.y = damp(rig.root.rotation.y, targetRotY, speed, delta)
+          rig.root.rotation.z = damp(rig.root.rotation.z, targetRotZ, speed, delta)
+          rig.root.scale.setScalar(damp(rig.root.scale.x, targetScale, speed, delta))
+        }
 
-        // Hover lift & tilt
-        const isHov = hoveredIndex === index && currentMode === 'hero'
-        const hovElevation = isHov && !reducedMotion ? 0.06 : 0
-        const hovTilt = isHov && !reducedMotion ? -0.06 : 0
+        rig.lastOffset = offset
+
+        // Controlled, subtle hover elevation and tilt (disabled while page is scrolling)
+        const isHov = hoveredIndex === index && currentMode === 'hero' && !isPageScrolling
+        const hovElevation = isHov && !reducedMotion ? 0.04 : 0
+        const hovTilt = isHov && !reducedMotion ? -0.03 : 0
         rig.motion.position.y = damp(rig.motion.position.y, hovElevation, 12, delta)
         rig.motion.rotation.x = damp(rig.motion.rotation.x, hovTilt, 12, delta)
       })
 
-      // Transitions
+      // Mode transitions
       if (currentMode === 'opening') {
         transitionTime = Math.min(1, transitionTime + delta / PRESENT_TRANSITION_DURATION)
         applyOpeningPose(transitionTime)
@@ -968,9 +1042,9 @@ export default function CypherAchievements3D({ className = '' }) {
         controls.update()
       }
 
-      // Ambient dust drift
+      // Gentle ambient dust drift
       if (dustParticles) {
-        dustParticles.rotation.y = elapsed * 0.02
+        dustParticles.rotation.y = elapsed * 0.015
       }
 
       renderer.render(scene, camera)
@@ -978,18 +1052,19 @@ export default function CypherAchievements3D({ className = '' }) {
 
     animationFrameId = requestAnimationFrame(frame)
 
-    // Complete clean-up
+    // Complete deterministic clean-up
     return () => {
       isDisposed = true
       if (animationFrameId) cancelAnimationFrame(animationFrameId)
+      if (scrollEndTimer) clearTimeout(scrollEndTimer)
       observer.disconnect()
       window.removeEventListener('resize', resize)
       window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('scroll', onWindowScroll)
       canvas.removeEventListener('pointermove', onPointerMove)
       canvas.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('pointerup', onPointerUp)
       canvas.removeEventListener('click', onCanvasClick)
-      canvas.removeEventListener('wheel', onWheel)
 
       // Dispose textures, geometries, materials
       sharedShadowTexture.dispose()
@@ -998,9 +1073,9 @@ export default function CypherAchievements3D({ className = '' }) {
       awardRigs.forEach((rig) => {
         rig.faceTexture.dispose()
         rig.faceMat.dispose()
-        rig.edgeMat.dispose()
       })
 
+      if (environmentTarget) environmentTarget.dispose()
       if (controls) controls.dispose()
       if (renderer) renderer.dispose()
     }
@@ -1081,14 +1156,12 @@ export default function CypherAchievements3D({ className = '' }) {
         />
       </div>
 
-      {/* Dynamic Cursor Tooltip */}
+      {/* Dynamic Cursor Tooltip (Hardware-accelerated transform, zero re-renders) */}
       <div
+        ref={tooltipRef}
         className="cypher-pointer-label"
-        style={{
-          left: `${pointerPos.x}px`,
-          top: `${pointerPos.y}px`
-        }}
-        aria-hidden={!pointerPos.visible || mode !== 'hero'}
+        style={{ opacity: 0, visibility: 'hidden' }}
+        aria-hidden={hoveredIdx === -1 || mode !== 'hero'}
       >
         <span className="cypher-pointer-label-idx">CYPHER // 0{hoveredIdx + 1}</span>
         <strong className="cypher-pointer-label-title">{hoverTitle}</strong>
@@ -1163,7 +1236,7 @@ export default function CypherAchievements3D({ className = '' }) {
               />
             ))}
           </div>
-          <span className="cypher-microcopy">Drag horizontal · Wheel scroll · Click award</span>
+          <span className="cypher-microcopy">Drag horizontal · Swipe to browse · Click to inspect</span>
         </div>
       </nav>
 
@@ -1227,7 +1300,7 @@ export default function CypherAchievements3D({ className = '' }) {
           </dl>
         </div>
 
-        {/* Lightweight Buttons */}
+        {/* Action Buttons */}
         <div className="cypher-award-actions">
           <button
             onClick={() => setActiveModalData(selectedAchievement)}
@@ -1247,7 +1320,7 @@ export default function CypherAchievements3D({ className = '' }) {
         </div>
 
         <p className="cypher-award-hint">
-          Drag in 3D to tilt plaque · 360° orbital preview
+          Drag in 3D to rotate plaque · 360° orbital preview
         </p>
       </aside>
 
