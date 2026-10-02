@@ -908,6 +908,58 @@
       display: none !important;
     }
 
+    html[data-threeui-presentation="background"],
+    html[data-threeui-presentation="background"] body,
+    body.mode-background,
+    body[data-background-only="true"] {
+      background: transparent !important;
+      overflow: hidden !important;
+    }
+
+    html[data-threeui-presentation="background"] .editorial-header,
+    html[data-threeui-presentation="background"] .browse-ui,
+    html[data-threeui-presentation="background"] .detail-panel,
+    html[data-threeui-presentation="background"] .pointer-label,
+    html[data-threeui-presentation="background"] .folio,
+    html[data-threeui-presentation="background"] .frame,
+    html[data-threeui-presentation="background"] .masthead,
+    html[data-threeui-presentation="background"] .static-fallback,
+    html[data-threeui-presentation="background"] .loading,
+    body.mode-background .editorial-header,
+    body.mode-background .browse-ui,
+    body.mode-background .detail-panel,
+    body.mode-background .pointer-label,
+    body.mode-background .folio,
+    body.mode-background .frame,
+    body.mode-background .masthead,
+    body.mode-background .static-fallback,
+    body.mode-background .loading,
+    body[data-background-only="true"] .editorial-header,
+    body[data-background-only="true"] .browse-ui,
+    body[data-background-only="true"] .detail-panel,
+    body[data-background-only="true"] .pointer-label,
+    body[data-background-only="true"] .folio,
+    body[data-background-only="true"] .frame,
+    body[data-background-only="true"] .masthead,
+    body[data-background-only="true"] .static-fallback,
+    body[data-background-only="true"] .loading {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    html[data-threeui-presentation="background"] .experience,
+    body.mode-background .experience,
+    body[data-background-only="true"] .experience {
+      background: transparent !important;
+    }
+
+    html[data-threeui-presentation="background"] .experience::after,
+    body.mode-background .experience::after,
+    body[data-background-only="true"] .experience::after {
+      display: none !important;
+    }
+
     #scene {
       cursor: default;
     }
@@ -1602,6 +1654,17 @@
   </script>
 </head>
 <body>
+  <script>
+    (function() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('mode') === 'background' || params.get('presentation') === 'background') {
+          document.documentElement.setAttribute('data-threeui-presentation', 'background');
+          document.body.classList.add('mode-background');
+        }
+      } catch (e) {}
+    })();
+  </script>
   <main class="experience" id="experience">
     <div class="scene-shell">
       <canvas id="scene" aria-hidden="true"></canvas>
@@ -1609,41 +1672,41 @@
 
     <header class="editorial-header" aria-label="Collection">
       <div class="editorial-identity">
-        <strong>Working Volumes</strong>
-        <span>Seven field guides for making</span>
+        <strong>CYPHER // PROJECTS</strong>
+        <span>Autonomous Systems · Threat Intelligence · IoT Labs</span>
       </div>
       <div class="editorial-index">
-        <span>Edition 02 · 2026</span>
-        <span id="palette-label">Ultramarine · bone · copper</span>
+        <span>Registry · 2025</span>
+        <span id="palette-label">AI · Cybersecurity · Systems</span>
       </div>
     </header>
 
     <div class="pointer-label" id="pointer-label" aria-hidden="true">
-      <span id="pointer-label-index">Volume 01</span>
-      <strong id="pointer-label-title">Codex</strong>
+      <span id="pointer-label-index">Project 01</span>
+      <strong id="pointer-label-title">AgroVision AI</strong>
     </div>
 
     <section class="browse-ui" id="browse-ui" aria-label="Shelf navigation">
       <div class="selection">
         <span class="counter" id="counter">01 / 07</span>
         <div class="selection__copy">
-          <h1 class="selection__title" id="selection-title">Codex</h1>
-          <p class="selection__note" id="selection-note">Precise intent, translated into tested systems.</p>
+          <h1 class="selection__title" id="selection-title">AgroVision AI</h1>
+          <p class="selection__note" id="selection-note">Quantized neural pathology detection with zero-latency inference.</p>
         </div>
       </div>
 
       <div class="browse-actions">
-        <button class="round-button" id="previous" type="button" aria-label="Previous volume">
+        <button class="round-button" id="previous" type="button" aria-label="Previous project">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m10.5 3.5-4.5 4.5 4.5 4.5"></path></svg>
         </button>
-        <button class="text-button" id="inspect" type="button">Open</button>
-        <button class="round-button" id="next" type="button" aria-label="Next volume">
+        <button class="text-button" id="inspect" type="button">Inspect Project</button>
+        <button class="round-button" id="next" type="button" aria-label="Next project">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5.5 3.5 4.5 4.5-4.5 4.5"></path></svg>
         </button>
       </div>
 
       <nav class="index-nav" aria-label="Volume index">
-        <div class="markers" id="markers" role="tablist" aria-label="Choose a volume"></div>
+        <div class="markers" id="markers" role="tablist" aria-label="Choose a project"></div>
         <p class="microcopy">Wheel · arrows · select</p>
       </nav>
     </section>
@@ -1657,48 +1720,39 @@
       aria-hidden="true"
       inert
     >
-      <button class="close-button" id="close-detail" type="button" aria-label="Return volume to shelf">
+      <button class="close-button" id="close-detail" type="button" aria-label="Return project to shelf">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"></path></svg>
       </button>
-      <p class="eyebrow" id="detail-eyebrow">Volume I · Agentic craft</p>
-      <h2 class="detail-title" id="detail-title">Codex</h2>
+      <p class="eyebrow" id="detail-eyebrow">Project 01 · Edge Vision & Agronomy</p>
+      <h2 class="detail-title" id="detail-title">AgroVision AI</h2>
       <p class="detail-deck" id="detail-deck">
-        A field manual for turning clear intent into working software, with verification treated as part of the craft.
+        An edge-accelerated computer vision platform that detects 38+ plant foliar diseases in real-time from smartphone camera feeds with 98.4% diagnostic accuracy.
       </p>
       <dl class="meta-list">
         <div>
-          <dt>Binding</dt>
-          <dd id="detail-binding">Evergreen cloth · antique brass foil</dd>
+          <dt>Stack & Core</dt>
+          <dd id="detail-binding">MobileNetV3 · TensorFlow Lite</dd>
         </div>
         <div>
-          <dt>Format</dt>
-          <dd id="detail-format">148 × 216 mm · imagined edition</dd>
+          <dt>Architecture</dt>
+          <dd id="detail-format">Edge Inference · Progressive Web App</dd>
         </div>
         <div>
-          <dt>Theme</dt>
-          <dd id="detail-theme">Intent into implementation</dd>
+          <dt>Domain</dt>
+          <dd id="detail-theme">Real-time edge leaf pathology diagnostics</dd>
         </div>
         <div>
-          <dt>Motif</dt>
-          <dd id="detail-motif">Nested brackets</dd>
+          <dt>Key Innovation</dt>
+          <dd id="detail-motif">Sub-2s leaf scanner with bounding-box overlay</dd>
         </div>
       </dl>
-      <div class="page-navigation" role="group" aria-label="Browse sample pages">
-        <button class="page-button" id="previous-page" type="button" aria-label="Previous sample page" disabled>
-          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m10.5 3.5-4.5 4.5 4.5 4.5"></path></svg>
-        </button>
-        <p class="page-status" aria-live="off">
-          <strong id="page-label">Closed</strong>
-          <span id="page-counter">Click book to open</span>
-        </p>
-        <button class="page-button" id="next-page" type="button" aria-label="Next sample page" disabled>
-          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5.5 3.5 4.5 4.5-4.5 4.5"></path></svg>
-        </button>
+      <div class="project-actions" id="project-actions" style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+        <a class="text-button" id="detail-github" href="#" target="_blank" rel="noopener noreferrer" style="display: none; align-items: center; gap: 6px; text-decoration: none; font-size: 0.72rem; padding: 0 16px; min-height: 36px; border: 1px solid color-mix(in srgb, var(--ink) 42%, transparent); border-radius: 999px; color: var(--ink);">Source Code ↗</a>
+        <a class="text-button" id="detail-demo" href="#" target="_blank" rel="noopener noreferrer" style="display: none; align-items: center; gap: 6px; text-decoration: none; font-size: 0.72rem; padding: 0 16px; min-height: 36px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--paper);">Live Demo ↗</a>
       </div>
-      <div class="detail-controls">
-        <p class="microcopy">Drag cover or click once to open · Background to orbit</p>
+      <div class="detail-controls" style="margin-top: 18px;">
+        <p class="microcopy">Drag project to orbit in 3D · Close or Escape to return to shelf</p>
         <div class="detail-buttons">
-          <button class="text-button reset-button" id="toggle-book" type="button" aria-pressed="false">Open book</button>
           <button class="text-button reset-button" id="reset-view" type="button">Reset view</button>
         </div>
       </div>
@@ -1709,32 +1763,32 @@
     <section class="static-fallback" id="static-fallback" aria-labelledby="fallback-title" hidden>
       <div class="fallback__header">
         <div>
-          <p class="fallback__kicker">Working Volumes · Static catalog</p>
-          <h2 id="fallback-title">Seven tools for making.</h2>
+          <p class="fallback__kicker">Cypher // Project Registry</p>
+          <h2 id="fallback-title">Engineering & Security Projects.</h2>
         </div>
         <p class="fallback__status" id="fallback-status">
-          The complete catalog remains readable while the interactive shelf is prepared.
+          The interactive 3D project shelf is loading.
         </p>
       </div>
-      <div class="fallback__grid" aria-label="Seven conceptual hardcovers">
-        <article class="fallback-book" style="--book-color:#182a43;--book-foil:#c87046;--book-height:390px"><span>Volume I</span><strong>Codex</strong></article>
-        <article class="fallback-book" style="--book-color:#c24d24;--book-foil:#efc16d;--book-height:356px"><span>Volume II</span><strong>Claude Code</strong></article>
-        <article class="fallback-book" style="--book-color:#afc400;--book-foil:#171a16;--book-height:374px"><span>Volume III</span><strong>Cursor</strong></article>
-        <article class="fallback-book" style="--book-color:#1537a1;--book-foil:#dbe8f1;--book-height:404px"><span>Volume IV</span><strong>Antigravity</strong></article>
-        <article class="fallback-book" style="--book-color:#c83222;--book-foil:#efb0aa;--book-height:365px"><span>Volume V</span><strong>Figma</strong></article>
-        <article class="fallback-book" style="--book-color:#da3b2f;--book-foil:#ff8eab;--book-height:385px"><span>Volume VI</span><strong>Framer</strong></article>
-        <article class="fallback-book" style="--book-color:#78a7bd;--book-foil:#e4e7e5;--book-height:398px"><span>Volume VII</span><strong>Xcode</strong></article>
+      <div class="fallback__grid" aria-label="Seven Cypher Projects">
+        <article class="fallback-book" style="--book-color:#0f5132;--book-foil:#34d399;--book-height:390px"><span>Project I</span><strong>AgroVision AI</strong></article>
+        <article class="fallback-book" style="--book-color:#1e3a8a;--book-foil:#38bdf8;--book-height:356px"><span>Project II</span><strong>AegisGuard</strong></article>
+        <article class="fallback-book" style="--book-color:#581c87;--book-foil:#c084fc;--book-height:374px"><span>Project III</span><strong>NeuroPulse</strong></article>
+        <article class="fallback-book" style="--book-color:#0f766e;--book-foil:#5eead4;--book-height:404px"><span>Project IV</span><strong>CampusFlow</strong></article>
+        <article class="fallback-book" style="--book-color:#881337;--book-foil:#fda4af;--book-height:365px"><span>Project V</span><strong>CipherVault</strong></article>
+        <article class="fallback-book" style="--book-color:#9a3412;--book-foil:#fdba74;--book-height:385px"><span>Project VI</span><strong>DevMorph</strong></article>
+        <article class="fallback-book" style="--book-color:#0369a1;--book-foil:#7dd3fc;--book-height:398px"><span>Project VII</span><strong>PulseMetric</strong></article>
       </div>
       <div class="fallback__footer">
-        <span>All bindings, motifs, descriptions, geometry, and cover artworks are original to this conceptual study.</span>
-        <span>Product names are used editorially and remain the property of their respective owners.</span>
+        <span>Developed by student engineers and security researchers at Cypher Club.</span>
+        <span>Open source and research initiatives.</span>
       </div>
     </section>
 
     <div class="loading" id="loading" aria-live="polite">
       <div class="loading__inner">
         <div class="loading__mark" aria-hidden="true"></div>
-        <p>Binding the collection</p>
+        <p>Loading 3D Project Archive</p>
       </div>
     </div>
   </main>
@@ -1748,234 +1802,248 @@
 
     const BOOKS = [
       {
-        id: "codex",
-        title: "Codex",
+        id: "agrovision",
+        title: "AgroVision AI",
         roman: "I",
-        discipline: "Agentic craft",
-        note: "Precise intent, translated into tested systems.",
-        deck: "A field manual for delegating repository work to Codex: state the intent, let the agent trace the system, and treat tests and browser proof as part of the craft.",
-        binding: "Ultramarine cloth · copper foil",
-        format: "148 × 216 mm · imagined edition",
-        theme: "Codex · intent into implementation",
-        motif: "Nested brackets",
+        discipline: "AI · Computer Vision",
+        note: "Edge-accelerated foliar pathology diagnostics.",
+        deck: "An edge-accelerated computer vision platform that detects 38+ plant foliar diseases in real-time from smartphone camera feeds with 98.4% diagnostic accuracy.",
+        binding: "MobileNetV3 · TensorFlow Lite",
+        format: "Edge Inference · Progressive Web App",
+        theme: "AgroVision · Real-time edge foliar pathology",
+        motif: "Nested scanning brackets",
         motifKey: "brackets",
-        paletteLabel: "Ultramarine · bone · copper",
-        color: "#182a43",
-        foil: "#c87046",
+        paletteLabel: "Emerald · Forest · Mint",
+        color: "#0f3d2e",
+        foil: "#34d399",
+        githubUrl: "https://github.com/cypher-club/agrovision-ai",
+        demoUrl: "https://agrovision.cypherclub.tech",
         palette: {
-          paper: "#171a24",
-          paperDeep: "#10131b",
-          paperPale: "#f1eadf",
-          ink: "#f4eee6",
-          inkSoft: "#b9b4ae",
-          wall: "#171a24",
+          paper: "#0b291f",
+          paperDeep: "#061812",
+          paperPale: "#d1fae5",
+          ink: "#ecfdf5",
+          inkSoft: "#a7f3d0",
+          wall: "#0b291f",
           shelf: "#3a2118",
           shelfDark: "#1c0e0a",
-          light: "#f4d7b9",
-          fill: "#9fb3c9"
+          light: "#a7f3d0",
+          fill: "#10b981"
         },
         width: 1.02,
         height: 1.58,
         depth: 0.26,
-        chapters: ["Intent", "Repository atlas", "Proof"],
+        chapters: ["Edge Ingress", "Neural Classifier", "Remediation"],
         seed: 11
       },
       {
-        id: "claude-code",
-        title: "Claude Code",
+        id: "aegisguard",
+        title: "AegisGuard",
         roman: "II",
-        discipline: "Contextual reasoning",
-        note: "Long context, held with deliberation and care.",
-        deck: "An annotated volume on Claude Code’s context-first practice: read the project, reason across files, preserve the surrounding work, and make every intervention explainable.",
-        binding: "Burnt-orange cloth · antique-gold foil",
-        format: "156 × 228 mm · imagined edition",
-        theme: "Claude Code · context before intervention",
-        motif: "Interlaced paths",
+        discipline: "Cybersecurity · eBPF",
+        note: "Kernel-level intrusion telemetry & cyber range.",
+        deck: "A defense-grade cyber range platform built for ethical hacking practice, featuring kernel-level eBPF intrusion telemetry, ephemeral docker challenge sandboxes, and automated MITRE ATT&CK mapping.",
+        binding: "Linux eBPF · Firecracker MicroVMs",
+        format: "Kernel SecOps · gRPC Telemetry",
+        theme: "AegisGuard · Kernel-level adversarial telemetry",
+        motif: "Interlaced network paths",
         motifKey: "paths",
-        paletteLabel: "Burnt orange · cream · burgundy",
-        color: "#c24d24",
-        foil: "#efc16d",
+        paletteLabel: "Midnight Blue · Cyan · Silver",
+        color: "#182a43",
+        foil: "#38bdf8",
+        githubUrl: "https://github.com/cypher-club/aegisguard-ctf",
+        demoUrl: "https://aegisguard.cypherclub.tech",
         palette: {
-          paper: "#762f1b",
-          paperDeep: "#572113",
-          paperPale: "#ffe4c5",
-          ink: "#fff0df",
-          inkSoft: "#e3bfa8",
-          wall: "#762f1b",
-          shelf: "#402015",
-          shelfDark: "#1d0d08",
-          light: "#ffd19a",
-          fill: "#dc8c6b"
+          paper: "#111c2e",
+          paperDeep: "#0a111c",
+          paperPale: "#e0f2fe",
+          ink: "#f0f9ff",
+          inkSoft: "#bae6fd",
+          wall: "#111c2e",
+          shelf: "#352219",
+          shelfDark: "#180d09",
+          light: "#bae6fd",
+          fill: "#38bdf8"
         },
         width: 1.1,
         height: 1.46,
         depth: 0.29,
-        chapters: ["Context", "Deliberation", "Intervention"],
+        chapters: ["MicroVM Jail", "eBPF Probe", "MITRE Graph"],
         seed: 22
       },
       {
-        id: "cursor",
-        title: "Cursor",
+        id: "neuropulse",
+        title: "NeuroPulse",
         roman: "III",
-        discipline: "Directed editing",
-        note: "A fast line between the thought and the file.",
-        deck: "A compact handbook for editing with Cursor: navigate living codebases quickly, keep the active context close, and change the right surface without disturbing the rest.",
-        binding: "Citron cloth · black gloss foil",
-        format: "140 × 210 mm · imagined edition",
-        theme: "Cursor · navigation with momentum",
-        motif: "Directional caret",
+        discipline: "IoT · Autonomous Robotics",
+        note: "LiDAR SLAM & hazard exploration rover.",
+        deck: "An autonomous tracked robotics platform engineered for physical inspection of campus utility tunnels, high-voltage rooms, and industrial ducts using 2D/3D SLAM and sub-15ms WebRTC telemetry.",
+        binding: "ROS2 Humble · RPLiDAR · ESP32",
+        format: "Cartographer SLAM · WebRTC Cockpit",
+        theme: "NeuroPulse · Autonomous spatial cartography",
+        motif: "Directional navigation caret",
         motifKey: "caret",
-        paletteLabel: "Citron · ink · off-white",
-        color: "#afc400",
-        foil: "#171a16",
+        paletteLabel: "Deep Violet · Amethyst · Lavender",
+        color: "#3b1754",
+        foil: "#c084fc",
+        githubUrl: "https://github.com/cypher-club/neuropulse-rover",
+        demoUrl: "https://neuropulse.cypherclub.tech",
         palette: {
-          paper: "#c3cf21",
-          paperDeep: "#9eaa16",
-          paperPale: "#f0f2c9",
-          ink: "#171914",
-          inkSoft: "#485015",
-          wall: "#c3cf21",
-          shelf: "#3b2418",
-          shelfDark: "#1c0f09",
-          light: "#fff6ce",
-          fill: "#dce37e"
+          paper: "#260e37",
+          paperDeep: "#160721",
+          paperPale: "#f3e8ff",
+          ink: "#faf5ff",
+          inkSoft: "#e9d5ff",
+          wall: "#260e37",
+          shelf: "#381f18",
+          shelfDark: "#1b0d0a",
+          light: "#e9d5ff",
+          fill: "#c084fc"
         },
-        width: 0.92,
-        height: 1.52,
-        depth: 0.22,
-        chapters: ["Navigation", "Selection", "Momentum"],
+        width: 0.94,
+        height: 1.54,
+        depth: 0.24,
+        chapters: ["LiDAR Sweep", "Spatial Grid", "Telemetry Stream"],
         seed: 33
       },
       {
-        id: "antigravity",
-        title: "Antigravity",
+        id: "campusflow",
+        title: "CampusFlow",
         roman: "IV",
-        discipline: "Spatial systems",
-        note: "Ideas released from the flatness of the page.",
-        deck: "A speculative atlas for Antigravity’s spatial way of working: let agents move across tools, make complex structures visible, and understand the system through motion.",
-        binding: "Cobalt cloth · cool-silver foil",
-        format: "162 × 240 mm · imagined edition",
-        theme: "Antigravity · structure in motion",
-        motif: "Suspended orbits",
+        discipline: "Web Dev · Cryptography",
+        note: "High-concurrency scheduler & cryptographic pass nexus.",
+        deck: "A high-concurrency event registration and ticket validation system employing dynamic TOTP rotating QR codes that defeat proxy attendance while enabling 0.4s badge validation.",
+        binding: "Next.js 14 · Prisma · Redis",
+        format: "Web Crypto API · PostgreSQL PostGIS",
+        theme: "CampusFlow · Cryptographic identity tokens",
+        motif: "Suspended verification orbits",
         motifKey: "orbits",
-        paletteLabel: "Cobalt · sky · silver",
-        color: "#1537a1",
-        foil: "#dbe8f1",
+        paletteLabel: "Teal · Aquamarine · Ice",
+        color: "#0f4c47",
+        foil: "#5eead4",
+        githubUrl: "https://github.com/cypher-club/campusflow",
+        demoUrl: "https://campusflow.cypherclub.tech",
         palette: {
-          paper: "#142a80",
-          paperDeep: "#0b1953",
-          paperPale: "#dbe8f1",
-          ink: "#f3f5f2",
-          inkSoft: "#b5c7e9",
-          wall: "#142a80",
+          paper: "#09332f",
+          paperDeep: "#051f1c",
+          paperPale: "#ccfbf1",
+          ink: "#f0fdfa",
+          inkSoft: "#99f6e4",
+          wall: "#09332f",
           shelf: "#3b2117",
           shelfDark: "#1a0d08",
-          light: "#e5edf2",
-          fill: "#5f85dc"
+          light: "#99f6e4",
+          fill: "#2dd4bf"
         },
-        width: 1.08,
-        height: 1.68,
+        width: 1.06,
+        height: 1.66,
         depth: 0.25,
-        chapters: ["System map", "Tool orbit", "Spatial proof"],
+        chapters: ["TOTP Token", "WASM Scanner", "Redis Pipeline"],
         seed: 44
       },
       {
-        id: "figma",
-        title: "Figma",
+        id: "ciphervault",
+        title: "CipherVault",
         roman: "V",
-        discipline: "Collaborative form",
-        note: "Components, conversations, and systems in common.",
-        deck: "A modular reader on designing in Figma: move from loose frames to shared components, invite critique into the canvas, and leave behind a system others can extend.",
-        binding: "Vermilion cloth · rose-gold foil",
-        format: "150 × 220 mm · imagined edition",
-        theme: "Figma · a shared visual language",
-        motif: "Connected modules",
+        discipline: "App Dev · Security Enclave",
+        note: "Zero-knowledge cross-platform key guardian.",
+        deck: "An air-gapped credentials vault performing client-side cryptographic hashing with Argon2id and AES-256-GCM, syncing between devices via encrypted local peer-to-peer Wi-Fi.",
+        binding: "Flutter · Rust · Argon2id",
+        format: "SQLCipher · Biometric Enclave",
+        theme: "CipherVault · Zero-knowledge peer synchronization",
+        motif: "Connected crypto modules",
         motifKey: "modules",
-        paletteLabel: "Vermilion · plum · blush",
-        color: "#c83222",
-        foil: "#efb0aa",
+        paletteLabel: "Crimson · Rose Gold · Quartz",
+        color: "#5c1328",
+        foil: "#fda4af",
+        githubUrl: "https://github.com/cypher-club/ciphervault",
+        demoUrl: "https://ciphervault.cypherclub.tech",
         palette: {
-          paper: "#a62c21",
-          paperDeep: "#7f1e17",
-          paperPale: "#ffe0d5",
-          ink: "#fff0e8",
-          inkSoft: "#e9bbb2",
-          wall: "#a62c21",
+          paper: "#3f0a1a",
+          paperDeep: "#24040d",
+          paperPale: "#ffe4e6",
+          ink: "#fff1f2",
+          inkSoft: "#fecdd3",
+          wall: "#3f0a1a",
           shelf: "#432016",
           shelfDark: "#1f0d08",
-          light: "#ffd1bc",
-          fill: "#d66d66"
+          light: "#fecdd3",
+          fill: "#fb7185"
         },
         width: 1,
         height: 1.48,
         depth: 0.3,
-        chapters: ["Frames", "Components", "Common language"],
+        chapters: ["Argon2id KDF", "Hardware Enclave", "Air-Gapped P2P"],
         seed: 55
       },
       {
-        id: "framer",
-        title: "Framer",
+        id: "devmorph",
+        title: "DevMorph",
         roman: "VI",
-        discipline: "Interactive composition",
-        note: "Structure becomes rhythm when the page begins to move.",
-        deck: "A studio notebook for Framer: compose responsive pages directly in the medium, then tune type, layout, and interaction until motion feels native to the structure.",
-        binding: "Coral cloth · copper foil",
-        format: "146 × 224 mm · imagined edition",
-        theme: "Framer · composition through motion",
-        motif: "Folded frames",
+        discipline: "Automation · CI/CD Sentinel",
+        note: "Automated PR security scanner & AI code reviewer.",
+        deck: "A continuous integration bot inspecting git diffs using AST parsing and semantic LLM reasoning to comment inline security fixes directly onto pull requests.",
+        binding: "Node.js 20 · Semgrep · Claude 3.5",
+        format: "GitHub Actions · Tree-sitter AST",
+        theme: "DevMorph · Static AST analysis & neural linting",
+        motif: "Folded code frames",
         motifKey: "frames",
-        paletteLabel: "Coral · pink · oxblood",
-        color: "#da3b2f",
-        foil: "#ff8eab",
+        paletteLabel: "Burnt Ochre · Amber · Copper",
+        color: "#6e290f",
+        foil: "#fdba74",
+        githubUrl: "https://github.com/cypher-club/devmorph",
+        demoUrl: "https://github.com/marketplace/actions/devmorph-sentinel",
         palette: {
-          paper: "#ae2830",
-          paperDeep: "#7f1822",
-          paperPale: "#ffe0df",
-          ink: "#fff0e9",
-          inkSoft: "#efb9b4",
-          wall: "#ae2830",
+          paper: "#4a1907",
+          paperDeep: "#2d0e03",
+          paperPale: "#ffedd5",
+          ink: "#fff7ed",
+          inkSoft: "#fed7aa",
+          wall: "#4a1907",
           shelf: "#402016",
           shelfDark: "#1d0d08",
-          light: "#ffc3bb",
-          fill: "#e46d78"
+          light: "#fed7aa",
+          fill: "#fb923c"
         },
         width: 0.96,
         height: 1.57,
         depth: 0.24,
-        chapters: ["Structure", "Rhythm", "Responsive motion"],
+        chapters: ["AST Diffing", "Entropy Scan", "Inline Resolution"],
         seed: 66
       },
       {
-        id: "xcode",
-        title: "Xcode",
+        id: "pulsemetric",
+        title: "PulseMetric",
         roman: "VII",
-        discipline: "Native making",
-        note: "A measured path from blueprint to living device.",
-        deck: "A technical folio for making with Xcode: shape the Swift interface, compile against the platform, inspect the runtime, and refine until the result feels native.",
-        binding: "Icy-cyan cloth · aluminum foil",
-        format: "158 × 232 mm · imagined edition",
-        theme: "Xcode · blueprint into native form",
-        motif: "Drafting compass",
+        discipline: "Data Science · Time-Series",
+        note: "Spatiotemporal predictive campus network telemetry.",
+        deck: "An IoT telemetry network and time-series ML pipeline analyzing campus Wi-Fi access points to forecast bandwidth bottlenecks up to 3 hours in advance.",
+        binding: "Python · InfluxDB · Scikit-Learn",
+        format: "FastAPI · Deck.gl Geospatial Map",
+        theme: "PulseMetric · Predictive bandwidth forecasting",
+        motif: "Signal drafting compass",
         motifKey: "compass",
-        paletteLabel: "Icy cyan · navy · aluminum",
-        color: "#78a7bd",
-        foil: "#e4e7e5",
+        paletteLabel: "Steel Blue · Sky · Titanium",
+        color: "#164e63",
+        foil: "#7dd3fc",
+        githubUrl: "https://github.com/cypher-club/pulsemetric",
+        demoUrl: "https://pulsemetric.cypherclub.tech",
         palette: {
-          paper: "#7ea5b7",
-          paperDeep: "#5e8699",
-          paperPale: "#e6f0f2",
-          ink: "#102a36",
-          inkSoft: "#274b5a",
-          wall: "#7ea5b7",
+          paper: "#0e3443",
+          paperDeep: "#071f29",
+          paperPale: "#e0f2fe",
+          ink: "#f0f9ff",
+          inkSoft: "#bae6fd",
+          wall: "#0e3443",
           shelf: "#382017",
           shelfDark: "#1b0e09",
-          light: "#eef5f2",
-          fill: "#add1df"
+          light: "#bae6fd",
+          fill: "#38bdf8"
         },
         width: 1.12,
         height: 1.63,
         depth: 0.28,
-        chapters: ["Blueprint", "Build", "Runtime"],
+        chapters: ["Probe Ingress", "Prophet ML", "Heatmap Uplink"],
         seed: 77
       }
     ];
@@ -2034,6 +2102,8 @@
     const detailFormat = document.querySelector("#detail-format");
     const detailTheme = document.querySelector("#detail-theme");
     const detailMotif = document.querySelector("#detail-motif");
+    const detailGithub = document.querySelector("#detail-github");
+    const detailDemo = document.querySelector("#detail-demo");
     const liveRegion = document.querySelector("#live-region");
     const pointerLabel = document.querySelector("#pointer-label");
     const pointerLabelIndex = document.querySelector("#pointer-label-index");
@@ -2475,7 +2545,7 @@
       ctx.textBaseline = "middle";
       ctx.font = '500 18px Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.letterSpacing = "4px";
-      ctx.fillText(`WORKING VOLUMES  /  ${book.roman}`, canvasTexture.width / 2, 92);
+      ctx.fillText(`CYPHER ARCHIVE  /  PROJECT ${book.roman}`, canvasTexture.width / 2, 92);
 
       const titleSize = book.title.length > 10 ? 72 : 88;
       ctx.font = `400 ${titleSize}px "Iowan Old Style", Baskerville, Georgia, serif`;
@@ -2501,7 +2571,7 @@
 
       ctx.font = '500 15px Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.letterSpacing = "2.8px";
-      ctx.fillText(`WORKING VOLUMES  /  ${pad(index)}`, 58, 70);
+      ctx.fillText(`CYPHER ARCHIVE  /  PROJECT ${pad(index)}`, 58, 70);
       ctx.globalAlpha = 0.7;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -4374,18 +4444,34 @@
       });
 
       if (announce) {
-        liveRegion.textContent = `Selected volume ${selectedIndex + 1} of ${BOOKS.length}: ${book.title}. ${book.note}`;
+        liveRegion.textContent = `Selected project ${selectedIndex + 1} of ${BOOKS.length}: ${book.title}. ${book.note}`;
       }
     }
 
     function populateDetail(book) {
-      detailEyebrow.textContent = `Volume ${book.roman} · ${book.discipline}`;
+      detailEyebrow.textContent = `Project ${book.roman} · ${book.discipline}`;
       detailTitle.textContent = book.title;
       detailDeck.textContent = book.deck;
       detailBinding.textContent = book.binding;
       detailFormat.textContent = book.format;
       detailTheme.textContent = book.theme;
       detailMotif.textContent = book.motif;
+      if (detailGithub) {
+        if (book.githubUrl) {
+          detailGithub.href = book.githubUrl;
+          detailGithub.style.display = "inline-flex";
+        } else {
+          detailGithub.style.display = "none";
+        }
+      }
+      if (detailDemo) {
+        if (book.demoUrl) {
+          detailDemo.href = book.demoUrl;
+          detailDemo.style.display = "inline-flex";
+        } else {
+          detailDemo.style.display = "none";
+        }
+      }
     }
 
     function getSpreadLabels(book) {
@@ -4405,32 +4491,38 @@
       const previousDisabled = interactionLocked || currentSpread === 0;
       const nextDisabled = interactionLocked || currentSpread === SPREAD_COUNT - 1;
 
-      previousPageButton.disabled = previousDisabled;
-      nextPageButton.disabled = nextDisabled;
-      pageLabel.textContent = readingOpen ? labels[currentSpread] : "Closed";
-      pageCounter.textContent = readingOpen
+      if (previousPageButton) previousPageButton.disabled = previousDisabled;
+      if (nextPageButton) nextPageButton.disabled = nextDisabled;
+      if (pageLabel) pageLabel.textContent = readingOpen ? labels[currentSpread] : "Closed";
+      if (pageCounter) pageCounter.textContent = readingOpen
         ? `${pad(currentSpread + 1)} / ${pad(SPREAD_COUNT)}`
-        : "Click book to open";
-      toggleBookButton.textContent = readingOpen ? "Close book" : "Open book";
-      toggleBookButton.setAttribute("aria-pressed", String(readingOpen));
-      detailMicrocopy.textContent = readingOpen
-        ? "Drag pages · Drag cover to close · Background to orbit"
-        : "Drag cover or click once to open · Background to orbit";
-      previousPageButton.setAttribute(
-        "aria-label",
-        previousDisabled
-          ? "Previous sample page"
-          : `Previous sample page: ${labels[currentSpread - 1]}`
-      );
-      nextPageButton.setAttribute(
-        "aria-label",
-        nextDisabled
-          ? "Next sample page"
-          : `Next sample page: ${labels[currentSpread + 1]}`
-      );
+        : "Click project to inspect";
+      if (toggleBookButton) {
+        toggleBookButton.textContent = readingOpen ? "Close inspection" : "Inspect details";
+        toggleBookButton.setAttribute("aria-pressed", String(readingOpen));
+      }
+      if (detailMicrocopy) {
+        detailMicrocopy.textContent = "Drag project to orbit in 3D · Close or Escape to return to shelf";
+      }
+      if (previousPageButton) {
+        previousPageButton.setAttribute(
+          "aria-label",
+          previousDisabled
+            ? "Previous section"
+            : `Previous section: ${labels[currentSpread - 1]}`
+        );
+      }
+      if (nextPageButton) {
+        nextPageButton.setAttribute(
+          "aria-label",
+          nextDisabled
+            ? "Next section"
+            : `Next section: ${labels[currentSpread + 1]}`
+        );
+      }
 
       if (announce && activeBook && readingOpen) {
-        liveRegion.textContent = `Page ${currentSpread + 1} of ${SPREAD_COUNT}: ${labels[currentSpread]}.`;
+        liveRegion.textContent = `Section ${currentSpread + 1} of ${SPREAD_COUNT}: ${labels[currentSpread]}.`;
       }
     }
 
@@ -5147,7 +5239,7 @@
       canvas.classList.toggle("has-book-hover", index >= 0);
       if (index >= 0) {
         const book = BOOKS[index];
-        pointerLabelIndex.textContent = `Volume ${pad(index + 1)}`;
+        pointerLabelIndex.textContent = `Project ${pad(index + 1)}`;
         pointerLabelTitle.textContent = book.title;
         pointerLabel.setAttribute("aria-hidden", "false");
       } else {
@@ -5809,12 +5901,7 @@
         // The system sans-serif fallback keeps the interface usable offline.
       }
 
-      try {
-        await coverAtlasImage.decode();
-        coverAtlasReady = true;
-      } catch (error) {
-        coverAtlasReady = false;
-      }
+      coverAtlasReady = false;
 
       try {
         renderer = new THREE.WebGLRenderer({

@@ -1,0 +1,229 @@
+.completeshelf-renderer-host {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.completeshelf-container .bookshelf.completeshelf-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #171a24;
+  outline: none;
+}
+
+.completeshelf-container .bookshelf__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  touch-action: none;
+}
+
+.completeshelf-container .bookshelf__canvas.is-ready {
+  opacity: 1;
+}
+
+.completeshelf-container .bookshelf__source-controls {
+  display: none;
+}
+
+.completeshelf-container .bookshelf__unavailable {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 24px;
+  color: #f4eee6;
+  text-align: center;
+}
+
+.completeshelf-details {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  width: min(36%, 380px);
+  min-width: 280px;
+  padding: 32px 30px;
+  border-left: 1px solid rgba(244, 238, 230, 0.2);
+  color: #f4eee6;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 48%),
+    rgba(23, 26, 36, 0.96);
+  box-shadow: -18px 0 42px rgba(0, 0, 0, 0.2);
+  animation: completeshelf-details-in 320ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+}
+
+.completeshelf-details__body {
+  width: 100%;
+}
+
+.completeshelf-details__title {
+  margin: 0 42px 16px 0;
+  color: #f4eee6;
+  font-family: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1.08;
+}
+
+.completeshelf-details__summary {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: rgba(244, 238, 230, 0.78);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.completeshelf-details__team-heading {
+  margin: 26px 0 12px;
+  color: rgba(244, 238, 230, 0.56);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+}
+
+.completeshelf-details__team {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.completeshelf-details__member {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid rgba(244, 238, 230, 0.34);
+  border-radius: 50%;
+  color: #f4eee6;
+  background: rgba(200, 112, 70, 0.2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.completeshelf-details__member img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.completeshelf-details__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 1;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(244, 238, 230, 0.34);
+  border-radius: 50%;
+  color: #f4eee6;
+  background: rgba(23, 26, 36, 0.78);
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.completeshelf-details__close:hover {
+  border-color: rgba(244, 238, 230, 0.78);
+  background: rgba(244, 238, 230, 0.12);
+}
+
+.completeshelf-details__close:focus-visible {
+  outline: 2px solid #c87046;
+  outline-offset: 3px;
+}
+
+.completeshelf-details__close svg {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes completeshelf-details-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .completeshelf-details {
+    inset: auto 0 0;
+    width: 100%;
+    min-width: 0;
+    max-height: 62%;
+    padding: 18px 60px 18px 20px;
+    overflow-y: auto;
+    border-top: 1px solid rgba(244, 238, 230, 0.2);
+    border-left: 0;
+    box-shadow: 0 -14px 34px rgba(0, 0, 0, 0.2);
+    animation-name: completeshelf-details-up;
+  }
+
+  .completeshelf-details__title {
+    margin: 0 0 9px;
+    font-size: 1.35rem;
+  }
+
+  .completeshelf-details__summary {
+    font-size: 0.78rem;
+    line-height: 1.42;
+  }
+
+  .completeshelf-details__team-heading {
+    margin: 14px 0 8px;
+  }
+
+  .completeshelf-details__team {
+    gap: 8px;
+  }
+
+  .completeshelf-details__member {
+    width: 38px;
+    height: 38px;
+  }
+
+  .completeshelf-details__close {
+    top: 13px;
+    right: 14px;
+  }
+}
+
+@keyframes completeshelf-details-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .completeshelf-details {
+    animation: none;
+  }
+}
