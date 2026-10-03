@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import OnePage from './pages/OnePage'
-import ParticleNetworkBackground from './components/ParticleNetworkBackground'
+import KageBackground from './components/KageBackground'
 
 export default function App() {
   const cursorGlowRef = useRef(null)
@@ -91,7 +91,7 @@ export default function App() {
 
   return (
     <div className="app-shell relative isolate min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
-      <ParticleNetworkBackground />
+      <KageBackground />
       <div ref={cursorGlowRef} className="cursor-glow" aria-hidden="true">
         <span ref={cursorClickRef} className="cursor-click-ripple" />
       </div>

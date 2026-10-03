@@ -85,7 +85,7 @@ export default function ProjectHero({ onExploreClick, onBuildClick }) {
           if (dist < maxDist) {
             const alpha = (1 - dist / maxDist) * 0.22
             ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`
-            ctx.lineWidth = 1.5
+            ctx.lineWidth = 0.75
             ctx.beginPath()
             ctx.moveTo(nodes[i].x, nodes[i].y)
             ctx.lineTo(nodes[j].x, nodes[j].y)
