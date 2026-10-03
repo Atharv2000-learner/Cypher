@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
-import { projects } from '../data/projects'
 import './CompleteShelfBackground.css'
+
+const projects = []
 
 const BookshelfScene = lazy(() =>
   import('@designcodeio/threeui/components/BookshelfScene').then(({ BookshelfScene: scene }) => ({
@@ -20,7 +21,7 @@ export default function CompleteShelfBackground({
   const closeObserverRef = useRef(null)
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0)
   const [isBookOpen, setIsBookOpen] = useState(false)
-  const selectedProject = projects[selectedProjectIndex]
+  const selectedProject = projects[selectedProjectIndex] ?? null
 
   useEffect(() => {
     const host = hostRef.current
@@ -35,7 +36,8 @@ export default function CompleteShelfBackground({
         10
       )
       if (Number.isFinite(selectedNumber)) {
-        setSelectedProjectIndex(Math.min(Math.max(selectedNumber - 1, 0), projects.length - 1))
+        const maxIndex = Math.max(projects.length - 1, 0)
+        setSelectedProjectIndex(Math.min(Math.max(selectedNumber - 1, 0), maxIndex))
       }
       setIsBookOpen(shelf.querySelector('#detail-panel')?.getAttribute('aria-hidden') === 'false')
     }

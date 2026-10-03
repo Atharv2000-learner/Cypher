@@ -153,10 +153,10 @@
   top: 0;
   left: 0;
   z-index: 40;
-  width: 400px;
-  height: 400px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.08) 0%, rgba(34, 211, 238, 0.04) 28%, transparent 70%);
   mix-blend-mode: screen;
   opacity: 0;
   pointer-events: none;
@@ -178,9 +178,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(34, 211, 238, 0.95);
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(96, 165, 250, 0.6);
   border-radius: 50%;
   content: '';
   opacity: 0;
@@ -188,13 +188,13 @@
 }
 
 .cursor-click-ripple::before {
-  box-shadow: 0 0 10px rgba(34, 211, 238, 0.75);
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.25);
 }
 
 .cursor-click-ripple::after {
-  width: 10px;
-  height: 10px;
-  border-color: rgba(255, 255, 255, 0.9);
+  width: 8px;
+  height: 8px;
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
 .cursor-click-active::before {
