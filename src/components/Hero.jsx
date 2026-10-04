@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Terminal, Code2, Shield, Cpu, ChevronRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
+import CypherLogoAnimation from './CypherLogoAnimation'
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pt-8 pb-12 md:pt-12 md:pb-16">
+    <section className="relative overflow-hidden pt-4 pb-12 md:pt-6 md:pb-16">
       {/* Background Decorative Gradients & Grid */}
       <div className="absolute inset-0 bg-cyber-grid bg-grid-pattern opacity-60 pointer-events-none"></div>
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] h-[350px] bg-gradient-to-tr from-cyan-600/15 via-violet-600/15 to-emerald-600/10 blur-[110px] rounded-full pointer-events-none"></div>
 
       <div className="w-full px-3 sm:px-5 relative z-10">
         
-        <div className="grid grid-cols-1 gap-10 lg:gap-8 items-center">
-          <div className="text-left space-y-6 max-w-4xl">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(260px,0.8fr)] lg:gap-8 items-center">
+          <div className="pl-2 sm:pl-4 lg:pl-8 text-left space-y-6 max-w-4xl">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-cypher-900/90 border border-neon-cyan/30 text-xs font-mono text-slate-300 shadow-lg shadow-neon-cyan/5">
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
@@ -23,9 +24,9 @@ export default function Hero() {
               <span>Cyber Security Club</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-tight">
+            <h1 className="whitespace-nowrap text-[clamp(1.15rem,6.2vw,4.5rem)] sm:text-[clamp(2.4rem,5.4vw,4.5rem)] lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-tight">
               Explore{' '}
-              <span className="block sm:inline">
+              <span>
                 <span style={{ color: '#ff003c', textShadow: '0 0 18px rgba(255, 0, 60, 0.55)' }}>Exploit</span>{' '}
                 <span style={{ color: '#00ffff', textShadow: '0 0 18px rgba(0, 255, 255, 0.55)' }}>Defend</span>
               </span>
@@ -35,6 +36,7 @@ export default function Hero() {
               Welcome to <span className="text-white font-medium">CYPHER</span> — the premier student hub for aspiring developers, cybersecurity enthusiasts, and AI builders. We bridge the gap between classroom theory and real-world engineering.
             </p>
           </div>
+          <CypherLogoAnimation />
         </div>
 
         {/* BOTTOM SECTION: Progression Loop Banner & Metrics */}

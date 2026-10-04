@@ -23,7 +23,7 @@ export default function Footer() {
       {/* Subtle background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-neon-cyan/5 blur-3xl pointer-events-none"></div>
 
-      <div className="w-full px-3 sm:px-5 pt-16 pb-12 relative z-10">
+      <div className="w-full px-3 sm:px-5 pt-10 pb-8 sm:pt-16 sm:pb-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
           
           {/* Brand Col */}
@@ -99,7 +99,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold uppercase font-mono tracking-wider text-xs">
               Explore
             </h3>
-            <ul className="space-y-2">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-1">
               <li>
                 <Link to="/" className="hover:text-neon-cyan transition-colors">Home</Link>
               </li>
@@ -190,13 +190,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-cypher-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p className="text-slate-400">
+        <div className="pt-6 sm:pt-8 border-t border-cypher-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <p className="text-slate-400 text-center sm:text-left">
             © {new Date().getFullYear()} {siteConfig.name}. Built with React, Vite & Tailwind CSS.
           </p>
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-slate-400">
             <Link to="/contact" className="hover:text-neon-cyan transition-colors">Contact Organizers</Link>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <Link to="/" className="hover:text-neon-cyan transition-colors">Back to Top ↑</Link>
           </div>
         </div>

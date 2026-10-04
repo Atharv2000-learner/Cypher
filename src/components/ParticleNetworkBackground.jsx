@@ -18,7 +18,7 @@ export default function ParticleNetworkBackground() {
     let animationFrameId = null
 
     const initializeParticles = () => {
-      nodes = Array.from({ length: 90 }, () => ({
+      nodes = Array.from({ length: 120 }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         vy: Math.random() * 0.8 + 0.25,
@@ -29,7 +29,7 @@ export default function ParticleNetworkBackground() {
         x: Math.random() * width,
         y: Math.random() * height,
         length: Math.random() * 120 + 60,
-        speed: Math.random() * 10 + 6,
+        speed: Math.random() * 5 + 3,
         opacity: Math.random() * 0.55 + 0.35
       }))
     }
@@ -100,7 +100,7 @@ export default function ParticleNetworkBackground() {
         }
 
         if (distance < 180) {
-          context.strokeStyle = `rgba(96, 165, 250, ${0.5 * (1 - distance / 180)})`
+          context.strokeStyle = `rgba(96, 165, 250, ${0.8 * (1 - distance / 180)})`
           context.beginPath()
           context.moveTo(node.x, node.y)
           context.lineTo(pointer.x, pointer.y)

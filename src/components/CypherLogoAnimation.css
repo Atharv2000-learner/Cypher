@@ -1,0 +1,151 @@
+.cypher-logo-animation {
+  position: relative;
+  width: min(74vw, 22rem);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  perspective: 1100px;
+}
+
+.cypher-logo-intro,
+.cypher-logo-object,
+.cypher-logo-glow,
+.cypher-logo-face {
+  position: absolute;
+  inset: 0;
+}
+
+.cypher-logo-intro {
+  transform-style: preserve-3d;
+  animation: cypher-logo-enter 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cypher-logo-object {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.cypher-logo-glow {
+  transform: translateZ(-90px) scale(1.1);
+}
+
+.cypher-logo-glow img,
+.cypher-logo-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cypher-logo-glow img {
+  filter: blur(26px) brightness(1.6) saturate(1.8);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+
+.cypher-logo-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.cypher-logo-face img {
+  -webkit-mask: radial-gradient(closest-side, #000 90%, transparent 100%);
+  mask: radial-gradient(closest-side, #000 90%, transparent 100%);
+}
+
+.cypher-logo-face-front {
+  transform: translateZ(9px);
+}
+
+.cypher-logo-face-back {
+  transform: rotateY(180deg) translateZ(9px);
+}
+
+.cypher-logo-disc {
+  position: absolute;
+  top: 3.5%;
+  left: 6.5%;
+  width: 87%;
+  height: 87%;
+  border: 1px solid rgba(43, 181, 238, 0.55);
+  border-radius: 50%;
+  background: #030b10;
+}
+
+.cypher-logo-disc-rim {
+  border-color: rgba(160, 225, 255, 0.9);
+  box-shadow: 0 0 14px rgba(43, 181, 238, 0.45);
+}
+
+.cypher-logo-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px dashed rgba(43, 181, 238, 0.35);
+  border-radius: 50%;
+  box-shadow: none;
+}
+
+.cypher-logo-ring-binary {
+  width: 122%;
+  height: 122%;
+  margin: -61% 0 0 -61%;
+  border: 0;
+  animation: cypher-logo-ring-one 18s linear infinite;
+}
+
+.cypher-logo-ring-binary svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cypher-logo-ring-binary text {
+  fill: rgba(120, 215, 250, 0.7);
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.cypher-logo-ring-orbit {
+  width: 100%;
+  height: 100%;
+  margin: -50% 0 0 -50%;
+  border-style: solid;
+  border-color: rgba(43, 181, 238, 0.18);
+  animation: cypher-logo-ring-two 26s linear infinite;
+}
+
+@keyframes cypher-logo-enter {
+  from {
+    opacity: 0;
+    transform: translateZ(-600px) rotateY(-140deg) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cypher-logo-ring-one {
+  from { transform: rotateX(72deg) rotateZ(0); }
+  to { transform: rotateX(72deg) rotateZ(360deg); }
+}
+
+@keyframes cypher-logo-ring-two {
+  from { transform: rotateY(74deg) rotateZ(360deg); }
+  to { transform: rotateY(74deg) rotateZ(0); }
+}
+
+@media (min-width: 1024px) {
+  .cypher-logo-animation {
+    width: 100%;
+    max-width: 24rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cypher-logo-intro,
+  .cypher-logo-ring {
+    animation: none;
+  }
+}
