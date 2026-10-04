@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Menu, X, Sun, Moon } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 
@@ -16,13 +17,13 @@ export default function Navbar({ isDark, onToggleTheme }) {
   }, [])
 
   const navLinks = [
-    { name: 'Home', href: '#top' },
-    { name: 'About', href: '#about' },
-    { name: 'Events', href: '#events' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Achievements', href: '#achievements' },
-    { name: 'Team', href: '#team' },
-    { name: 'Contact', href: '#contact' }
+    { name: 'Home', to: '/' },
+    { name: 'About', to: '/about' },
+    { name: 'Events', to: '/events' },
+    { name: 'Projects', to: '/projects' },
+    { name: 'Achievements', to: '/achievements' },
+    { name: 'Team', to: '/team' },
+    { name: 'Contact', to: '/contact' }
   ]
 
   return (
@@ -36,8 +37,8 @@ export default function Navbar({ isDark, onToggleTheme }) {
       <div className="w-full px-3 sm:px-5">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Brand Logo */}
-          <a
-            href="#top"
+          <Link
+            to="/"
             className="navbar-brand-enter flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-neon-cyan rounded-lg px-1 py-0.5"
             aria-label="CYPHER Home"
           >
@@ -54,19 +55,19 @@ export default function Navbar({ isDark, onToggleTheme }) {
                 Cyber Security Club
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:ml-auto lg:mr-3 lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
             {navLinks.map((link, index) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.to}
                 style={{ animationDelay: `${100 + index * 45}ms` }}
                 className="navbar-link-enter nav-cyber-corners px-3.5 py-2 rounded-lg text-sm font-display font-medium transition-all duration-200 hover:scale-105 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white border border-transparent"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -110,15 +111,15 @@ export default function Navbar({ isDark, onToggleTheme }) {
         <div className="navbar-drawer-enter lg:hidden bg-white/95 dark:bg-cypher-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-cypher-800 px-4 pt-2 pb-6 space-y-1 shadow-2xl transition-all">
           <nav className="flex flex-col space-y-1" aria-label="Mobile Navigation">
             {navLinks.map((link, index) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.to}
                 onClick={() => setIsOpen(false)}
                 style={{ animationDelay: `${index * 35}ms` }}
                 className="navbar-link-enter nav-cyber-corners px-4 py-3 rounded-lg text-base font-display font-medium transition-all duration-200 hover:scale-105 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>

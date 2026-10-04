@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { X, Award, ExternalLink, CheckCircle, Code2, Users, Calendar, ShieldCheck, Terminal, Cpu, FileText } from 'lucide-react'
 
 export default function AchievementDetailModal({ achievement, onClose }) {
@@ -170,14 +171,14 @@ export default function AchievementDetailModal({ achievement, onClose }) {
             >
               Close
             </button>
-            <a
-              href="#projects"
+            <Link
+              to="/projects"
               onClick={onClose}
               className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-xs font-mono font-bold uppercase tracking-wider text-slate-950 shadow-lg shadow-cyan-500/20 transition-all"
             >
               <span>{achievement.actionLabel}</span>
               <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
