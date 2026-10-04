@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Github, Linkedin, MessageSquare, Twitter, Instagram, Mail, MapPin, CheckCircle2, ArrowRight } from 'lucide-react'
 import { siteConfig } from '../data/siteConfig'
 
@@ -27,7 +28,7 @@ export default function Footer() {
           
           {/* Brand Col */}
           <div className="lg:col-span-4 space-y-4">
-            <a href="#top" className="inline-flex items-center gap-3 group">
+            <Link to="/" className="inline-flex items-center gap-3 group">
               <img
                 src="/assets/cypher-logo.png"
                 alt="CYPHER logo"
@@ -36,7 +37,7 @@ export default function Footer() {
               <span className="text-xl font-bold font-display tracking-tight text-white">
                 CYPHER
               </span>
-            </a>
+            </Link>
             <p className="text-slate-300 font-medium font-mono text-sm">
               "{siteConfig.tagline}"
             </p>
@@ -100,25 +101,25 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="#top" className="hover:text-neon-cyan transition-colors">Home</a>
+                <Link to="/" className="hover:text-neon-cyan transition-colors">Home</Link>
               </li>
               <li>
-                <a href="#about" className="hover:text-neon-cyan transition-colors">About Us</a>
+                <Link to="/about" className="hover:text-neon-cyan transition-colors">About Us</Link>
               </li>
               <li>
-                <a href="#events" className="hover:text-neon-cyan transition-colors">Events & Workshops</a>
+                <Link to="/events" className="hover:text-neon-cyan transition-colors">Events & Workshops</Link>
               </li>
               <li>
-                <a href="#projects" className="hover:text-neon-cyan transition-colors">Member Projects</a>
+                <Link to="/projects" className="hover:text-neon-cyan transition-colors">Member Projects</Link>
               </li>
               <li>
-                <a href="#achievements" className="hover:text-neon-cyan transition-colors">Achievements</a>
+                <Link to="/achievements" className="hover:text-neon-cyan transition-colors">Achievements</Link>
               </li>
               <li>
-                <a href="#team" className="hover:text-neon-cyan transition-colors">Core Team</a>
+                <Link to="/team" className="hover:text-neon-cyan transition-colors">Core Team</Link>
               </li>
               <li>
-                <a href="#faqs" className="hover:text-neon-cyan transition-colors">FAQs</a>
+                <Link to="/faqs" className="hover:text-neon-cyan transition-colors">FAQs</Link>
               </li>
             </ul>
           </div>
@@ -194,9 +195,9 @@ export default function Footer() {
             © {new Date().getFullYear()} {siteConfig.name}. Built with React, Vite & Tailwind CSS.
           </p>
           <div className="flex items-center gap-4 text-slate-400">
-            <a href="#contact" className="hover:text-neon-cyan transition-colors">Contact Organizers</a>
+            <Link to="/contact" className="hover:text-neon-cyan transition-colors">Contact Organizers</Link>
             <span>•</span>
-            <a href="#top" className="hover:text-neon-cyan transition-colors">Back to Top ↑</a>
+            <Link to="/" className="hover:text-neon-cyan transition-colors">Back to Top ↑</Link>
           </div>
         </div>
       </div>

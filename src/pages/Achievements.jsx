@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Trophy, Medal, Sparkles, Box, LayoutGrid } from 'lucide-react'
 import CypherAchievements3D from '../components/CypherAchievements3D'
 import AchievementCard from '../components/AchievementCard'
@@ -105,13 +106,13 @@ export default function Achievements() {
           </p>
         </div>
         <div className="shrink-0">
-          <a
-            href="#join"
+          <Link
+            to="/join"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-neon-cyan hover:bg-neon-cyan-bright text-cypher-950 font-mono font-bold text-xs uppercase tracking-wider shadow-lg shadow-neon-cyan/20 transition-all hover:scale-105"
           >
             <Sparkles className="w-4 h-4" />
             Join Next Squad
-          </a>
+          </Link>
         </div>
       </div>
     </div>

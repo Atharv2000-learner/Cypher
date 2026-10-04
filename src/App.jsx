@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import OnePage from './pages/OnePage'
+import AppRoutes from './pages/AppRoutes'
 import ParticleNetworkBackground from './components/ParticleNetworkBackground'
 
 export default function App() {
@@ -90,20 +91,22 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell relative isolate min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
-      <ParticleNetworkBackground />
-      <div ref={cursorGlowRef} className="cursor-glow" aria-hidden="true">
-        <span ref={cursorClickRef} className="cursor-click-ripple" />
-      </div>
-      <div className="relative z-10 flex flex-1 flex-col">
-        <Navbar isDark={isDark} onToggleTheme={toggleTheme} />
+    <BrowserRouter>
+      <div className="app-shell relative isolate min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-800 dark:selection:text-neon-cyan-bright transition-colors duration-200">
+        <ParticleNetworkBackground />
+        <div ref={cursorGlowRef} className="cursor-glow" aria-hidden="true">
+          <span ref={cursorClickRef} className="cursor-click-ripple" />
+        </div>
+        <div className="relative z-10 flex flex-1 flex-col">
+          <Navbar isDark={isDark} onToggleTheme={toggleTheme} />
 
-        <main className="flex-grow">
-          <OnePage />
-        </main>
+          <main className="flex-grow">
+            <AppRoutes />
+          </main>
 
-        <Footer />
+          <Footer />
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   )
 }

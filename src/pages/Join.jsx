@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Mail, MapPin, Clock, Github, Linkedin, MessageSquare, Twitter } from 'lucide-react'
 import SectionHeader from '../components/SectionHeader'
 import JoinForm from '../components/JoinForm'
@@ -6,6 +7,14 @@ import ContactForm from '../components/ContactForm'
 import { siteConfig } from '../data/siteConfig'
 
 export default function Join() {
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.pathname === '/contact') {
+      document.getElementById('contact')?.scrollIntoView()
+    }
+  }, [location.pathname])
+
   return (
     <div className="w-full px-3 sm:px-5 py-8 space-y-10">
       {/* Header */}
