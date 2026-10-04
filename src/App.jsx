@@ -44,8 +44,8 @@ export default function App() {
     const handlePointerMove = (event) => {
       if (event.pointerType === 'touch') return
 
-      pointerX = event.clientX - 200
-      pointerY = event.clientY - 200
+      pointerX = event.clientX - cursorGlow.offsetWidth / 2
+      pointerY = event.clientY - cursorGlow.offsetHeight / 2
       cursorGlow.classList.add('cursor-glow-visible')
 
       if (animationFrameId !== null) return
@@ -58,8 +58,8 @@ export default function App() {
     const handlePointerDown = (event) => {
       if (event.pointerType === 'touch' || event.button !== 0) return
 
-      pointerX = event.clientX - 200
-      pointerY = event.clientY - 200
+      pointerX = event.clientX - cursorGlow.offsetWidth / 2
+      pointerY = event.clientY - cursorGlow.offsetHeight / 2
       cursorGlow.classList.add('cursor-glow-visible')
       cursorGlow.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0)`
 
