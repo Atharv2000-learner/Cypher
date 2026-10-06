@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { X } from 'lucide-react'
+import { X, ArrowRight } from 'lucide-react'
+import { projects } from '../data/projects'
+import ProjectDetailModal from './ProjectDetailModal'
 import './CompleteShelfBackground.css'
-
-const projects = []
 
 const BookshelfScene = lazy(() =>
   import('@designcodeio/threeui/components/BookshelfScene').then(({ BookshelfScene: scene }) => ({
@@ -21,6 +21,7 @@ export default function CompleteShelfBackground({
   const closeObserverRef = useRef(null)
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0)
   const [isBookOpen, setIsBookOpen] = useState(false)
+  const [selectedModalProject, setSelectedModalProject] = useState(null)
   const selectedProject = projects[selectedProjectIndex] ?? null
 
   useEffect(() => {
@@ -126,8 +127,26 @@ export default function CompleteShelfBackground({
                 )
               })}
             </div>
+
+            <div className="completeshelf-details__actions" style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(244, 238, 230, 0.15)' }}>
+              <button
+                type="button"
+                onClick={() => setSelectedModalProject(selectedProject)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neon-cyan hover:bg-cyan-300 text-cypher-950 font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-neon-cyan/20 cursor-pointer"
+              >
+                <span>View Details</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </aside>
+      )}
+
+      {selectedModalProject && (
+        <ProjectDetailModal
+          project={selectedModalProject}
+          onClose={() => setSelectedModalProject(null)}
+        />
       )}
     </div>
   )

@@ -95,15 +95,15 @@ export default function ProjectCard({ project, onViewProject }) {
             </span>
           </div>
 
-          {/* 8. View Project Button */}
+          {/* 8. View Project / Details Button */}
           <button
             onClick={(e) => {
               e.stopPropagation()
               onViewProject(project)
             }}
-            className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-neon-cyan group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all focus:outline-none"
+            className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-neon-cyan group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all focus:outline-none cursor-pointer"
           >
-            <span>View Project</span>
+            <span>View Details</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>

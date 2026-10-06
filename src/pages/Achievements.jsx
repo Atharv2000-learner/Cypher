@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom'
 import { Trophy, Medal, Sparkles, Box, LayoutGrid } from 'lucide-react'
 import CypherAchievements3D from '../components/CypherAchievements3D'
 import AchievementCard from '../components/AchievementCard'
+import AchievementDetailModal from '../components/AchievementDetailModal'
 import { achievementsData } from '../data/achievements'
 
 export default function Achievements() {
   const [viewMode, setViewMode] = useState('3d') // '3d' | 'grid'
   const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedAchievementModal, setSelectedAchievementModal] = useState(null)
 
   const categories = ['All', 'Hackathon', 'Competition', 'Projects', 'Workshop', 'Coding', 'Innovation', 'Community', 'Recognition']
 
@@ -84,11 +86,21 @@ export default function Achievements() {
                 team: item.team,
                 badge: `ACH-${item.number}`,
                 icon: item.category === 'Hackathon' ? 'Trophy' : item.category === 'Competition' ? 'ShieldCheck' : item.category === 'Projects' ? 'Code2' : 'Award',
-                accent: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10'
-              }} 
+                accent: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+                rawItem: item
+              }}
+              onViewDetails={setSelectedAchievementModal}
             />
           ))}
         </div>
+      )}
+
+      {/* Modal popup when clicking [ VIEW DETAILS ] from grid cards */}
+      {selectedAchievementModal && (
+        <AchievementDetailModal
+          achievement={selectedAchievementModal}
+          onClose={() => setSelectedAchievementModal(null)}
+        />
       )}
 
       {/* Competition Culture Banner */}
