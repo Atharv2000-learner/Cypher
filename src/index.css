@@ -124,10 +124,6 @@
 .page-transition-achievements { animation-name: page-enter-scale; }
 .page-transition-join { animation-name: page-enter-rotate; }
 
-.app-shell {
-  min-height: 180vh;
-}
-
 .kage-background {
   position: fixed;
   inset: 0;
@@ -141,6 +137,18 @@
   background: #05070a;
   opacity: 0.96;
   filter: saturate(1.08) brightness(0.78);
+}
+
+.shader-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shader-frame canvas {
+  display: block;
 }
 
 .cypher-backdrop {
