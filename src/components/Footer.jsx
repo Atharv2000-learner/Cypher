@@ -23,36 +23,36 @@ export default function Footer() {
       {/* Subtle background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-neon-cyan/5 blur-3xl pointer-events-none"></div>
 
-      <div className="w-full px-3 sm:px-5 pt-10 pb-8 sm:pt-16 sm:pb-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
+      <div className="w-full px-3 sm:px-5 pt-8 pb-5 sm:pt-10 sm:pb-7 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-7 lg:gap-6 mb-7">
           
           {/* Brand Col */}
-          <div className="lg:col-span-4 space-y-4">
+          <div className="lg:col-span-4 space-y-3">
             <Link to="/" className="inline-flex items-center gap-3 group">
               <img
                 src="/assets/cypher-logo.png"
                 alt="CYPHER logo"
-                className="w-14 h-14 rounded-full object-cover border border-white"
+                className="w-11 h-11 rounded-full object-cover border border-white"
               />
-              <span className="text-xl font-bold font-display tracking-tight text-white">
+              <span className="brand-inter text-lg font-bold tracking-tight text-white">
                 CYPHER
               </span>
             </Link>
-            <p className="text-slate-300 font-medium font-mono text-sm">
+            <p className="text-slate-300 font-medium font-mono text-xs sm:text-sm">
               "{siteConfig.tagline}"
             </p>
-            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-sm">
               {siteConfig.description}
             </p>
             
             {/* Social Links */}
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center gap-2.5 pt-1">
               {siteConfig.socials.github && (
                 <a
                   href={siteConfig.socials.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-cypher-900 border border-cypher-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-neon-cyan/50 hover:bg-neon-cyan/10 transition-all"
+                  className="w-8 h-8 rounded-lg bg-cypher-900 border border-cypher-800 flex items-center justify-center text-slate-300 hover:text-white hover:border-neon-cyan/50 hover:bg-neon-cyan/10 transition-all"
                   aria-label="Cypher Club on GitHub"
                 >
                   <Github className="w-4 h-4" />
@@ -95,11 +95,11 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="lg:col-span-2 space-y-3">
-            <h3 className="text-white font-semibold uppercase font-mono tracking-wider text-xs">
+          <div className="lg:col-span-2 space-y-2">
+            <h3 className="text-white font-semibold uppercase font-mono tracking-wider text-[10px] sm:text-xs">
               Explore
             </h3>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-1">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-1 text-xs sm:text-sm">
               <li>
                 <Link to="/" className="hover:text-neon-cyan transition-colors">Home</Link>
               </li>
@@ -125,11 +125,11 @@ export default function Footer() {
           </div>
 
           {/* Campus Details */}
-          <div className="lg:col-span-3 space-y-3">
-            <h3 className="text-white font-semibold uppercase font-mono tracking-wider text-xs">
+          <div className="lg:col-span-3 space-y-2.5">
+            <h3 className="text-white font-semibold uppercase font-mono tracking-wider text-[10px] sm:text-xs">
               Campus Headquarters
             </h3>
-            <div className="space-y-2.5 text-xs sm:text-sm">
+            <div className="space-y-2 text-xs sm:text-sm">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
                 <span>{siteConfig.contact.location}, {siteConfig.contact.institution}</span>
@@ -140,28 +140,28 @@ export default function Footer() {
                   {siteConfig.contact.email}
                 </a>
               </div>
-              <p className="text-xs text-slate-400 pt-1 border-t border-cypher-800">
+              <p className="text-[11px] text-slate-400 pt-1 border-t border-cypher-800">
                 <span className="text-slate-300 font-medium">Club Lab Hours:</span> {siteConfig.contact.meetingHours}
               </p>
             </div>
           </div>
 
           {/* Newsletter / Bulletin */}
-          <div className="lg:col-span-3 space-y-3">
-            <h3 className="text-white font-semibold uppercase font-mono tracking-wider text-xs">
+          <div className="lg:col-span-3 space-y-2.5">
+            <h3 className="text-white font-semibold uppercase font-mono tracking-wider text-[10px] sm:text-xs">
               Club Dispatch
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-[11px] text-slate-400">
               Get bi-weekly notifications for new hackathon registrations, AI paper deep-dives, and tech talks.
             </p>
             
             {newsletterStatus === 'success' ? (
-              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+              <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Subscribed! Check your campus inbox for the next digest.</span>
               </div>
             ) : (
-              <form onSubmit={handleNewsletterSubmit} className="space-y-2">
+              <form onSubmit={handleNewsletterSubmit} className="space-y-1.5">
                 <div className="relative">
                   <input
                     type="email"
@@ -170,18 +170,18 @@ export default function Footer() {
                     placeholder="student@university.edu"
                     required
                     aria-label="Email address for newsletter"
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-cypher-900 border border-cypher-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all"
+                    className="w-full px-3 py-2 rounded-lg bg-cypher-900 border border-cypher-800 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all"
                   />
                   <button
                     type="submit"
                     disabled={newsletterStatus === 'loading'}
-                    className="absolute right-1 top-1 bottom-1 px-3 bg-neon-cyan text-cypher-950 font-semibold rounded-md text-xs hover:bg-neon-cyan-bright transition-colors flex items-center gap-1 disabled:opacity-50"
+                    className="absolute right-1 top-1 bottom-1 px-2.5 bg-neon-cyan text-cypher-950 font-semibold rounded-md text-[11px] hover:bg-neon-cyan-bright transition-colors flex items-center gap-1 disabled:opacity-50"
                   >
                     <span>Join</span>
                     <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
-                <span className="text-[11px] text-slate-400 block">
+                <span className="text-[10px] text-slate-400 block">
                   Zero spam. Unsubscribe anytime.
                 </span>
               </form>
@@ -190,11 +190,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-6 sm:pt-8 border-t border-cypher-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div className="pt-4 sm:pt-5 border-t border-cypher-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
           <p className="text-slate-400 text-center sm:text-left">
             © {new Date().getFullYear()} {siteConfig.name}. Built with React, Vite & Tailwind CSS.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-slate-400">
             <Link to="/contact" className="hover:text-neon-cyan transition-colors">Contact Organizers</Link>
             <span className="hidden sm:inline">•</span>
             <Link to="/" className="hover:text-neon-cyan transition-colors">Back to Top ↑</Link>

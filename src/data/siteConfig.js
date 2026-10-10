@@ -92,7 +92,7 @@ export const siteConfig = {
   contact: {
     email: "contact@cypherclub.edu", // Replace with verified club address
     alternateEmail: "support@cypherclub.edu",
-    location: "Student Innovation Center, Tech Campus Lab 402",
+    location: "TSSM'S PVPIT BAVDHAN",
     institution: "Department of Computer Science & Engineering",
     meetingHours: "Wednesdays & Fridays: 4:30 PM – 6:30 PM",
     openTo: "All university students across all engineering branches and years."

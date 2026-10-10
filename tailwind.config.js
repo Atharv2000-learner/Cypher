@@ -33,9 +33,9 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'Fira Code', 'monospace'],
-        display: ['Orbitron', 'Inter', 'sans-serif'],
+        sans: ['Orbitron', 'Rajdhani', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'Fira Code', 'monospace'],
+        display: ['Black Future', 'Orbitron', 'sans-serif'],
       },
       backgroundImage: {
         'cyber-grid': "radial-gradient(circle, rgba(14, 165, 233, 0.08) 1px, transparent 1px)",

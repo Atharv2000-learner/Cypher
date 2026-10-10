@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Black Future';
+  src: url('/assets/BlackFuture-gx1q3.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @keyframes page-enter {
   from {
     opacity: 0;
@@ -248,11 +256,42 @@ html.light .cypher-backdrop {
     color-scheme: dark;
   }
 
+  body {
+    font-family: 'Orbitron', 'Rajdhani', sans-serif;
+  }
+
   h1,
   h2,
   h3,
   h4 {
+    font-family: 'Black Future', 'Orbitron', sans-serif;
+    letter-spacing: 0.08em !important;
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.12);
+  }
+
+  .font-display {
+    font-family: 'Orbitron', 'Rajdhani', sans-serif;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.12);
+  }
+
+  .brand-inter,
+  .nav-inter {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: normal;
+    text-shadow: none;
+  }
+
+  .nav-orbitron {
     font-family: 'Orbitron', sans-serif;
+  }
+
+  a {
+    transition: color 180ms ease, opacity 180ms ease;
+  }
+
+  a:hover {
+    color: #67e8f9;
   }
   
   html.light {
@@ -260,7 +299,32 @@ html.light .cypher-backdrop {
   }
 
   body {
+    position: relative;
     overflow-x: hidden;
+    background:
+      radial-gradient(circle at top, rgba(34, 211, 238, 0.12), transparent 26%),
+      radial-gradient(circle at 80% 16%, rgba(168, 85, 247, 0.12), transparent 22%),
+      linear-gradient(180deg, #040812 0%, #070d18 100%);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    background-size: 48px 48px, 48px 48px, 100% 100%;
+    mask-image: radial-gradient(circle at center, black 38%, transparent 100%);
+    opacity: 0.7;
+    z-index: 0;
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
   }
 
   /* Custom scrollbar for cyber aesthetic */
@@ -289,10 +353,12 @@ html.light .cypher-backdrop {
 @layer utilities {
   .card-lift {
     transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.06), 0 18px 30px rgba(2, 6, 23, 0.38);
   }
 
   .card-lift:hover {
     transform: translateY(-8px);
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 0 24px rgba(34, 211, 238, 0.18), 0 18px 36px rgba(2, 6, 23, 0.42);
   }
 
   .bg-grid-pattern {
@@ -312,9 +378,10 @@ html.light .cypher-backdrop {
   }
 
   .text-gradient-cyan {
-    background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 50%, #818cf8 100%);
+    background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 42%, #8b5cf6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.22);
   }
 
   .text-gradient-green {

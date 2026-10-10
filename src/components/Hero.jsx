@@ -24,7 +24,7 @@ export default function Hero() {
               <span>Cyber Security Club</span>
             </div>
 
-            <h1 className="whitespace-nowrap text-[clamp(1.15rem,6.2vw,4.5rem)] sm:text-[clamp(2.4rem,5.4vw,4.5rem)] lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-tight">
+            <h1 className="whitespace-nowrap text-[clamp(1rem,4.8vw,3.5rem)] sm:text-[clamp(1.8rem,4vw,3.2rem)] lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-tight">
               Explore{' '}
               <span>
                 <span style={{ color: '#ff003c', textShadow: '0 0 18px rgba(255, 0, 60, 0.55)' }}>Exploit</span>{' '}
